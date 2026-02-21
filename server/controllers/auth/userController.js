@@ -175,7 +175,7 @@ async function sendPasswordResetEmail(email, token) {
           <h2 style="color: #333;">Password Reset Request</h2>
           <p>You requested a password reset. Click the link below to reset your password:</p>
           <div style="margin: 30px 0; text-align: center;">
-            <a href="https://e-commerce-mern-lovat-gamma.vercel.app/reset-password" 
+            <a href="https://shoppingweb-beryl.vercel.app/reset-password" 
                style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
               Reset Password
             </a>
