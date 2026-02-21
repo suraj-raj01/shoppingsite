@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 app.use(cors());
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended:true}));
-app.use("/uploads",express.static("uploads"));
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 
 import categoryRoutes from './routes/categoryRoutes.js'
 import productRoutes from './routes/productRoutes.js'
@@ -23,16 +23,19 @@ import roleRoutes from './routes/auth/rolesRoutes.js'
 import permissionRoutes from './routes/auth/permissionRoutes.js'
 import userRoutes from './routes/auth/userRoutes.js'
 
+app.get("/", (req, res) => {
+    res.send("SERVER IS RUNNING ✅");
+});
 
-app.use('/api/admin/category',categoryRoutes)
-app.use('/api/admin/upload',uploadRoutes)
-app.use('/api/admin/products',productRoutes)
-app.use('/api/admin/heroes',heroRoutes)
-app.use('/api/admin/navbar',navbarRoutes)
-app.use('/api/admin/roles',roleRoutes)
-app.use('/api/admin/permissions',permissionRoutes)
-app.use('/api/admin/users',userRoutes)
+app.use('/api/admin/category', categoryRoutes)
+app.use('/api/admin/upload', uploadRoutes)
+app.use('/api/admin/products', productRoutes)
+app.use('/api/admin/heroes', heroRoutes)
+app.use('/api/admin/navbar', navbarRoutes)
+app.use('/api/admin/roles', roleRoutes)
+app.use('/api/admin/permissions', permissionRoutes)
+app.use('/api/admin/users', userRoutes)
 
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log(`Server run on port ${PORT}`);
 });
