@@ -1,0 +1,5 @@
+# Ignore .env files
+.env
+*.env
+git rm --cached .env
+node_modules
