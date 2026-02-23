@@ -71,17 +71,16 @@ export default function Navbar() {
 
                 // ✅ persist
                 localStorage.setItem("userLocation", JSON.stringify(locationObj))
-
                 toast.success("Location detected")
                 setDetecting(false)
             },
             () => {
-                toast.error("Permission denied or failed")
+                // toast.error("Permission denied or failed")
                 setDetecting(false)
             },
             {
                 enableHighAccuracy: true,
-                timeout: 500,
+                timeout: 1000,
                 maximumAge: 0,
             }
         )
@@ -93,7 +92,9 @@ export default function Navbar() {
         if (saved) {
             try {
                 setCoords(JSON.parse(saved))
-            } catch { }
+            } catch (err) {
+                console.error("Failed to parse saved location:", err)
+            }
         }
     }, [])
 
@@ -107,10 +108,9 @@ export default function Navbar() {
                     coords.latitude,
                     coords.longitude
                 )
-                console.log(fullAddress)
                 setAddress(fullAddress as { suburb?: string; postcode?: string; city?: string })
-            } catch {
-                console.log("Address fetch failed")
+            } catch (err) {
+                console.log("Address fetch failed:", err)
             }
         }
 

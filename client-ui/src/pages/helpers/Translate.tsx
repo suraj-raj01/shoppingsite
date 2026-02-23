@@ -8,22 +8,20 @@ import {
 import { useTranslation } from "react-i18next"
 
 export default function Translation() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   const changeLang = (lang: string) => {
-    if (i18n?.changeLanguage) {
-      i18n.changeLanguage(lang)
-      localStorage.setItem("lang", lang)
-    }
+    i18n.changeLanguage(lang)
+    localStorage.setItem("lang", lang)
   }
 
   return (
     <Select
-      value={i18n.resolvedLanguage || "en"}
+      value={i18n.resolvedLanguage}
       onValueChange={changeLang}
     >
-      <SelectTrigger className="w-fit shadow-none">
-        <SelectValue placeholder="Language" />
+      <SelectTrigger className="w-fit">
+        <SelectValue placeholder={t("language")} />
       </SelectTrigger>
 
       <SelectContent>

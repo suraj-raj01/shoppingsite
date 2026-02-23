@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import BASE_URL from "@/Config"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import {
   Carousel,
@@ -10,6 +10,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+
+import Autoplay from "embla-carousel-autoplay"
+
 import TrandingProducts from "./products/TrandingProducts"
 import Categories from "./products/Categories"
 import HeroSkeleton from "./skeletons/HeroSkeleton"
@@ -28,6 +31,15 @@ export default function Hero() {
   const [hero, setHero] = useState<HeroType[]>([])
   const [loading, setLoading] = useState(true)
 
+  // ✅ autoplay plugin
+  const autoplay = useRef(
+    Autoplay({
+      delay: 4000, // slide every 3 sec
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    })
+  )
+
   const fetchHero = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/admin/heroes`)
@@ -43,55 +55,47 @@ export default function Hero() {
     fetchHero()
   }, [])
 
-  if (loading) return <div className="p-4">
-    <HeroSkeleton/>
-  </div>
+  if (loading)
+    return <HeroSkeleton />
 
   return (
     <section className="w-full">
-      <Categories/>
-      <Carousel opts={{ loop: true }} className="w-full">
+      <Categories />
+
+      {/* ✅ PASS plugins */}
+      <Carousel
+        opts={{ loop: true }}
+        plugins={[autoplay.current]}
+        className="w-full"
+      >
         <CarouselContent>
           {hero.map((item) => (
-            // ✅ FULL WIDTH ITEM
             <CarouselItem key={item._id} className="basis-full">
               <div className="relative w-full h-130 md:h-135 lg:h-165 overflow-hidden">
-
-                {/* Image */}
                 <img
                   src={item.image}
                   alt={item.title}
                   className="w-full h-full object-cover"
                 />
 
-                {/* Overlay */}
                 <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
                   <div className="max-w-full -mt-50 flex flex-col items-center justify-center mx-auto px-6 space-y-4">
-
-                    {/* <h2 className="text-2xl md:text-4xl font-bold">
-                      {item.title}
-                    </h2>
-
-                    <p className="max-w-xl text-sm md:text-base opacity-90">
-                      {item.description}
-                    </p> */}
-
                     <Button
                       className="mt-2 bg-transparent text-gray-100 hover:bg-black/10 hover:text-gray-50 backdrop-blur-xl"
                       variant="outline"
                     >
                       <Link to={item.link}>{item.button}</Link>
                     </Button>
-
                   </div>
                 </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <TrandingProducts/>
 
-        <CarouselPrevious  className="absolute top-40 left-2 md:left-10 cursor-pointer"/>
+        <TrandingProducts />
+
+        <CarouselPrevious className="absolute top-40 left-2 md:left-10 cursor-pointer" />
         <CarouselNext className="absolute top-40 right-2 md:right-10 cursor-pointer" />
       </Carousel>
     </section>

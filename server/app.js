@@ -22,6 +22,7 @@ import navbarRoutes from './routes/navbarRoutes.js'
 import roleRoutes from './routes/auth/rolesRoutes.js'
 import permissionRoutes from './routes/auth/permissionRoutes.js'
 import userRoutes from './routes/auth/userRoutes.js'
+import locationRoutes from './routes/location/locationRoutes.js'
 
 app.get("/", (req, res) => {
     res.send("SERVER IS RUNNING ✅");
@@ -35,6 +36,8 @@ app.use('/api/admin/navbar', navbarRoutes)
 app.use('/api/admin/roles', roleRoutes)
 app.use('/api/admin/permissions', permissionRoutes)
 app.use('/api/admin/users', userRoutes)
+// location route
+app.use('/api/location', locationRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server run on port ${PORT}`);

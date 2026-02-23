@@ -1,25 +1,89 @@
+import BASE_URL from "@/Config"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
 
-const categories = [
-    "All",
-    "Electronics",
-    "Grossory",
-    "Plants",
-    "Food",
-    "Vehicles"
-]
+type Subcategories = {
+  _id: string
+  name: string
+  brands: string[]
+}
+
+type Category = {
+  _id: string
+  categories: string
+  subcategories: Subcategories[]
+}
 
 export default function Categories() {
-    return (
-        <div className="flex items-center h-8 justify-start text-muted-foreground gap-2 md:px-10">
-            {
-                categories.map((item, index) => {
-                    return (
-                        <div key={index} className="p-1 font-semibold cursor-pointer text-sm lg:text:md hover:bg-muted">
-                            {item}
-                        </div>
-                    )
-                })
-            }
-        </div>
-    )
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/admin/category`)
+      setCategories(res.data || [])
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  if (loading) return <p>Loading categories...</p>
+
+  return (
+    <NavigationMenu>
+      <NavigationMenuList>
+        {categories.map((category) => (
+          <NavigationMenuItem key={category._id}>
+            
+            {/* CATEGORY */}
+            <NavigationMenuTrigger className="text-sm font-semibold">
+              {category.categories}
+            </NavigationMenuTrigger>
+
+            {/* SUBCATEGORY PANEL */}
+            <NavigationMenuContent>
+              <div className="grid left-10 w-85 md:w-125 grid-cols-2 gap-2 p-3">
+
+                {category.subcategories?.map((sub) => (
+                  <div key={sub._id} className="space-y-2">
+
+                    {/* SUBCATEGORY */}
+                    <p className="font-medium text-sm">{sub.name}</p>
+
+                    {/* BRANDS */}
+                    <div className="flex flex-col gap-1">
+                      {sub.brands?.map((brand) => (
+                        <span
+                          key={brand}
+                          className="text-sm text-muted-foreground hover:text-foreground cursor-pointer"
+                        >
+                          {brand}
+                        </span>
+                      ))}
+                    </div>
+
+                  </div>
+                ))}
+
+              </div>
+            </NavigationMenuContent>
+
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  )
 }

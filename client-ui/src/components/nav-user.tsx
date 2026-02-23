@@ -1,5 +1,14 @@
-"use client"
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import {
   Bell,
   ChevronsUpDown,
@@ -30,6 +39,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -45,6 +55,7 @@ export function NavUser({
   const navigate = useNavigate();
   function logout() {
     localStorage.removeItem("user")
+    toast.success("Logged out successfully")
     navigate("/")
   }
   return (
@@ -57,7 +68,7 @@ export function NavUser({
               className="data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-9 w-9 border rounded-full">
-                <AvatarImage src={user.profile} alt={user.name}/>
+                <AvatarImage src={user.profile} alt={user.name} />
                 <AvatarFallback className="rounded-lg">G</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -109,14 +120,37 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={logout}
-              className="cursor-pointer"
-            >
-              <LogOutIcon />
-              Log out
-            </DropdownMenuItem>
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="cursor-pointer"
+                  onSelect={(e) => e.preventDefault()} // ⭐ VERY IMPORTANT
+                >
+                  <LogOutIcon className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Are you sure you want to logout?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You will need to login again to access your account.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={logout}>
+                    Yes, Logout
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
