@@ -42,12 +42,12 @@ export default function UserTable() {
             if (searchQuery) {
                 response = await axios.post(`${api}/api/admin/users/searchuser/${searchQuery}`)
                 setNavbar(response?.data?.data || [])
-                console.log(response.data, "search data");
+                // console.log(response.data, "search data");
             } else {
-                response = await axios.get(`${api}/api/admin/users/getuser`)
+                response = await axios.get(`${api}/api/admin/users/getuser?page=${page}&limit=10`)
                 setNavbar(response?.data?.data || [])
                 setPage(response.data.currentPage)
-                setPageCount(response.data.pageCount)
+                setPageCount(response.data.totalPages)
                 // console.log("userdata data", response.data)
             }
             const { data } = response

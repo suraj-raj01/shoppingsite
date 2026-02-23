@@ -39,7 +39,7 @@ export default function DashboardLayout() {
 
           </div>
           <div className="flex items-center gap-2">
-            <Button size='icon' className="rounded-full" variant='outline'>
+            <Button size='icon' className="rounded-full overflow-hidden" variant='outline'>
               {user ? (
                 <img src={user.user.profile} alt="" />
               ) : "G"}

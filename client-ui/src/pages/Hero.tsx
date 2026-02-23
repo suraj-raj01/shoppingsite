@@ -11,6 +11,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import TrandingProducts from "./products/TrandingProducts"
+import Categories from "./products/Categories"
+import HeroSkeleton from "./skeletons/HeroSkeleton"
+import { Link } from "react-router-dom"
 
 type HeroType = {
   _id: string
@@ -40,11 +43,13 @@ export default function Hero() {
     fetchHero()
   }, [])
 
-  if (loading) return <div className="p-4">Loading hero...</div>
-  if (!hero.length) return <div className="p-4">Hero not found</div>
+  if (loading) return <div className="p-4">
+    <HeroSkeleton/>
+  </div>
 
   return (
     <section className="w-full">
+      <Categories/>
       <Carousel opts={{ loop: true }} className="w-full">
         <CarouselContent>
           {hero.map((item) => (
@@ -61,21 +66,21 @@ export default function Hero() {
 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                  <div className="max-w-full -mt-50 flex flex-col items-center justify-center mx-auto px-6 text-white space-y-4">
+                  <div className="max-w-full -mt-50 flex flex-col items-center justify-center mx-auto px-6 space-y-4">
 
-                    <h2 className="text-2xl md:text-4xl font-bold">
+                    {/* <h2 className="text-2xl md:text-4xl font-bold">
                       {item.title}
                     </h2>
 
                     <p className="max-w-xl text-sm md:text-base opacity-90">
                       {item.description}
-                    </p>
+                    </p> */}
 
                     <Button
-                      onClick={() => (window.location.href = item.link)}
-                      className="mt-2"
+                      className="mt-2 bg-transparent text-gray-100 hover:bg-black/10 hover:text-gray-50 backdrop-blur-xl"
+                      variant="outline"
                     >
-                      {item.button}
+                      <Link to={item.link}>{item.button}</Link>
                     </Button>
 
                   </div>

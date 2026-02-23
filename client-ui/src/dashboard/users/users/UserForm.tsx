@@ -266,7 +266,7 @@ export default function UserForm() {
                                     <img
                                         src={preview}
                                         alt="preview"
-                                        className="h-20 rounded-xs border object-cover"
+                                        className="h-20 rounded-full border object-cover"
                                     />
                                 </div>
                             )}

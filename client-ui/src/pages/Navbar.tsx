@@ -11,15 +11,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { DialogTitle } from "@/components/ui/dialog"
 import { Link } from "react-router-dom"
-import LanguageDropdown from "./components/LanguageDropdown"
+import NavbarSkeleton from "./skeletons/Navbar"
+import { toast } from "sonner"
+import { getAddress } from "./helpers/getAddress"
+import Translation from "./helpers/Translate"
 
 type CategoryType = {
     _id: string
@@ -40,42 +39,111 @@ export default function Navbar() {
     const [category, setCategory] = useState<CategoryType[] | null>(null)
     const [loading, setLoading] = useState(true)
 
-    const fetchNavbar = async () => {
-        try {
-            const res = await axios.get(`${BASE_URL}/api/admin/navbar`)
-            setNavbar(res.data?.data?.[0] || null)
-            // console.log(res.data)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false)
+    const [address, setAddress] = useState<{
+        suburb?: string
+        postcode?: string
+        city?: string
+    } | null>(null)
+    const [detecting, setDetecting] = useState(false)
+
+    const [coords, setCoords] = useState<{
+        latitude: number
+        longitude: number
+    } | null>(null)
+
+    // ✅ get location
+    const getUserLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation not supported")
+            return
         }
-    }
-    const fetchCategory = async () => {
-        try {
-            const res = await axios.get(`${BASE_URL}/api/admin/category`)
-            setCategory(res.data || null)
-            // console.log(res.data)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
+
+        setDetecting(true)
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude
+                const lng = position.coords.longitude
+
+                const locationObj = { latitude: lat, longitude: lng }
+
+                setCoords(locationObj)
+
+                // ✅ persist
+                localStorage.setItem("userLocation", JSON.stringify(locationObj))
+
+                toast.success("Location detected")
+                setDetecting(false)
+            },
+            () => {
+                toast.error("Permission denied or failed")
+                setDetecting(false)
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 500,
+                maximumAge: 0,
+            }
+        )
     }
 
+    // ✅ restore location after refresh
     useEffect(() => {
-        fetchNavbar();
-        fetchCategory();
+        const saved = localStorage.getItem("userLocation")
+        if (saved) {
+            try {
+                setCoords(JSON.parse(saved))
+            } catch { }
+        }
     }, [])
 
-    if (loading) return <div className="p-4">Loading navbar...</div>
+    // ✅ fetch address when coords change
+    useEffect(() => {
+        if (!coords) return
+
+        const fetchAddress = async () => {
+            try {
+                const fullAddress = await getAddress(
+                    coords.latitude,
+                    coords.longitude
+                )
+                console.log(fullAddress)
+                setAddress(fullAddress as { suburb?: string; postcode?: string; city?: string })
+            } catch {
+                console.log("Address fetch failed")
+            }
+        }
+
+        fetchAddress()
+    }, [coords])
+
+    // ✅ fetch navbar + category together (fix loading bug)
+    useEffect(() => {
+        const fetchAll = async () => {
+            try {
+                const [navRes, catRes] = await Promise.all([
+                    axios.get(`${BASE_URL}/api/admin/navbar`),
+                    axios.get(`${BASE_URL}/api/admin/category`),
+                ])
+
+                setNavbar(navRes.data?.data?.[0] || null)
+                setCategory(catRes.data || null)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchAll()
+    }, [])
+
+    if (loading) return <NavbarSkeleton />
     if (!navbar) return <div className="p-4">Navbar not found</div>
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b bg-background">
-            {/* 🔹 Top Row */}
             <div className="max-w-full mx-auto md:px-10 px-3 py-3 flex items-center gap-3">
-
                 {/* Mobile Menu */}
                 <Sheet>
                     <SheetTrigger asChild>
@@ -84,8 +152,7 @@ export default function Navbar() {
                         </Button>
                     </SheetTrigger>
 
-                    <SheetContent side="left" className="p-2 flex items-start justify-start">
-                        {/* <p className="font-semibold text-lg">Menu</p> */}
+                    <SheetContent side="left" className="p-2">
                         <DialogTitle>
                             <img
                                 src={navbar.logo}
@@ -93,6 +160,7 @@ export default function Navbar() {
                                 className="h-8 object-contain"
                             />
                         </DialogTitle>
+
                         <Button variant="ghost" className="w-full justify-start">
                             <Heart size={18} /> Wishlist
                         </Button>
@@ -102,21 +170,15 @@ export default function Navbar() {
                         </Button>
 
                         <Button variant="outline" className="w-full">
-                            {navbar.signin}
+                            <Link to="/auth/login">{navbar.signin}</Link>
                         </Button>
                     </SheetContent>
                 </Sheet>
 
                 {/* Logo */}
-                <img
-                    src={navbar.logo}
-                    alt="logo"
-                    className="h-9 object-contain"
-                />
+                <img src={navbar.logo} alt="logo" className="h-9 object-contain" />
 
-                {/* <LanguageDropdown /> */}
-
-                {/* ✅ MOBILE RIGHT ICONS (NEW) */}
+                {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
                     <Button variant="ghost" size="icon">
                         <Heart />
@@ -130,36 +192,41 @@ export default function Navbar() {
                     </Button>
                 </div>
 
-                {/* Location (desktop only — unchanged) */}
+                {/* ✅ Location */}
                 <div className="hidden px-8 md:flex md:flex-col items-center text-sm text-muted-foreground">
-                    <span>{navbar.location}</span>
-                    <div className="flex items-center cursor-pointer justify-center gap-2 font-bold">
+                    <span>
+                        {address
+                            ? `${address.suburb ?? ""}, ${address.postcode ?? ""}, ${address.city ?? ""}`.trim()
+                            : navbar.location}
+                    </span>
+
+                    <div
+                        onClick={getUserLocation}
+                        className="flex items-center cursor-pointer justify-center gap-2 font-bold"
+                    >
                         <MapPin size={16} />
-                        Use Current Location
+                        {detecting ? "Detecting..." : "Use Current Location"}
                     </div>
                 </div>
 
-                {/* Search (desktop only — unchanged) */}
+                {/* Search */}
                 <div className="flex-1 hidden md:flex">
                     <div className="flex w-full items-center justify-center">
-                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                        <Select
+                            value={selectedCategory}
+                            onValueChange={setSelectedCategory}
+                        >
                             <SelectTrigger className="w-fit shadow-none border-r-0">
                                 <SelectValue placeholder="All" />
                             </SelectTrigger>
 
                             <SelectContent>
                                 <SelectItem value="all">All</SelectItem>
-                                {category?.length ? (
-                                    category.map((item: CategoryType) => (
-                                        <SelectItem key={item._id} value={item.categories}>
-                                            {item.categories}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    <SelectItem value="loading" disabled>
-                                        Loading...
+                                {category?.map((item) => (
+                                    <SelectItem key={item._id} value={item.categories}>
+                                        {item.categories}
                                     </SelectItem>
-                                )}
+                                ))}
                             </SelectContent>
                         </Select>
 
@@ -175,58 +242,23 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Right Icons (desktop only — unchanged) */}
+                {/* Right Icons */}
                 <div className="hidden md:flex items-center gap-3">
-                    <LanguageDropdown />
-                    <div className="">
-                        <Button variant="ghost" size="icon" className="cursor-pointer">
-                            <Heart />
-                        </Button>
-
-                        <Button variant="ghost" size="icon" className="relative -ml-2 cursor-pointer">
-                            <ShoppingCart className="" />
-                            <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
-                                0
-                            </span>
-                        </Button>
-                    </div>
-
-                    <Button variant="outline" className="cursor-pointer">
-                        <Link to='/auth/login'>{navbar.signin}</Link>
+                    {/* Translation components */}
+                    <Translation/>
+                    <Button variant="ghost" size="icon">
+                        <Heart />
                     </Button>
-                </div>
-            </div>
 
-            {/* ✅ MOBILE SEARCH BAR (NEW) */}
-            <div className="md:hidden px-3 pb-3">
-                <div className="flex w-full">
-                    <Select value={selectedCategory} onValueChange={setSelectedCategory} defaultValue={selectedCategory}>
-                        <SelectTrigger className="w-fit shadow-none border-r-0">
-                            <SelectValue placeholder="All" />
-                        </SelectTrigger>
+                    <Button variant="ghost" size="icon" className="relative -ml-2">
+                        <ShoppingCart />
+                        <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
+                            0
+                        </span>
+                    </Button>
 
-                        <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            {category?.length ? (
-                                category.map((item: CategoryType) => (
-                                    <SelectItem key={item._id} value={item.categories}>
-                                        {item.categories}
-                                    </SelectItem>
-                                ))
-                            ) : (
-                                <SelectItem value="loading" disabled>
-                                    Loading...
-                                </SelectItem>
-                            )}
-                        </SelectContent>
-                    </Select>
-                    <Input
-                        type="text"
-                        placeholder="Search products..."
-                        className="border-l border-r-0"
-                    />
-                    <Button className="rounded-l-none w-12">
-                        <Search size={18} />
+                    <Button variant="outline">
+                        <Link to="/auth/login">{navbar.signin}</Link>
                     </Button>
                 </div>
             </div>

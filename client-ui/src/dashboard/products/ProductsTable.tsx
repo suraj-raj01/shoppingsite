@@ -50,13 +50,13 @@ export default function ProductsTable() {
             if (searchQuery) {
                 response = await axios.get(`${api}/api/admin/products/${searchQuery}`)
                 setCategories(response?.data || [])
-                console.log(response.data, "search data");
+                // console.log(response.data, "search data");
             } else {
-                response = await axios.get(`${api}/api/admin/products`)
+                response = await axios.get(`${api}/api/admin/products?page=${page}&limit=10`)
                 setCategories(response?.data?.data || [])
                 setPage(response.data.currentPage)
-                setPageCount(response.data.pageCount)
-                console.log("products data", response.data.data)
+                setPageCount(response.data.totalPages)
+                // console.log("products data", response.data)
             }
             const { data } = response
             setPageCount(data.totalPages || 1)
@@ -72,7 +72,7 @@ export default function ProductsTable() {
     }, [page, searchQuery])
 
 
-    const deleteCategory = async (id: any) => {
+    const deleteProduct = async (id: any) => {
         try {
             await axios.delete(`${api}/api/admin/products/${id}`)
             toast.success('Category deleted successfully')
@@ -172,7 +172,7 @@ export default function ProductsTable() {
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Products
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => deleteCategory(row.original._id)}>
+                        <DropdownMenuItem onClick={() => deleteProduct(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
                             Delete
                         </DropdownMenuItem>

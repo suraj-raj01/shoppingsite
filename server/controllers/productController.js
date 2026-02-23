@@ -53,12 +53,12 @@ export const saveProduct = async (req, res) => {
     delete data.id;
     delete data._id;
     // ================= CREATE =================
-    
-     const product = await Product.create(data);
+
+    const product = await Product.create(data);
     return res.status(201).json({
       success: true,
       data: product,
-      message:"Product created ✅",
+      message: "Product created ✅",
     });
   } catch (error) {
     console.error("SAVE PRODUCT ERROR:", error);
@@ -147,12 +147,29 @@ export const updateProduct = async (req, res) => {
 // ================= GET ALL =================
 export const getProducts = async (req, res) => {
   try {
-    const data = await Product.find().sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
+    const [products, total] = await Promise.all([
+      Product.find()
+        .skip(skip)
+        .limit(limit)
+        .sort({ updatedAt: -1 }),
+      Product.countDocuments(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+    if (!products) {
+      return res.status(404).json({ message: "Products not found" });
+    }
     return res.status(200).json({
       success: true,
-      count: data.length,
-      data,
+      data:products,
+      currentPage: page,
+      totalPages,
+      totalItems: total,
+      message: "Products fetched ✅"
     });
   } catch (error) {
     console.error("GET PRODUCTS ERROR:", error);

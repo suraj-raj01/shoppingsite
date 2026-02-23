@@ -38,17 +38,18 @@ export default function ElectronicProducts() {
     if (!products.length) return null
 
     return (
-        <section className="w-full py-6 md:mt-12">
+        <section className="w-full py-6 mt-315 md:mt-12">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
                     Electronics Products
+                    <span className="text-sm ml-10 text-blue-500 cursor-pointer">View all</span>
                 </h2>
 
                 <Carousel opts={{ loop: true }} className="w-full">
                     <CarouselContent>
-                        {products.map((product) => (
+                        {products.map((product,index) => (
                             <CarouselItem
-                                key={product.id}
+                                key={index}
                                 className="
                   basis-1/2
                   sm:basis-1/3
@@ -56,8 +57,8 @@ export default function ElectronicProducts() {
                   lg:basis-1/5
                 "
                             >
-                                <Card className="overflow-hidden p-0 hover:shadow-md transition">
-                                    <div className="w-full aspect-4/3 overflow-hidden">
+                                <Card className="overflow-hidden border-3 p-0 hover:shadow-md transition">
+                                    <div className="w-full aspect-4/2 overflow-hidden">
                                         <img
                                             src={product.defaultImage}
                                             alt={product.title}

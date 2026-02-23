@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
+import { Edit2Icon } from "lucide-react"
 
 type Role = {
   _id: string
@@ -39,8 +40,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex items-center md:flex-row flex-col justify-start gap-2 p-3">
-      <div className="w-full flex justify-start">
+    <div className="flex items-center md:flex-row flex-col justify-start gap-2 p-2">
+      <div className="md:w-1/2 w-full flex justify-start">
         <div className="w-full max-w-auto h-85 border shadow-md rounded-xs p-5 bg-white">
 
           {/* Header with button */}
@@ -49,7 +50,7 @@ export default function Dashboard() {
 
             <Button variant="outline" size="sm">
               <Link to={`/dashboard/users/${user._id}`}>
-                Edit User
+                <Edit2Icon/>
               </Link>
             </Button>
           </div>
@@ -59,7 +60,7 @@ export default function Dashboard() {
             <img
               src={user.profile}
               alt={user.name}
-              className="w-24 h-24 rounded-full object-cover border-5"
+              className="w-24 h-24 rounded-full object-cover border-4"
             />
 
             <div>
@@ -85,12 +86,13 @@ export default function Dashboard() {
               <div className="flex flex-wrap gap-2 mt-1">
                 {user.roleId?.length ? (
                   user.roleId.map((role) => (
-                    <span
+                    <Button
                       key={role._id}
-                      className="text-sm font-semibold border px-2 py-1 rounded-xs bg-muted"
+                      className="text-sm font-semibold border px-2 py-1 rounded-xs"
+                      variant='ghost'
                     >
                       {role.role}
-                    </span>
+                    </Button>
                   ))
                 ) : (
                   <span className="text-sm text-gray-400">
@@ -102,10 +104,10 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-start">
+      {/* <div className="w-full flex justify-start">
         <div className="w-full max-w-auto border h-85 shadow-md rounded-xs p-5 bg-white">
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

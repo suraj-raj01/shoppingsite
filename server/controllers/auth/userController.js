@@ -57,11 +57,27 @@ export const createUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await UserModel.find()
-            .populate("roleId").sort({ updatedAt: -1 })
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const skip = (page - 1) * limit;
+
+        const [users, total] = await Promise.all([
+            UserModel.find()
+                .populate("roleId")
+                .skip(skip)
+                .limit(limit)
+                .sort({ updatedAt: -1 }),
+            UserModel.countDocuments(),
+        ]);
+
+        const totalPages = Math.ceil(total / limit);
 
         res.status(200).json({
             data: users,
+            currentPage: page,
+            totalPages,
+            totalItems: total,
             message: "User data fetched successfully",
             status: 200,
         });
@@ -175,7 +191,7 @@ async function sendPasswordResetEmail(email, token) {
           <h2 style="color: #333;">Password Reset Request</h2>
           <p>You requested a password reset. Click the link below to reset your password:</p>
           <div style="margin: 30px 0; text-align: center;">
-            <a href="https://shoppingweb-beryl.vercel.app/reset-password" 
+            <a href="https://shoppingweb-beryl.vercel.app/resetpassword" 
                style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
               Reset Password
             </a>

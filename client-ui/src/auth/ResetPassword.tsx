@@ -23,7 +23,7 @@ export function ResetPassword() {
 
     useEffect(() => {
         const user = localStorage.getItem('user');
-        console.log(user)
+        // console.log(user)
         if (user) {
             // setEmail(token);
         }
@@ -156,12 +156,12 @@ export function ResetPassword() {
 
     return (
         <section className="flex items-center justify-center mt-6 w-full px-4">
-            <Card className="overflow-hidden w-full max-w-lg lg:max-w-4xl mt-4 h-auto">
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 p-0">
+            <Card className="overflow-hidden w-full md:max-w-xl lg:max-w-xl mt-4 h-auto">
+                <CardContent className="grid grid-cols-1 p-0">
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="p-4 sm:p-6 md:p-8">
-                        <div className="flex flex-col gap-4">
+                    <form onSubmit={handleSubmit} className="p-3 md:p-6">
+                        <div className="flex flex-col gap-3">
                             <div className="flex flex-col items-center text-center">
                                 <h1 className="text-xl sm:text-2xl font-bold">Reset Password</h1>
                                 <p className="text-sm sm:text-base text-muted-foreground">
@@ -169,12 +169,12 @@ export function ResetPassword() {
                                 </p>
                             </div>
 
-                            <div className="grid gap-3">
-                                <Label htmlFor="email">New Password</Label>
+                            <div className="grid gap-1">
+                                <Label htmlFor="email">Enter Your Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="Enter your new email"
+                                    placeholder="johndoe@gmail.com"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -185,12 +185,12 @@ export function ResetPassword() {
                             </div>
 
                             {/* New Password */}
-                            <div className="grid gap-3">
+                            <div className="grid gap-1">
                                 <Label htmlFor="password">New Password</Label>
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder="Enter your new password"
+                                    placeholder="Johndoe@123"
                                     required
                                     value={password}
                                     onChange={(e) => handlePasswordChange(e.target.value)}
@@ -212,12 +212,12 @@ export function ResetPassword() {
                             </div>
 
                             {/* Confirm Password */}
-                            <div className="grid gap-3">
+                            <div className="grid gap-1">
                                 <Label htmlFor="confirm-password">Confirm New Password</Label>
                                 <Input
                                     id="confirm-password"
                                     type="password"
-                                    placeholder="Confirm your new password"
+                                    placeholder="Johndoe@123"
                                     required
                                     value={confirmPassword}
                                     onChange={(e) => handleConfirmPasswordChange(e.target.value)}
@@ -316,27 +316,9 @@ export function ResetPassword() {
                                         Back to Login
                                     </Link>
                                 </div>
-                                <div>
-                                    Don&apos;t have an account?{' '}
-                                    <Link to="/auth/signup" className="underline underline-offset-4 hover:text-primary transition-colors">
-                                        Sign up
-                                    </Link>
-                                </div>
                             </div>
                         </div>
                     </form>
-
-                    {/* Image */}
-                    <div className="bg-transparent relative flex items-center justify-center">
-                        <img
-                            src="/auth.png"
-                            alt="Password Reset"
-                            className="h-40 sm:h-60 md:h-full w-full object-contain md:object-cover p-4"
-                            onError={(e) => {
-                                console.warn('Image failed to load:', e)
-                            }}
-                        />
-                    </div>
                 </CardContent>
             </Card>
         </section>

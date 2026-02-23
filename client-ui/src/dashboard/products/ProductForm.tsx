@@ -306,7 +306,7 @@ export default function ProductForm() {
   // ================= UI =================
   return (
     <div className="p-3 space-y-8">
-      <div className="flex mb-5 flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+      <div className="flex mb-5 flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
         <div>
           {loading ? (
             <>
@@ -586,7 +586,7 @@ export default function ProductForm() {
             />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-10 gap-4">
+          <div className="grid grid-cols-3 md:grid-cols-11 gap-4">
             {form.images.map((img, i) => (
               <div key={i} className="relative group">
                 <img
