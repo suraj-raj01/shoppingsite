@@ -15,7 +15,7 @@ export default function AuthNavbar() {
         className="h-full"
         onClick={home}
         />
-        <Button variant='outline' >
+        <Button variant='outline' className="border-none shadow-none hover:bg-background">
           <Link to='/' className="flex items-center justify-center gap-2"><Home/> Home</Link>
         </Button>
     </div>

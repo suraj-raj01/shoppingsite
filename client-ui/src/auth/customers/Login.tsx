@@ -6,15 +6,53 @@ import {
   FieldGroup,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { toast } from "sonner"
+import axios from "axios"
+import BASE_URL from "@/Config"
 import { Label } from "@/components/ui/label"
 
-export function Register() {
+export function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    const payload = {
+      email: email,
+      password: password
+    }
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/customers/login`, payload);
+      const user = response.data;
+      console.log(response.data);
+      localStorage.setItem("user", JSON.stringify(user))
+      localStorage.setItem("token", user.token)
+      toast.success(response.data.message || "Login successful")
+      navigate("/")
+    } catch (err: any) {
+      console.log(err)
+      // setError(err.response.data.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
   return (
-    <div className="flex flex-col p-2 md:p-0 gap-6 md:w-md mx-auto mt-10">
-      <Card className="overflow-hidden p-0 rounded-md">
+    <div className="max-w-md p-2 md:p-0 mx-auto mt-10">
+      <Card className="overflow-hidden p-0 rounded-xs">
         <CardContent className="grid p-0 md:grid-cols-1">
-          <form className="p-3 md:p-5">
+          <form onSubmit={handleSubmit} className="p-3 md:p-5">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome Back</h1>
@@ -29,22 +67,34 @@ export function Register() {
                   type="email"
                   placeholder="m@example.com"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="-mt-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link
-                    to="#"
-                    className="ml-auto text-sm font-semibold underline-offset-2 hover:underline"
+                    to="/auth/forgetpassword"
+                    className="ml-auto font-semibold text-sm underline-offset-2 hover:underline"
                   >
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" placeholder="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {error && <p className="text-sm text-red-600">{error}</p>}
               </div>
               <Field>
-                <Button type="submit" className="cursor-pointer">Login</Button>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Logging in...' : 'Login'}
+                </Button>
               </Field>
               {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -79,7 +129,7 @@ export function Register() {
                 </Button>
               </Field> */}
               <FieldDescription className="text-center">
-                Already have an account? <Link to="/auth/login" className="font-semibold">Login</Link>
+                Don&apos;t have an account? <Link to="/auth/signup" className="font-semibold">Sign up</Link>
               </FieldDescription>
             </FieldGroup>
           </form>

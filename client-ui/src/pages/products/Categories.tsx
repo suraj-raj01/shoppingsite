@@ -8,6 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import { Link } from "react-router-dom"
 
 type Subcategories = {
   _id: string
@@ -43,25 +44,28 @@ export default function Categories() {
   if (loading) return <p>Loading categories...</p>
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="w-full px-1 md:px-10 bg-transparent">
       <NavigationMenuList>
         {categories.map((category) => (
           <NavigationMenuItem key={category._id}>
-            
+
             {/* CATEGORY */}
-            <NavigationMenuTrigger className="text-sm font-semibold">
+            <NavigationMenuTrigger className="text-sm p-1 font-semibold bg-transparent">
+              {/* <Link to={`/product/categories/${category._id}`}>{category.categories}</Link> */}
               {category.categories}
             </NavigationMenuTrigger>
 
             {/* SUBCATEGORY PANEL */}
             <NavigationMenuContent>
-              <div className="grid left-10 w-85 md:w-125 grid-cols-2 gap-2 p-3">
+              <div className="grid w-85 md:w-125 grid-cols-2 md:grid-cols-3 gap-2 p-3">
 
                 {category.subcategories?.map((sub) => (
                   <div key={sub._id} className="space-y-2">
 
                     {/* SUBCATEGORY */}
-                    <p className="font-medium text-sm">{sub.name}</p>
+                    <p className="font-medium text-sm cursor-pointer">
+                      <Link to={`/product/subcategories/${sub._id}`}>{sub.name}</Link>
+                    </p>
 
                     {/* BRANDS */}
                     <div className="flex flex-col gap-1">
@@ -70,7 +74,7 @@ export default function Categories() {
                           key={brand}
                           className="text-sm text-muted-foreground hover:text-foreground cursor-pointer"
                         >
-                          {brand}
+                          <Link to={`/product/subcategories/${brand}`}>{brand}</Link>
                         </span>
                       ))}
                     </div>

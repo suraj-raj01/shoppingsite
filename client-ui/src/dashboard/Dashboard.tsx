@@ -14,6 +14,8 @@ type User = {
   email: string
   profile: string
   roleId?: Role[]
+  contact: string
+  address: string
 }
 
 export default function Dashboard() {
@@ -41,73 +43,102 @@ export default function Dashboard() {
 
   return (
     <div className="flex items-center md:flex-row flex-col justify-start gap-2 p-2">
-      <div className="md:w-1/2 w-full flex justify-start">
-        <div className="w-full max-w-auto h-85 border shadow-md rounded-xs p-5 bg-white">
+      {
+        user.roleId?.length ? (
+          <div className="md:w-1/2 w-full flex justify-start">
+            <div className="w-full max-w-auto h-85 border shadow-md rounded-xs p-5 bg-white">
 
-          {/* Header with button */}
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-semibold">User Profile</h3>
+              {/* Header with button */}
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-lg font-semibold">User Profile</h3>
 
-            <Button variant="outline" size="sm">
-              <Link to={`/dashboard/users/${user._id}`}>
-                <Edit2Icon/>
-              </Link>
-            </Button>
-          </div>
+                <Button variant="outline" size="sm">
+                  <Link to={`/dashboard/users/${user._id}`}>
+                    <Edit2Icon />
+                  </Link>
+                </Button>
+              </div>
 
-          {/* Profile */}
-          <div className="flex items-center gap-6">
-            <img
-              src={user.profile}
-              alt={user.name}
-              className="w-24 h-24 rounded-full object-cover border-4"
-            />
+              {/* Profile */}
+              <div className="flex items-center gap-6">
+                <img
+                  src={user.profile}
+                  alt={user.name}
+                  className="w-24 h-24 rounded-full object-cover border-4"
+                />
 
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">
-                {user.name}
-              </h2>
-              <p className="text-gray-500">{user.email}</p>
-            </div>
-          </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {user.name}
+                  </h2>
+                  <p className="text-gray-500">{user.email}</p>
+                </div>
+              </div>
 
-          {/* Divider */}
-          <div className="my-6 border-t" />
+              {/* Divider */}
+              <div className="my-6 border-t" />
 
-          {/* Details */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <p className="text-sm text-gray-500">User ID</p>
-              <p className="font-medium break-all">{user._id}</p>
-            </div>
+              {/* Details */}
+              <div className="flex flex-col gap-3">
+                <div>
+                  <p className="text-sm text-gray-500">User ID</p>
+                  <p className="font-medium break-all">{user._id}</p>
+                </div>
 
-            <div>
-              <p className="text-sm text-gray-500">Roles</p>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {user.roleId?.length ? (
-                  user.roleId.map((role) => (
-                    <Button
-                      key={role._id}
-                      className="text-sm font-semibold border px-2 py-1 rounded-xs"
-                      variant='ghost'
-                    >
-                      {role.role}
-                    </Button>
-                  ))
-                ) : (
-                  <span className="text-sm text-gray-400">
-                    No roles assigned
-                  </span>
-                )}
+                <div>
+                  <p className="text-sm text-gray-500">Roles</p>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {user.roleId?.length ? (
+                      user.roleId.map((role) => (
+                        <Button
+                          key={role._id}
+                          className="text-sm font-semibold border px-2 py-1 rounded-xs"
+                          variant='ghost'
+                        >
+                          {role.role}
+                        </Button>
+                      ))
+                    ) : (
+                      <span className="text-sm text-gray-400">
+                        No roles assigned
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      {/* <div className="w-full flex justify-start">
-        <div className="w-full max-w-auto border h-85 shadow-md rounded-xs p-5 bg-white">
-        </div>
-      </div> */}
+        ) : (
+          <div className="md:w-1/3 w-full border shadow-md rounded-xs p-5">
+            {/* Header */}
+            <div className="md:mt-8 md:absolute text-right top-13 md:left-80">
+              <Button variant='outline' className="px-5 py-2 rounded-xs transition">
+                <Link to={`/auth/signup/${user._id}`}>Edit User</Link>
+              </Button>
+            </div>
+            <div className="flex items-center gap-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {user.name}
+                </h2>
+                <p className="text-gray-500">{user.email}</p>
+                <p className="text-gray-500">{user.contact}</p>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className=" my-2 border-t" />
+
+            {/* Details */}
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div>
+                <p className="text-sm text-gray-500">Address</p>
+                <p className="font-medium">{user.address}</p>
+              </div>
+            </div>
+          </div>
+        )
+      }
     </div>
   )
 }

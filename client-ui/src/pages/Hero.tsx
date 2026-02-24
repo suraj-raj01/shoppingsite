@@ -60,7 +60,9 @@ export default function Hero() {
 
   return (
     <section className="w-full">
+      <div className="fixed top-15 z-35 w-full border-b backdrop-blur-md bg-background/50">
       <Categories />
+      </div>
 
       {/* ✅ PASS plugins */}
       <Carousel
@@ -95,8 +97,8 @@ export default function Hero() {
 
         <TrandingProducts />
 
-        <CarouselPrevious className="absolute top-40 left-2 md:left-10 cursor-pointer" />
-        <CarouselNext className="absolute top-40 right-2 md:right-10 cursor-pointer" />
+        <CarouselPrevious className="absolute top-55 left-2 md:left-10 cursor-pointer" />
+        <CarouselNext className="absolute top-55 right-2 md:right-10 cursor-pointer" />
       </Carousel>
     </section>
   )

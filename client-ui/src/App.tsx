@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Suspense, lazy } from "react"
+import { LoginForm } from "./auth/customers/Login"
+import CustomerView from "./dashboard/users/customers/CustomerView"
 // Auth (lazy)
 const Login = lazy(() => import("./auth/Login"))
 const LoginLayout = lazy(() => import("./auth/LoginLayout"))
 const Auth = lazy(() => import("./auth/Auth"))
-const Register = lazy(() => import("./auth/Register").then(m => ({ default: m.Register })))
+const Register = lazy(() => import("./auth/customers/Register").then(m => ({ default: m.Register })))
 const ForgetPassword = lazy(() => import("./auth/ForgetPassword").then(m => ({ default: m.ForgetPassword })))
 const ResetPassword = lazy(() => import("./auth/ResetPassword").then(m => ({ default: m.ResetPassword })))
 
@@ -69,8 +71,10 @@ export default function App() {
           {/* Authentication */}
           <Route path="/auth" element={<LoginLayout />}>
             <Route index element={<Auth />} />
-            <Route path="login" element={<Login />} />
+            <Route path="adminlogin" element={<Login />} />
+            <Route path="login" element={<LoginForm />} />
             <Route path="signup" element={<Register />} />
+            <Route path="signup/:id" element={<Register />} />
             <Route path="forgetpassword" element={<ForgetPassword />} />
             <Route path="resetpassword" element={<ResetPassword />} />
           </Route>
@@ -110,6 +114,7 @@ export default function App() {
             <Route path="users/:id/view" element={<UsersView />} />
             <Route path="userstable" element={<UserTable />} />
             <Route path="customerstable" element={<CustomerTable />} />
+            <Route path="customers/:id/view" element={<CustomerView />} />
           </Route>
         </Routes>
       </Suspense>

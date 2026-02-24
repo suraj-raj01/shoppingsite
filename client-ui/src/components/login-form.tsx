@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Field,
-  FieldDescription,
   FieldGroup,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
@@ -132,9 +131,9 @@ export function LoginForm({
                   <span className="sr-only">Login with Meta</span>
                 </Button>
               </Field> */}
-              <FieldDescription className="text-center">
+              {/* <FieldDescription className="text-center">
                 Don&apos;t have an account? <Link to="/auth/signup" className="font-semibold">Sign up</Link>
-              </FieldDescription>
+              </FieldDescription> */}
             </FieldGroup>
           </form>
         </CardContent>

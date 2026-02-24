@@ -43,7 +43,7 @@ const products: Product[] = [
 
 export default function TrandingProducts() {
     return (
-        <section className="w-full absolute top-80 py-5">
+        <section className="w-full absolute top-100 py-5">
             <div className="max-w-full mx-auto px-2 md:px-2">
 
                 {/* Grid */}

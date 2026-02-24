@@ -1,7 +1,20 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Search, ShoppingCart, Heart, MapPin, Menu } from "lucide-react"
+import { Search, ShoppingCart, Heart, MapPin, LucideMenu } from "lucide-react"
 import BASE_URL from "@/Config"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+    CreditCardIcon,
+    LogOutIcon,
+    SettingsIcon,
+    UserIcon,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,7 +27,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import { DialogTitle } from "@/components/ui/dialog"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import NavbarSkeleton from "./skeletons/Navbar"
 import { toast } from "sonner"
 import { getAddress } from "./helpers/getAddress"
@@ -37,6 +50,7 @@ export default function Navbar() {
     const [navbar, setNavbar] = useState<NavbarType | null>(null)
     const [selectedCategory, setSelectedCategory] = useState("all")
     const [category, setCategory] = useState<CategoryType[] | null>(null)
+    const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
 
     const [address, setAddress] = useState<{
@@ -138,6 +152,25 @@ export default function Navbar() {
         fetchAll()
     }, [])
 
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem("user")
+            if (userData) {
+                setUser(JSON.parse(userData))
+            }
+        } catch (err) {
+            console.error("Invalid user in localStorage")
+        }
+    }, [])
+
+    const navigate = useNavigate();
+    const logout = () => {
+        localStorage.removeItem("user")
+        localStorage.removeItem("token")
+        toast.success("Logged out successfully")
+        navigate("/")
+    }
+
     if (loading) return <NavbarSkeleton />
     if (!navbar) return <div className="p-4">Navbar not found</div>
 
@@ -147,8 +180,8 @@ export default function Navbar() {
                 {/* Mobile Menu */}
                 <Sheet>
                     <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon" className="md:hidden">
-                            <Menu />
+                        <Button variant="ghost" size="icon" className="md:hidden -ml-4">
+                            <LucideMenu />
                         </Button>
                     </SheetTrigger>
 
@@ -169,9 +202,21 @@ export default function Navbar() {
                             <ShoppingCart size={18} /> Cart
                         </Button>
 
-                        <Button variant="outline" className="w-full">
-                            <Link to="/auth/login">{navbar.signin}</Link>
-                        </Button>
+                        {
+                            user?.user?.contact ? (
+                                <Button variant="outline">
+                                    <Link to="/dashboard">
+                                        Dashboard
+                                    </Link>
+                                </Button>
+                            ) : (
+                                <Link to="/auth/login">
+                                    <Button variant='outline' className="w-full justify-center">
+                                        {navbar.signin}
+                                    </Button>
+                                </Link>
+                            )
+                        }
                     </SheetContent>
                 </Sheet>
 
@@ -184,12 +229,46 @@ export default function Navbar() {
                         <Heart />
                     </Button>
 
-                    <Button variant="ghost" size="icon" className="relative">
+                    <Button variant="ghost" size="icon" className="relative -ml-3">
                         <ShoppingCart />
                         <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
                             0
                         </span>
                     </Button>
+                    <Link to="/auth/login">
+                        {user?.user?.contact ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant='outline' className="rounded-full text-xl bg-muted h-8 w-8">
+                                        {user?.user?.name[0]?.toUpperCase() || "User"}
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>
+                                        <Link to="/dashboard" className="flex items-center gap-2">
+                                            <UserIcon />
+                                            Profile
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <CreditCardIcon />
+                                        Billing
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <SettingsIcon />
+                                        Settings
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem variant="destructive" onClick={logout} className="cursor-pointer">
+                                        <LogOutIcon />
+                                        Log out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button variant='outline'>{navbar.signin}</Button>
+                        )}
+                    </Link>
                 </div>
 
                 {/* ✅ Location */}
@@ -245,7 +324,7 @@ export default function Navbar() {
                 {/* Right Icons */}
                 <div className="hidden md:flex items-center gap-3">
                     {/* Translation components */}
-                    <Translation/>
+                    <Translation />
                     <Button variant="ghost" size="icon">
                         <Heart />
                     </Button>
@@ -257,9 +336,40 @@ export default function Navbar() {
                         </span>
                     </Button>
 
-                    <Button variant="outline">
-                        <Link to="/auth/login">{navbar.signin}</Link>
-                    </Button>
+                    <Link to="/auth/login">
+                        {user?.user?.contact ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant='outline' className="rounded-full text-xl bg-muted h-9 w-9">
+                                        {user?.user?.name[0]?.toUpperCase() || "User"}
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    <DropdownMenuItem>
+                                        <Link to="/dashboard" className="flex items-center gap-2">
+                                            <UserIcon />
+                                            Profile
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <CreditCardIcon />
+                                        Billing
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <SettingsIcon />
+                                        Settings
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem variant="destructive" onClick={logout} className="cursor-pointer">
+                                        <LogOutIcon />
+                                        Log out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Button variant='outline'>{navbar.signin}</Button>
+                        )}
+                    </Link>
                 </div>
             </div>
         </nav>
