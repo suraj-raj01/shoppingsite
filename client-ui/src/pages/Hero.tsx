@@ -81,9 +81,9 @@ export default function Hero() {
                 />
 
                 <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                  <div className="max-w-full -mt-50 flex flex-col items-center justify-center mx-auto px-6 space-y-4">
+                  <div className="max-w-full -mt-20 flex flex-col items-center justify-center mx-auto px-6 space-y-4">
                     <Button
-                      className="mt-2 bg-transparent text-gray-100 hover:bg-black/10 hover:text-gray-50 backdrop-blur-xl"
+                      className="mt-2 bg-transparent text-gray-100 hover:bg-black/10 hover:text-gray-50 backdrop-blur-2xl"
                       variant="outline"
                     >
                       <Link to={item.link}>{item.button}</Link>

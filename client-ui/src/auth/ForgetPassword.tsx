@@ -183,7 +183,7 @@ export function ForgetPassword({
                     className={cn(
                       "pr-10 text-sm sm:text-base",
                       emailError && "border-red-500 focus:border-red-500",
-                      isEmailVerified && "border-green-500 focus:border-green-500"
+                      isEmailVerified && "border-orange-500 focus:border-orange-500"
                     )}
                     disabled={verifyingEmail || loading}
                     autoComplete="email"
@@ -194,12 +194,12 @@ export function ForgetPassword({
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
                     {verifyingEmail && (
                       <div
-                        className="w-4 h-4 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"
+                        className="w-4 h-4 border-2 border-gray-300 border-t-orange-600 rounded-full animate-spin"
                         aria-label="Verifying email"
                       />
                     )}
                     {!verifyingEmail && isEmailVerified && (
-                      <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                      <div className="w-4 h-4 bg-orange-500 rounded-full flex items-center justify-center">
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -226,7 +226,7 @@ export function ForgetPassword({
                 )}
 
                 {isEmailVerified && (
-                  <p id="email-success" className="text-xs sm:text-sm text-green-600 flex items-center gap-1" role="status">
+                  <p id="email-success" className="text-xs sm:text-sm text-orange-600 flex items-center gap-1" role="status">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>

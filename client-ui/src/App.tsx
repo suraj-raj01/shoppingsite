@@ -2,6 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { Suspense, lazy } from "react"
 import { LoginForm } from "./auth/customers/Login"
 import CustomerView from "./dashboard/users/customers/CustomerView"
+import PageNotFound from "./PageNotFound"
+import ProductLayout from "./products-layouting/ProductLayout"
+import Products from "./products-layouting/Products"
+import ProductViewPage from "./products-layouting/components/ProductView"
 // Auth (lazy)
 const Login = lazy(() => import("./auth/Login"))
 const LoginLayout = lazy(() => import("./auth/LoginLayout"))
@@ -63,13 +67,22 @@ export default function App() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<Layout />}>
+            <Route path="*" element={<PageNotFound url="/" />} />
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
+          </Route>
+
+          {/* Products Layouting */}
+          <Route path="/products" element={<ProductLayout />}>
+            <Route path="*" element={<PageNotFound url="/products" />} />
+            <Route index element={<Products />} />
+            <Route path=":id" element={<ProductViewPage/>} />
           </Route>
 
 
           {/* Authentication */}
           <Route path="/auth" element={<LoginLayout />}>
+            <Route path="*" element={<PageNotFound url="/auth" />} />
             <Route index element={<Auth />} />
             <Route path="adminlogin" element={<Login />} />
             <Route path="login" element={<LoginForm />} />
@@ -81,6 +94,7 @@ export default function App() {
 
           {/* Dashboard */}
           <Route path="/dashboard" element={<DashboardLayout/>}>
+            <Route path="*" element={<PageNotFound url="/dashboard" />} />
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
             <Route path="roles" element={<RoleTable />} />

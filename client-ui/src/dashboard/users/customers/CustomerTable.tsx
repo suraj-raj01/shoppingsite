@@ -45,7 +45,7 @@ export default function CustomerTable() {
                 setNavbar(response?.data?.data || [])
                 setPage(response.data.currentPage)
                 setPageCount(response.data.totalPages)
-                console.log("userdata data", response.data)
+                // console.log("userdata data", response.data)
             }
             const { data } = response
             setPageCount(data.totalPages || 1)

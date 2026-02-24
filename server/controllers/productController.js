@@ -69,6 +69,25 @@ export const saveProduct = async (req, res) => {
   }
 };
 
+// ================= TRANDING PRODUCT =================
+export const trandingProduct = async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 }).limit(4);
+    return res.status(200).json({
+      success: true,
+      data: products,
+      message: "Tranding Products fetched ✅",
+    });
+  } catch (error) {
+    console.error("TRANDING PRODUCT ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
 // ================= UPDATE PRODUCT =================
 export const updateProduct = async (req, res) => {
   try {

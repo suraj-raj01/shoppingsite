@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card"
 import BASE_URL from "@/Config"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import {
     Carousel,
@@ -10,9 +10,11 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
+import { Link, useNavigate } from "react-router-dom"
 
 type Product = {
-    id: string
+    _id: string
     title: string
     description: string
     defaultImage: string
@@ -21,6 +23,7 @@ type Product = {
 
 export default function ElectronicProducts() {
     const [products, setProducts] = useState<Product[]>([])
+    const navigate = useNavigate()
 
     const loadProducts = async () => {
         try {
@@ -35,33 +38,47 @@ export default function ElectronicProducts() {
         loadProducts()
     }, [])
 
+    const autoplay = useRef(
+        Autoplay({
+            delay: 4000, // slide every 3 sec
+            stopOnInteraction: false,
+            stopOnMouseEnter: true,
+        })
+    )
+
     if (!products.length) return null
 
     return (
-        <section className="w-full py-6 mt-335 md:mt-30">
+        <section className="w-full py-6 mt-350 md:mt-30">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
                     Electronics Products
-                    <span className="text-sm ml-10 text-blue-500 cursor-pointer">View all</span>
+                    <span className="text-sm ml-5 text-orange-400 cursor-pointer">
+                        <Link to="/products/electronics">View all</Link>
+                    </span>
                 </h2>
 
-                <Carousel opts={{ loop: true }} className="w-full">
+                <Carousel opts={{ loop: true }}
+                    plugins={[autoplay.current]}
+                    className="w-full">
                     <CarouselContent>
-                        {products.map((product,index) => (
+                        {products.map((product) => (
                             <CarouselItem
-                                key={index}
+                                key={product._id}
                                 className="
-                  basis-1/2
+                  basis-1/1
                   sm:basis-1/3
                   md:basis-1/4
                   lg:basis-1/5
                 "
                             >
-                                <Card className="overflow-hidden border-3 p-0 hover:shadow-md transition">
-                                    <div className="w-full aspect-4/2 overflow-hidden">
+                                <Card className="overflow-hidden border p-0 hover:shadow-md transition">
+                                    <div className="w-full aspect-4/3 p-1 overflow-hidden">
                                         <img
                                             src={product.defaultImage}
                                             alt={product.title}
+                                            loading="lazy"
+                                            onClick={()=>{navigate(`/products/${product._id}`)}}
                                             className="w-full h-full object-cover hover:scale-105 transition duration-500"
                                         />
                                     </div>
@@ -71,8 +88,8 @@ export default function ElectronicProducts() {
                     </CarouselContent>
 
                     {/* arrows */}
-                    <CarouselPrevious className="absolute rounded-xs h-20 w-10 left-2 md:left-2 cursor-pointer" />
-                    <CarouselNext className="absolute rounded-xs h-20 w-10 right-2 md:right-2 cursor-pointer" />
+                    <CarouselPrevious className="absolute bg-background/50 rounded-xs h-20 w-10 left-2 md:left-2 cursor-pointer" />
+                    <CarouselNext className="absolute bg-background/50 rounded-xs h-20 w-10 right-2 md:right-2 cursor-pointer" />
                 </Carousel>
             </div>
         </section>

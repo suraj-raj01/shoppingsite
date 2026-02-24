@@ -244,35 +244,35 @@ export function ResetPassword() {
                                 <ul className="space-y-1">
                                     <li className={cn(
                                         "flex items-center gap-2",
-                                        password.length >= 8 ? "text-green-600" : "text-gray-500"
+                                        password.length >= 8 ? "text-orange-600" : "text-gray-500"
                                     )}>
                                         <span className="w-1 h-1 bg-current rounded-full"></span>
                                         At least 8 characters
                                     </li>
                                     <li className={cn(
                                         "flex items-center gap-2",
-                                        /(?=.*[a-z])/.test(password) ? "text-green-600" : "text-gray-500"
+                                        /(?=.*[a-z])/.test(password) ? "text-orange-600" : "text-gray-500"
                                     )}>
                                         <span className="w-1 h-1 bg-current rounded-full"></span>
                                         One lowercase letter
                                     </li>
                                     <li className={cn(
                                         "flex items-center gap-2",
-                                        /(?=.*[A-Z])/.test(password) ? "text-green-600" : "text-gray-500"
+                                        /(?=.*[A-Z])/.test(password) ? "text-orange-600" : "text-gray-500"
                                     )}>
                                         <span className="w-1 h-1 bg-current rounded-full"></span>
                                         One uppercase letter
                                     </li>
                                     <li className={cn(
                                         "flex items-center gap-2",
-                                        /(?=.*\d)/.test(password) ? "text-green-600" : "text-gray-500"
+                                        /(?=.*\d)/.test(password) ? "text-orange-600" : "text-gray-500"
                                     )}>
                                         <span className="w-1 h-1 bg-current rounded-full"></span>
                                         One number
                                     </li>
                                     <li className={cn(
                                         "flex items-center gap-2",
-                                        /(?=.*[@$!%*?&])/.test(password) ? "text-green-600" : "text-gray-500"
+                                        /(?=.*[@$!%*?&])/.test(password) ? "text-orange-600" : "text-gray-500"
                                     )}>
                                         <span className="w-1 h-1 bg-current rounded-full"></span>
                                         One special character (@$!%*?&)

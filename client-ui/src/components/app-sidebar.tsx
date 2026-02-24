@@ -6,6 +6,8 @@ import {
   Image,
   Package,
   Users,
+  ShoppingBasket,
+  ShieldUser,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -42,10 +44,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {
         title: "Profile",
         url: "#",
-        icon: UserCheck,
-        isActive: true,
+        icon: ShieldUser,
+        isActive: false,
         items: [
           { title: "Profile", url: "/dashboard" },
+          { title: "Vouchers", url: "/dashboard/vouchers" },
+          { title: "Billing", url: "/dashboard/billing" },
+          { title: "Settings", url: "/dashboard/settings" },
+        ],
+      },
+      {
+        title: "Orders",
+        url: "#",
+        icon: ShoppingBasket,
+        items: [
+          { title: "Orders", url: "/dashboard/orders" },
+          { title: "Returns", url: "/dashboard/returns" },
+          { title: "Reviews", url: "/dashboard/reviews" },
+          { title: "Payments", url: "/dashboard/payments" },
+          { title: "Added Items", url: "/dashboard/carts" },
+          { title: "Liked Items", url: "/dashboard/likes" },
         ],
       },
     ]

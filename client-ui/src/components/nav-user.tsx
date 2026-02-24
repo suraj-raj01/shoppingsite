@@ -71,7 +71,7 @@ export function NavUser({
             >
               <Avatar className="h-9 w-9 border rounded-full">
                 <AvatarImage src={userinfo.contact ? userinfo.contact : userinfo.profile} alt={userinfo.name} />
-                <AvatarFallback className="rounded-lg">G</AvatarFallback>
+                <AvatarFallback className="rounded-lg font-bold text-xl border shadoe-md">{userinfo.name.charAt(0) || "G"}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{userinfo.name}</span>

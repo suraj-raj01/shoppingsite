@@ -40,9 +40,11 @@ export default function DashboardLayout() {
           </div>
           <div className="flex items-center gap-2">
             <Button size='icon' className="rounded-full overflow-hidden" variant='outline'>
-              {user ? (
+              {user?.user?.roleId ? (
                 <img src={user.user.profile} alt="" />
-              ) : "G"}
+              ) : (
+                <span className="font-bold text-lg">{user?.user?.name?.charAt(0).toUpperCase() || "G"}</span>
+              )}
             </Button>
             <Separator
               orientation="vertical"

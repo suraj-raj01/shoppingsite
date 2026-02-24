@@ -20,11 +20,11 @@ export default function Translation() {
       value={i18n.resolvedLanguage}
       onValueChange={changeLang}
     >
-      <SelectTrigger className="w-fit">
+      <SelectTrigger className="w-fit shadow-none border">
         <SelectValue placeholder={t("language")} />
       </SelectTrigger>
 
-      <SelectContent>
+      <SelectContent className="w-auto">
         <SelectItem value="en">English</SelectItem>
         <SelectItem value="hi">हिंदी</SelectItem>
         <SelectItem value="bn">বাংলা</SelectItem>

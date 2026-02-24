@@ -4,12 +4,14 @@ import {
   updateProduct,
   getProducts,
   getProductById,
-  deleteProduct
+  deleteProduct,
+  trandingProduct
 } from "../controllers/productController.js";
 
 const router = express.Router();
 
 router.post("/", saveProduct);
+router.get("/trainding", trandingProduct)
 router.put("/:id", updateProduct);
 
 router.get("/", getProducts);

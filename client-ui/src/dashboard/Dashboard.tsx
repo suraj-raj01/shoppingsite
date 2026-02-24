@@ -111,9 +111,9 @@ export default function Dashboard() {
         ) : (
           <div className="md:w-1/3 w-full border shadow-md rounded-xs p-5">
             {/* Header */}
-            <div className="md:mt-8 md:absolute text-right top-13 md:left-80">
+            <div className="md:mt-8 md:absolute text-right top-13 md:left-90">
               <Button variant='outline' className="px-5 py-2 rounded-xs transition">
-                <Link to={`/auth/signup/${user._id}`}>Edit User</Link>
+                <Link to={`/auth/signup/${user._id}`}><Edit2Icon /></Link>
               </Button>
             </div>
             <div className="flex items-center gap-6">
