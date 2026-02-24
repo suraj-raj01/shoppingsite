@@ -22,6 +22,7 @@ import navbarRoutes from './routes/navbarRoutes.js'
 import roleRoutes from './routes/auth/rolesRoutes.js'
 import permissionRoutes from './routes/auth/permissionRoutes.js'
 import userRoutes from './routes/auth/userRoutes.js'
+import customerRoutes from './routes/auth/customerRouets.js'
 import locationRoutes from './routes/location/locationRoutes.js'
 
 app.get("/", (req, res) => {
@@ -35,7 +36,10 @@ app.use('/api/admin/heroes', heroRoutes)
 app.use('/api/admin/navbar', navbarRoutes)
 app.use('/api/admin/roles', roleRoutes)
 app.use('/api/admin/permissions', permissionRoutes)
+// user route
 app.use('/api/admin/users', userRoutes)
+// customer route
+app.use('/api/customers', customerRoutes)
 // location route
 app.use('/api/location', locationRoutes)
 
