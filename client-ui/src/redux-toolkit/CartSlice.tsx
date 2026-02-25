@@ -9,12 +9,10 @@ export interface Product {
 
 interface CartState {
   cart: Product[];
-  likes: Product[];
 }
 
 const initialState: CartState = {
   cart: [],
-  likes: [],
 };
 
 const cartSlice = createSlice({
@@ -27,7 +25,7 @@ const cartSlice = createSlice({
       );
 
       if (exists) {
-        toast.error("Product already added!");
+        toast.info("Product already added!");
       } else {
         state.cart.push({
           ...action.payload,
@@ -65,27 +63,7 @@ const cartSlice = createSlice({
       state.cart = state.cart.filter(
         (item) => item.id !== action.payload.id
       );
-      toast.error("Item successfully removed!");
-    },
-
-    addLikeData: (state, action: PayloadAction<Product>) => {
-      const exists = state.likes.some(
-        (item) => item.id === action.payload.id
-      );
-
-      if (exists) {
-        toast.error("Product already liked!");
-      } else {
-        state.likes.push(action.payload);
-        toast.success("Product successfully added to likes");
-      }
-    },
-
-    itemDislike: (state, action: PayloadAction<{ id: Product["id"] }>) => {
-      state.likes = state.likes.filter(
-        (item) => item.id !== action.payload.id
-      );
-      toast.error("Item disliked!");
+      toast.success("Item successfully removed!");
     },
   },
 });
@@ -95,8 +73,6 @@ export const {
   itemInc,
   itemDec,
   itemDel,
-  addLikeData,
-  itemDislike,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

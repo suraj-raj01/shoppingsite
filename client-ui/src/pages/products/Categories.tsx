@@ -9,6 +9,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { Link } from "react-router-dom"
+import CategoriesSkeleton from "../skeletons/products/CategoriesSkeleton"
 
 type Subcategories = {
   _id: string
@@ -41,7 +42,7 @@ export default function Categories() {
     fetchCategories()
   }, [])
 
-  if (loading) return <p>Loading categories...</p>
+  if (loading) return <CategoriesSkeleton/>
 
   return (
     <NavigationMenu className="w-full px-1 md:px-10 bg-transparent">

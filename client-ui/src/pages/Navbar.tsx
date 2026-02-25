@@ -32,6 +32,8 @@ import NavbarSkeleton from "./skeletons/Navbar"
 import { toast } from "sonner"
 import { getAddress } from "./helpers/getAddress"
 import Translation from "./helpers/Translate"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux-toolkit/Store"
 
 type CategoryType = {
     _id: string
@@ -52,6 +54,9 @@ export default function Navbar() {
     const [category, setCategory] = useState<CategoryType[] | null>(null)
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+
+    const cartItems = useSelector((state: RootState) => state.addtoCart.cart);
+    const likeItems = useSelector((state: RootState) => state.addtoLike.likes);
 
     const [address, setAddress] = useState<{
         suburb?: string
@@ -194,12 +199,12 @@ export default function Navbar() {
                             />
                         </DialogTitle>
 
-                        <Button variant="ghost" className="w-full justify-start">
+                        <Button variant="ghost" className="w-full justify-start" onClick={() => { navigate('products/likeditems') }}>
                             <Heart size={18} /> Wishlist
                         </Button>
 
-                        <Button variant="ghost" className="w-full justify-start -mt-5">
-                            <ShoppingCart size={18} /> Cart
+                        <Button variant="ghost" className="w-full justify-start -mt-5" onClick={() => { navigate('products/cartitems') }}>
+                            <ShoppingCart size={18} /> Cart {cartItems.length}
                         </Button>
 
                         {
@@ -221,25 +226,25 @@ export default function Navbar() {
                 </Sheet>
 
                 {/* Logo */}
-                <img src={navbar?.logo} alt="logo" onClick={()=>{navigate('/')}} className="h-9 -ml-2 object-contain" />
+                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-9 -ml-2 object-contain" />
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
                         <Heart />
                     </Button>
 
-                    <Button variant="ghost" size="icon" className="relative -ml-3">
+                    <Button variant="ghost" size="icon" className="relative -ml-3" onClick={() => { navigate('products/cartitems') }}>
                         <ShoppingCart />
                         <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
-                            0
+                            {cartItems.length}
                         </span>
                     </Button>
                     <Link to="/auth/login">
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant='outline' className="rounded-full text-white text-md hover:bg-green-600 bg-green-500 h-7 w-7 p-1">
+                                    <Button variant='outline' className="rounded-full text-green-600 text-md  h-7 w-7 p-1">
                                         {user?.user?.name[0]?.toUpperCase() || "User"}
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -316,7 +321,7 @@ export default function Navbar() {
                         />
 
                         <Button variant='outline' className="w-18 border-l-0 px-8">
-                            <Search className=" font-bold"/>
+                            <Search className=" font-bold" />
                         </Button>
                     </div>
                 </div>
@@ -325,14 +330,24 @@ export default function Navbar() {
                 <div className="hidden md:flex items-center gap-3">
                     {/* Translation components */}
                     <Translation />
-                    <Button variant="ghost" size="icon">
-                        <Heart />
+                    <Button variant="ghost" size="icon" className="relative ml-3" onClick={() => { navigate('products/likeditems') }}>
+                        {
+                            likeItems.length > 0 ? (
+                                <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                    <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+                                </Button>
+                            ) : (
+                                <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                    <Heart className="h-6 w-6" />
+                                </Button>
+                            )
+                        }
                     </Button>
 
-                    <Button variant="ghost" size="icon" className="relative -ml-2">
+                    <Button variant="ghost" size="icon" className="relative -ml-3" onClick={() => { navigate('products/cartitems') }}>
                         <ShoppingCart />
                         <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
-                            0
+                            {cartItems.length}
                         </span>
                     </Button>
 

@@ -62,8 +62,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           { title: "Returns", url: "/dashboard/returns" },
           { title: "Reviews", url: "/dashboard/reviews" },
           { title: "Payments", url: "/dashboard/payments" },
-          { title: "Added Items", url: "/dashboard/carts" },
-          { title: "Liked Items", url: "/dashboard/likes" },
+          { title: "Added Items", url: "/dashboard/cartitems" },
+          { title: "Liked Items", url: "/dashboard/likeitems" },
         ],
       },
     ]

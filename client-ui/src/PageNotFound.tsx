@@ -17,7 +17,7 @@ export default function PageNotFound({ url = "/" }: PageNotFoundProps) {
       </p>
 
       <div className="flex items-center justify-center">
-        <Button className="mt-6">
+        <Button className="mt-6" variant='destructive'>
           <Link to={url} className="px-4 py-2">
             Go to Home
           </Link>

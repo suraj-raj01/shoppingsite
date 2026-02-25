@@ -24,6 +24,7 @@ type Product = {
 export default function ElectronicProducts() {
     const [products, setProducts] = useState<Product[]>([])
     const navigate = useNavigate()
+    const [loading, setLoading] = useState<boolean>(true)
 
     const loadProducts = async () => {
         try {
@@ -31,6 +32,9 @@ export default function ElectronicProducts() {
             setProducts(res.data.data || [])
         } catch (error) {
             console.log(error)
+        }
+        finally {
+            setLoading(false)
         }
     }
 
@@ -46,6 +50,7 @@ export default function ElectronicProducts() {
         })
     )
 
+    if (loading) return <p>loading...</p>
     if (!products.length) return null
 
     return (
@@ -78,7 +83,7 @@ export default function ElectronicProducts() {
                                             src={product.defaultImage}
                                             alt={product.title}
                                             loading="lazy"
-                                            onClick={()=>{navigate(`/products/${product._id}`)}}
+                                            onClick={() => { navigate(`/products/view/${product._id}`) }}
                                             className="w-full h-full object-cover hover:scale-105 transition duration-500"
                                         />
                                     </div>

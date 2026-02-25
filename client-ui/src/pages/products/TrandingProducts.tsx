@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 type Product = {
     _id: string
@@ -33,6 +33,8 @@ export default function TrandingProducts() {
         fetchProducts()
     }, [])
 
+    const navigate = useNavigate()
+
     if (loading) return null
 
     return (
@@ -51,6 +53,8 @@ export default function TrandingProducts() {
                                 <img
                                     src={product.defaultImage}
                                     alt={product.title}
+                                    loading="lazy"
+                                    onClick={() => { navigate(`/products/view/${product._id}`) }}
                                     className="w-full h-full object-cover hover:scale-105 transition duration-500"
                                 />
                             </div>

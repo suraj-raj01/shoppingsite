@@ -15,7 +15,8 @@ export default function ProductView() {
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/admin/products/${id}`)
-      const data = res.data.data
+      const data = res.data.data[0] || null
+      // console.log(data,'data')
       setProduct(data)
       setActiveImage(data?.defaultImage || data?.images?.[0]?.url || "")
     } catch (err) {
@@ -40,7 +41,7 @@ export default function ProductView() {
       <div className="grid md:grid-cols-2 gap-6">
         
         {/* ===== IMAGE GALLERY ===== */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <img
             src={activeImage}
             alt={product.name}

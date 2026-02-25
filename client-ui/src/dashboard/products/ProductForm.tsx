@@ -94,7 +94,7 @@ export default function ProductForm() {
   const loadProducts = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/admin/products/${id}`)
-      setForm(res.data?.data)
+      setForm(res.data?.data[0] || [])
       // console.log(res.data?.data)
     } catch (error) {
       console.log(error)
