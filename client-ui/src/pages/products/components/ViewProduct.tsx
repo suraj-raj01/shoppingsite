@@ -49,8 +49,8 @@ export default function ViewProduct() {
         `${BASE_URL}/api/admin/products/${id}`
       );
 
-      const data = res.data.data[0];
-      // console.log(data);
+      const data = res.data.data[0] || null;
+      console.log(data);
       setProduct(data);
       setActiveImage(data?.defaultImage);
     } catch (error) {
