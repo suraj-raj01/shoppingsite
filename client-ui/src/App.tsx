@@ -5,7 +5,10 @@ import CustomerView from "./dashboard/users/customers/CustomerView"
 import PageNotFound from "./PageNotFound"
 import ProductLayout from "./products-layouting/ProductLayout"
 import Products from "./products-layouting/Products"
-import ProductViewPage from "./products-layouting/components/ProductView"
+import AuthSuccess from "./auth/customers/components/AuthSuccess"
+import AuthFailed from "./auth/customers/components/AuthFailed"
+import CategoryProduct from "./products-layouting/components/CategoryProducts"
+import ViewProduct from "./products-layouting/components/ViewProduct"
 // Auth (lazy)
 const Login = lazy(() => import("./auth/Login"))
 const LoginLayout = lazy(() => import("./auth/LoginLayout"))
@@ -76,7 +79,8 @@ export default function App() {
           <Route path="/products" element={<ProductLayout />}>
             <Route path="*" element={<PageNotFound url="/products" />} />
             <Route index element={<Products />} />
-            <Route path=":id" element={<ProductViewPage/>} />
+            <Route path=":id" element={<CategoryProduct/>} />
+            <Route path="view/:id" element={<ViewProduct/>} />
           </Route>
 
 
@@ -86,6 +90,8 @@ export default function App() {
             <Route index element={<Auth />} />
             <Route path="adminlogin" element={<Login />} />
             <Route path="login" element={<LoginForm />} />
+            <Route path="login-success" element={<AuthSuccess />} />
+            <Route path="login-failed" element={<AuthFailed />} />
             <Route path="signup" element={<Register />} />
             <Route path="signup/:id" element={<Register />} />
             <Route path="forgetpassword" element={<ForgetPassword />} />

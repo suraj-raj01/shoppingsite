@@ -65,7 +65,7 @@ export default function CategoriesView() {
               {sub.brands?.map((brand, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 text-xs bg-gray-100 border"
+                  className="px-2 py-1 text-xs bg-green-600 text-white font-semibold border"
                 >
                   {brand}
                 </span>

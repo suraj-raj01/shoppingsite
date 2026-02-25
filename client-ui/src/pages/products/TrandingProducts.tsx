@@ -64,7 +64,7 @@ export default function TrandingProducts() {
                                 <p className="text-sm text-muted-foreground line-clamp-2">
                                     {product.description}
                                 </p>
-                                <Link to={`/products/${product.category.toLocaleLowerCase()}`} className="font-semibold text-sm text-orange-400">View Details</Link>
+                                <Link to={`/products/${product.category.toLocaleLowerCase()}`} className="font-semibold text-sm text-green-400">View Details</Link>
                             </CardContent>
                         </Card>
                     ))}

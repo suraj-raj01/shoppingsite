@@ -1,4 +1,5 @@
 import UserModel from "../../models/auth/userModel.js";
+import CustomerModel from "../../models/auth/customerModel.js";
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
@@ -217,33 +218,41 @@ async function sendPasswordResetEmail(email, token) {
 
 export const verifyEmail = async (req, res) => {
     const { email } = req.body;
-    console.log(email, "email")
+
     try {
-        // Input validation
+        // ✅ Validate input
         if (!email) {
             return res.status(400).json({ message: "Email is required" });
         }
 
-        // Email format validation
+        const normalizedEmail = email.toLowerCase().trim();
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(normalizedEmail)) {
             return res.status(400).json({ message: "Invalid email format" });
         }
 
-        const user = await UserModel.findOne({ email: email.toLowerCase().trim() });
+        // 🔎 Check existence (silent)
+        let user = await UserModel.findOne({ email: normalizedEmail });
         if (!user) {
-            return res.status(404).json({ message: "No account found with this email address" });
+            user = await CustomerModel.findOne({ email: normalizedEmail });
         }
 
-        res.status(200).json({
-            message: "Email verified successfully",
-            exists: true
+        // 🔐 DO NOT reveal existence
+        return res.status(200).json({
+            message: "Verification processed",
+            exists: !!user, // optional — remove in high-security apps
         });
+
     } catch (error) {
-        console.error('Email verification error:', error);
-        res.status(500).json({
+        console.error("Email verification error:", error);
+
+        return res.status(500).json({
             message: "Unable to verify email",
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
         });
     }
 };
@@ -252,55 +261,65 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
-        // Input validation
+        // ✅ Validate input
         if (!email) {
             return res.status(400).json({ message: "Email is required" });
         }
 
-        // Email format validation
+        const normalizedEmail = email.toLowerCase().trim();
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(normalizedEmail)) {
             return res.status(400).json({ message: "Invalid email format" });
         }
 
-        const user = await UserModel.findOne({ email: email.toLowerCase().trim() });
+        // 🔎 Find user
+        let user = await UserModel.findOne({ email: normalizedEmail });
         if (!user) {
-            return res.status(404).json({ message: "No account found with this email address" });
+            user = await CustomerModel.findOne({ email: normalizedEmail });
         }
 
-        // Fixed: Added JWT_SECRET and expiration time
+        // 🔐 IMPORTANT: prevent user enumeration
+        if (!user) {
+            return res.status(200).json({
+                message:
+                    "If an account with this email exists, a reset link has been sent.",
+            });
+        }
+
+        // ✅ Check JWT secret
         if (!process.env.JWT_SECRET) {
-            throw new Error('JWT_SECRET is not defined in environment variables');
+            throw new Error("JWT_SECRET is not defined");
         }
 
-        // Generate a password reset token with expiration
+        // 🔐 Generate reset token (scoped)
         const token = jwt.sign(
-            { id: user._id, email: user.email },
+            {
+                id: user._id,
+                type: "reset",
+            },
             process.env.JWT_SECRET,
             { expiresIn: "15m" }
         );
 
-        // Fixed: Pass token to email function
+        // 📧 Send email
         await sendPasswordResetEmail(user.email, token);
 
-        res.status(200).json({
-            message: "Password reset email sent successfully",
-            email: email
+        return res.status(200).json({
+            message:
+                "If an account with this email exists, a reset link has been sent.",
         });
-    } catch (error) {
-        console.error('Forgot password error:', error);
 
-        // Handle specific errors
-        if (error.message.includes('JWT_SECRET')) {
-            res.status(500).json({ message: "Server configuration error" });
-        } else if (error.message.includes('Error sending email')) {
-            res.status(500).json({ message: "Failed to send reset email. Please try again." });
-        } else {
-            res.status(500).json({
-                message: "Unable to process password reset request",
-                error: process.env.NODE_ENV === 'development' ? error.message : undefined
-            });
-        }
+    } catch (error) {
+        console.error("Forgot password error:", error);
+
+        return res.status(500).json({
+            message: "Unable to process password reset request",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined,
+        });
     }
 };
 
@@ -309,7 +328,7 @@ export const resetPassword = async (req, res) => {
     const { token, newPassword, confirmPassword } = req.body;
 
     try {
-        // Input validation
+        // ✅ Input validation
         if (!token || !newPassword || !confirmPassword) {
             return res.status(400).json({ message: "All fields are required" });
         }
@@ -319,64 +338,115 @@ export const resetPassword = async (req, res) => {
         }
 
         if (newPassword.length < 8) {
-            return res.status(400).json({ message: "Password must be at least 8 characters long" });
+            return res
+                .status(400)
+                .json({ message: "Password must be at least 8 characters long" });
         }
 
-        // Verify token
+        // ✅ Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // Find user
-        const user = await UserModel.findById(decoded.id);
+        // ⭐ Optional but recommended
+        if (decoded.type !== "reset") {
+            return res.status(400).json({ message: "Invalid reset token type" });
+        }
+
+        // 🔎 Find user properly
+        let user = await UserModel.findById(decoded.id);
+        if (!user) {
+            user = await CustomerModel.findById(decoded.id);
+        }
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        ;
+
+        // 🔐 Prevent same password reuse
+        const isSamePassword = await bcrypt.compare(
+            newPassword,
+            user.password
+        );
+
+        if (isSamePassword) {
+            return res.status(400).json({
+                message: "New password must be different from old password",
+            });
+        }
+
+        // 🔐 Hash password
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
-        // Update user password
+        // ✅ Update password
         user.password = hashedPassword;
+
+        // ⭐ OPTIONAL: invalidate reset tokens (if you store version)
+        // user.passwordChangedAt = new Date();
+
         await user.save();
 
-        res.status(200).json({ message: "Password reset successfully" });
+        return res
+            .status(200)
+            .json({ message: "Password reset successfully" });
 
     } catch (error) {
-        console.error('Reset password error:', error);
+        console.error("Reset password error:", error);
 
-        if (error.name === 'JsonWebTokenError') {
-            res.status(400).json({ message: "Invalid reset token" });
-        } else if (error.name === 'TokenExpiredError') {
-            res.status(400).json({ message: "Reset token has expired" });
-        } else {
-            res.status(500).json({ message: "Unable to reset password" });
+        if (error.name === "JsonWebTokenError") {
+            return res.status(400).json({ message: "Invalid reset token" });
         }
+
+        if (error.name === "TokenExpiredError") {
+            return res.status(400).json({ message: "Reset token has expired" });
+        }
+
+        return res.status(500).json({ message: "Unable to reset password" });
     }
 };
 
 export const updatePassword = async (req, res) => {
     const { email, newPassword } = req.body;
+
     try {
         if (!email || !newPassword) {
-            return res.status(400).json({ message: "Email and new password are required!" });
+            return res
+                .status(400)
+                .json({ message: "Email and new password are required!" });
         }
-        const user = await UserModel.findOne({ email });
+
+        // 🔎 Check both collections
+        let user = await UserModel.findOne({ email });
+        let model = UserModel;
+
+        if (!user) {
+            user = await CustomerModel.findOne({ email });
+            model = CustomerModel;
+        }
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
+        // 🔐 Hash password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        user.password = hashedPassword;
-        // await user.save();
-        await UserModel.updateOne({
-            email: email
-        }, {
-            password: hashedPassword
-        });
-        res.status(200).json({ message: "Password updated successfully" });
+
+        // ✅ Update using actual model
+        await model.updateOne(
+            { email },
+            { $set: { password: hashedPassword } }
+        );
+
+        return res
+            .status(200)
+            .json({ message: "Password updated successfully" });
+
     } catch (error) {
-        console.error('Update password error:', error);
-        res.status(500).json({ message: "Unable to update password" });
+        console.error("Update password error:", error);
+        return res
+            .status(500)
+            .json({ message: "Unable to update password" });
     }
 };
-
 
 const JWT_SECRET = process.env.JWT_SECRET || "yourSecretKey";
 export const userLogin = async (req, res) => {

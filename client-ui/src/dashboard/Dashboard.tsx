@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Edit2Icon } from "lucide-react"
+import AccessDenied from "@/components/access-denied"
 
 type Role = {
   _id: string
@@ -35,10 +36,7 @@ export default function Dashboard() {
 
   // ✅ loading state
   if (!user) {
-    return <div className="p-6 uppercase">
-      <p className="text-red-600 font-bold">Unauthorized</p>
-      <span>Guest User</span>
-    </div>
+   return <AccessDenied user={"Guest"}/>
   }
 
   return (

@@ -147,7 +147,7 @@ export function NavUser({
 
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={logout}>
+                  <AlertDialogAction onClick={logout} variant='destructive'>
                     Yes, Logout
                   </AlertDialogAction>
                 </AlertDialogFooter>

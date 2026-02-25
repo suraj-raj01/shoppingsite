@@ -172,7 +172,7 @@ export default function Navbar() {
     }
 
     if (loading) return <NavbarSkeleton />
-    if (!navbar) return <div className="p-4">Navbar not found</div>
+    // if (!navbar) return <div className="p-4">Navbar not found</div>
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b bg-background backdrop-blur-2xl">
@@ -188,7 +188,7 @@ export default function Navbar() {
                     <SheetContent side="left" className="p-2">
                         <DialogTitle>
                             <img
-                                src={navbar.logo}
+                                src={navbar?.logo}
                                 alt="logo"
                                 className="h-8 object-contain"
                             />
@@ -212,7 +212,7 @@ export default function Navbar() {
                             ) : (
                                 <Link to="/auth/login">
                                     <Button variant='outline' className="w-full justify-center">
-                                        {navbar.signin}
+                                        {navbar?.signin}
                                     </Button>
                                 </Link>
                             )
@@ -221,7 +221,7 @@ export default function Navbar() {
                 </Sheet>
 
                 {/* Logo */}
-                <img src={navbar.logo} alt="logo" onClick={()=>{navigate('/')}} className="h-9 -ml-2 object-contain" />
+                <img src={navbar?.logo} alt="logo" onClick={()=>{navigate('/')}} className="h-9 -ml-2 object-contain" />
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
@@ -239,7 +239,7 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant='outline' className="rounded-full text-white text-md hover:bg-orange-600 bg-orange-500 h-7 w-7 p-1">
+                                    <Button variant='outline' className="rounded-full text-white text-md hover:bg-green-600 bg-green-500 h-7 w-7 p-1">
                                         {user?.user?.name[0]?.toUpperCase() || "User"}
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -266,7 +266,7 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant='outline' className="ml-1">{navbar.signin}</Button>
+                            <Button variant='outline' className="ml-1">{navbar?.signin}</Button>
                         )}
                     </Link>
                 </div>
@@ -276,7 +276,7 @@ export default function Navbar() {
                     <span>
                         {address
                             ? `${address.suburb ?? ""}, ${address.postcode ?? ""}, ${address.city ?? ""}`.trim()
-                            : navbar.location}
+                            : navbar?.location}
                     </span>
 
                     <div
@@ -315,8 +315,8 @@ export default function Navbar() {
                             className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
                         />
 
-                        <Button variant='outline' className="w-18 border-orange-500 border-l-0 bg-orange-500 hover:bg-orange-600 px-8">
-                            <Search className="text-white font-bold"/>
+                        <Button variant='outline' className="w-18 border-l-0 px-8">
+                            <Search className=" font-bold"/>
                         </Button>
                     </div>
                 </div>
@@ -340,7 +340,7 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button className="rounded-full border-2 hover:bg-orange-600 bg-orange-500 border-orange-500 cursor-pointer text-xl p-1 h-8 w-8">
+                                    <Button className="rounded-full border-2 hover:bg-green-600 bg-green-500 border-green-500 cursor-pointer text-xl p-1 h-8 w-8">
                                         {user?.user?.name[0]?.toUpperCase() || "User"}
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -367,7 +367,7 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant='outline'>{navbar.signin}</Button>
+                            <Button variant='outline'>{navbar?.signin}</Button>
                         )}
                     </Link>
                 </div>

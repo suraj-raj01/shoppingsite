@@ -53,7 +53,7 @@ export default function ElectronicProducts() {
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
                     Electronics Products
-                    <span className="text-sm ml-5 text-orange-400 cursor-pointer">
+                    <span className="text-sm ml-5 text-green-400 cursor-pointer">
                         <Link to="/products/electronics">View all</Link>
                     </span>
                 </h2>

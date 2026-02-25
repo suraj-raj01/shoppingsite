@@ -197,24 +197,73 @@ export const getProducts = async (req, res) => {
 };
 
 // ================= GET ONE =================
+import mongoose from "mongoose";
+
 export const getProductById = async (req, res) => {
   try {
-    const data = await Product.findById(req.params.id);
+    const { id } = req.params;
+    const { category, subcategory, brand, search } = req.query;
 
-    if (!data) {
-      return res.status(404).json({ message: "Product not found" });
+    const orConditions = [];
+
+    // ✅ Search by id or slug
+    if (id) {
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        orConditions.push({ _id: id });
+      }
+      orConditions.push({ slug: { $regex: id, $options: "i" } });
+    }
+
+    // ✅ Category filter (regex)
+    if (category) {
+      orConditions.push({
+        category: { $regex: category, $options: "i" },
+      });
+    }
+
+    // ✅ Subcategory filter
+    if (subcategory) {
+      orConditions.push({
+        subcategory: { $regex: subcategory, $options: "i" },
+      });
+    }
+
+    // ✅ Brand filter
+    if (brand) {
+      orConditions.push({
+        brand: { $regex: brand, $options: "i" },
+      });
+    }
+
+    // ✅ Generic search (name/title)
+    if (search) {
+      orConditions.push({
+        name: { $regex: search, $options: "i" },
+      });
+    }
+
+    // 🧠 Build final query
+    const query =
+      orConditions.length > 0 ? { $or: orConditions } : {};
+
+    const products = await Product.find(query);
+
+    if (!products.length) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
     }
 
     return res.status(200).json({
       success: true,
-      data,
+      count: products.length,
+      data: products,
     });
   } catch (error) {
     console.error("GET PRODUCT ERROR:", error);
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
-
 // ================= DELETE =================
 export const deleteProduct = async (req, res) => {
   try {
