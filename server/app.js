@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8000;
 
 connectDB();
 app.use(cors({
-    origin:'http://localhost:5173',
-    // origin:'https://shoppingweb-beryl.vercel.app',
+    // origin:'http://localhost:5173',
+    origin:'https://shoppingweb-beryl.vercel.app',
     credentials:true
 }))
 app.use(bodyparser.json());
