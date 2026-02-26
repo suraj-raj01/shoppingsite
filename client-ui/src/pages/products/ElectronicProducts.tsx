@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Link, useNavigate } from "react-router-dom"
+import ElectronicProductsSkeleton from "../skeletons/products/ElectronicProductSkeleton"
 
 type Product = {
     _id: string
@@ -50,7 +51,7 @@ export default function ElectronicProducts() {
         })
     )
 
-    if (loading) return <p>loading...</p>
+    if (loading) return <ElectronicProductsSkeleton />
     if (!products.length) return null
 
     return (

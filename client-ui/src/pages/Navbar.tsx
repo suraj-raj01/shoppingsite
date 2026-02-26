@@ -206,7 +206,7 @@ export default function Navbar() {
                         </Button>
 
                         <Button variant="ghost" className="w-full justify-start -mt-5" onClick={() => { navigate('products/cartitems') }}>
-                            <ShoppingCart size={18} /> Cart {cartItems.length}
+                            <ShoppingCart size={18} /> Cart <span className="text-red-600">{cartItems.length}</span>
                         </Button>
 
                         {
@@ -254,15 +254,21 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant='outline' className="rounded-full text-green-600 text-md  h-7 w-7 p-1">
-                                        {user?.user?.name[0]?.toUpperCase() || "User"}
-                                    </Button>
+                                    <div className="rounded-full text-green-600 text-md p-1">
+                                        <div className="rounded-full flex p-0 items-center justify-center border cursor-pointer text-xl h-7 w-full">
+                                            {user?.user?.profile ? (
+                                                <img src={user?.user?.profile || ""} alt="Profile" className="w-full h-full rounded-full" />
+                                            ) : (
+                                                user?.user?.name[0]?.toUpperCase() || "U"
+                                            )}
+                                        </div>
+                                    </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuItem>
                                         <Link to="/dashboard" className="flex items-center gap-2">
                                             <UserIcon />
-                                            Profile
+                                            Dashboard
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
@@ -377,7 +383,7 @@ export default function Navbar() {
                                     <DropdownMenuItem>
                                         <Link to="/dashboard" className="flex items-center gap-2">
                                             <UserIcon />
-                                            Profile
+                                            Dashboard
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>

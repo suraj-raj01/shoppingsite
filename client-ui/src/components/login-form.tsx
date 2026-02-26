@@ -95,7 +95,7 @@ export function LoginForm({
                 {error && <p className="text-sm text-red-600">{error}</p>}
               </div>
               <Field>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full cursor-pointer transition duration-300 hover:bg-green-600 bg-green-500" disabled={loading}>
                   {loading ? 'Logging in...' : 'Login'}
                 </Button>
               </Field>

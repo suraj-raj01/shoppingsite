@@ -141,7 +141,7 @@ export function LoginForm() {
               <Field>
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="w-full cursor-pointer transition duration-300 hover:bg-green-600 bg-green-500"
                   disabled={loading}
                 >
                   {loading ? "Logging in..." : "Login"}

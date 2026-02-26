@@ -63,7 +63,7 @@ export default function Dashboard() {
                 <img
                   src={user.profile}
                   alt={user.name}
-                  className="w-24 h-24 rounded-full object-cover border-4 border-green-500"
+                  className="w-24 h-24 rounded-full object-cover border-3 border-green-500"
                 />
 
                 <div>
@@ -108,7 +108,7 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="md:w-1/3 w-full border shadow-md rounded-xs p-5">
+          <div className="md:w-1/3 w-full border shadow-xs rounded-xs p-5">
             {/* Header */}
             <div className="md:mt-8 md:absolute text-right top-12 md:left-95">
               <Button variant='outline' className="px-3 py-2 rounded-xs transition">
@@ -121,7 +121,7 @@ export default function Dashboard() {
                   <img
                     src={user.profile}
                     alt={user.name}
-                    className="md:w-24 md:h-24 rounded-full object-cover border-4 border-green-500"
+                    className="md:w-24 md:h-24 h-16 w-16 rounded-full object-cover border-3 border-green-500"
                   />
                 ) : (
                   ""
@@ -145,8 +145,8 @@ export default function Dashboard() {
                 <p className="text-sm text-gray-500">Address</p>
                 <p className="font-medium">{user.address}</p>
               </div>
-              <Badge variant='outline' className="bg-green-500">
-                <p className="text-sm text-white">Orders</p>
+              <Badge variant='outline' className="bg-green-500 p-2 px-5 cursor-pointer">
+                <Link to={`/dashboard/orders`} className="text-sm text-white">Orders</Link>
               </Badge>
             </div>
           </div>

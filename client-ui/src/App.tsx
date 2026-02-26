@@ -1,10 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+
 import CartItems from "./pages/cart/CartItems";
 import LikeItems from "./pages/cart/LikeItems";
 import UserLikeItems from "./dashboard/cart/LikeItems";
 import UserCartItems from "./dashboard/cart/CartItems";
 import EditProfile from "./dashboard/users/customers/EditProfile";
+import Orders from "./dashboard/users/customers/components/Orders";
+import Returns from "./dashboard/users/customers/components/Returns";
+import Reviews from "./dashboard/users/customers/components/Reviews";
+import CheckOut from "./pages/checkouts/CheckOut";
 
 /* =========================================================
    🔐 AUTH (Lazy Loaded)
@@ -126,6 +131,7 @@ export default function App() {
             <Route path="products/view/:id" element={<ViewProduct />} />
             <Route path="products/cartitems" element={<CartItems />} />
             <Route path="products/likeditems" element={<LikeItems />} />
+            <Route path="products/checkouts" element={<CheckOut />} />
             <Route path="*" element={<PageNotFound url="/products" />} />
           </Route>
 
@@ -201,6 +207,9 @@ export default function App() {
 
             <Route path="likeitems" element={<UserLikeItems />} />
             <Route path="cartitems" element={<UserCartItems />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="returns" element={<Returns />} />
+            <Route path="reviews" element={<Reviews />} />
 
             <Route path="*" element={<PageNotFound url="/dashboard" />} />
           </Route>

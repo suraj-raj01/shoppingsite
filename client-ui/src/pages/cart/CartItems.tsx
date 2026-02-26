@@ -1,4 +1,4 @@
-import type { RootState } from "@/redux-toolkit/Store";
+import type { AppDispatch, RootState } from "@/redux-toolkit/Store";
 import { useDispatch, useSelector } from "react-redux";
 import {
     itemInc as incrementQty,
@@ -9,29 +9,32 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Trash } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function CartItems() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const cartItems = useSelector(
-        (state: RootState) => state.addtoCart.cart
+        (state: RootState) => state.addtoCart.cart ?? []
     );
+    const navigate = useNavigate();
 
     // ✅ total price
-    const totalAmount = cartItems.reduce(
-        (acc, item) => acc + item.salePrice * (item.qnty ?? 0),
-        0
-    );
+    let totalAmount = 0;
+    if (cartItems.length >=1) {
+        totalAmount = cartItems.reduce(
+            (acc, item) => acc + item.salePrice * (item.qnty ?? 0),
+            0
+        );
+    }
 
-    if (cartItems.length === 0) {
+    if (cartItems.length < 1) {
         return (
             <div className="p-10 text-center text-gray-500 text-xl">
                 🛒 Your cart is empty
             </div>
-        );
+        )
     }
 
-    const navigate = useNavigate();
 
     return (
         <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
@@ -107,7 +110,7 @@ export default function CartItems() {
                                 onClick={() => dispatch(removeFromCart({ id: item._id }))}
                                 className="text-sm"
                             >
-                                <Trash/>
+                                <Trash />
                             </Button>
                         </div>
                         {/* item total */}
@@ -127,7 +130,7 @@ export default function CartItems() {
                     </h2>
                 </div>
                 <Button className="ml-auto text-xs md:text-xl bg-green-500 hover:bg-green-600 text-white md:px-6 px-3 py-3 md:py-6 cursor-pointer rounded-xs">
-                    Proceed to Checkout
+                    <Link to="/products/checkouts">Proceed to Checkout</Link>
                 </Button>
             </div>
         </div>
