@@ -146,6 +146,8 @@ export default function Navbar() {
                 ])
 
                 setNavbar(navRes.data?.data?.[0] || null)
+                console.log(navRes.data.data[0])
+                console.log(catRes.data)
                 setCategory(catRes.data || null)
             } catch (err) {
                 console.error(err)

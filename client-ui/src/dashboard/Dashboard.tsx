@@ -43,8 +43,8 @@ export default function Dashboard() {
     <div className="flex items-center md:flex-row flex-col justify-start gap-2 p-2">
       {
         user.roleId?.length ? (
-          <div className="md:w-1/2 w-full flex justify-start">
-            <div className="w-full max-w-auto h-85 border shadow-md rounded-xs p-5 bg-white">
+          <div className="md:w-md w-full flex justify-start">
+            <div className="w-full max-w-auto h-85 border shadow-xs rounded-xs p-5 bg-white">
 
               {/* Header with button */}
               <div className="flex justify-between items-start mb-2">
@@ -62,7 +62,7 @@ export default function Dashboard() {
                 <img
                   src={user.profile}
                   alt={user.name}
-                  className="w-24 h-24 rounded-full object-cover border-4"
+                  className="w-24 h-24 rounded-full object-cover border-4 border-green-500"
                 />
 
                 <div>
@@ -79,18 +79,18 @@ export default function Dashboard() {
               {/* Details */}
               <div className="flex flex-col gap-3">
                 <div>
-                  <p className="text-sm text-gray-500">User ID</p>
-                  <p className="font-medium break-all">{user._id}</p>
+                  <p className="text-sm text-gray-400">User ID</p>
+                  <p className="font-medium text-green-500 break-all">{user._id}</p>
                 </div>
 
                 <div>
-                  <p className="text-sm text-gray-500">Roles</p>
+                  <p className="text-sm text-gray-400">Roles</p>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {user.roleId?.length ? (
                       user.roleId.map((role) => (
                         <Button
                           key={role._id}
-                          className="text-sm font-semibold border px-2 py-1 rounded-xs"
+                          className="text-sm font-semibold bg-green-500 text-white border px-2 py-1 rounded-xs"
                           variant='ghost'
                         >
                           {role.role}

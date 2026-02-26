@@ -124,7 +124,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "#",
         icon: Package, // ✅ better
         items: [
-          { title: "Product", url: "/dashboard/productstable" },
+          { title: "Products", url: "/dashboard/productstable" },
           { title: "Categories", url: "/dashboard/categoriestable" },
         ],
       },
