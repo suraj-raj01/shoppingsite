@@ -4,6 +4,7 @@ import CartItems from "./pages/cart/CartItems";
 import LikeItems from "./pages/cart/LikeItems";
 import UserLikeItems from "./dashboard/cart/LikeItems";
 import UserCartItems from "./dashboard/cart/CartItems";
+import EditProfile from "./dashboard/users/customers/EditProfile";
 
 /* =========================================================
    🔐 AUTH (Lazy Loaded)
@@ -156,6 +157,7 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
+            <Route path="profile/:id" element={<EditProfile />} />
 
             {/* 🔑 Roles & Permissions */}
             <Route path="roles" element={<RoleTable />} />

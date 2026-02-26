@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Edit2Icon } from "lucide-react"
 import AccessDenied from "@/components/access-denied"
+import { Badge } from "@/components/ui/badge"
 
 type Role = {
   _id: string
@@ -36,7 +37,7 @@ export default function Dashboard() {
 
   // ✅ loading state
   if (!user) {
-   return <AccessDenied user={"Guest"}/>
+    return <AccessDenied user={"Guest"} />
   }
 
   return (
@@ -109,12 +110,23 @@ export default function Dashboard() {
         ) : (
           <div className="md:w-1/3 w-full border shadow-md rounded-xs p-5">
             {/* Header */}
-            <div className="md:mt-8 md:absolute text-right top-13 md:left-90">
-              <Button variant='outline' className="px-5 py-2 rounded-xs transition">
-                <Link to={`/auth/signup/${user._id}`}><Edit2Icon /></Link>
+            <div className="md:mt-8 md:absolute text-right top-12 md:left-95">
+              <Button variant='outline' className="px-3 py-2 rounded-xs transition">
+                <Link to={`/dashboard/profile/${user._id}`}><Edit2Icon /></Link>
               </Button>
             </div>
             <div className="flex items-center gap-6">
+              <div>
+                {user.profile ? (
+                  <img
+                    src={user.profile}
+                    alt={user.name}
+                    className="md:w-24 md:h-24 rounded-full object-cover border-4 border-green-500"
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">
                   {user.name}
@@ -133,6 +145,9 @@ export default function Dashboard() {
                 <p className="text-sm text-gray-500">Address</p>
                 <p className="font-medium">{user.address}</p>
               </div>
+              <Badge variant='outline' className="bg-green-500">
+                <p className="text-sm text-white">Orders</p>
+              </Badge>
             </div>
           </div>
         )

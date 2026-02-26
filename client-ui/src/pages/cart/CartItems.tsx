@@ -42,7 +42,7 @@ export default function CartItems() {
                 {cartItems.map((item) => (
                     <div
                         key={item._id}
-                        className="flex flex-col md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
+                        className="flex overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
                     >
                         {/* image */}
                         <img

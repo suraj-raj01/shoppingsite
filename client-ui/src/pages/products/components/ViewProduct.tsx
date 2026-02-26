@@ -48,7 +48,7 @@ export default function ViewProduct() {
       const res = await axios.get(
         `${BASE_URL}/api/admin/products/${id}`
       );
-      console.log(res.data.data[0]);
+      // console.log(res.data.data[0]);
       setProduct(res.data.data[0] || null);
       setActiveImage(res.data.data[0]?.defaultImage || "");
     } catch (error) {

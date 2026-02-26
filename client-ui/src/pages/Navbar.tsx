@@ -146,8 +146,8 @@ export default function Navbar() {
                 ])
 
                 setNavbar(navRes.data?.data?.[0] || null)
-                console.log(navRes.data.data[0])
-                console.log(catRes.data)
+                // console.log(navRes.data.data[0])
+                // console.log(catRes.data)
                 setCategory(catRes.data || null)
             } catch (err) {
                 console.error(err)
@@ -232,9 +232,17 @@ export default function Navbar() {
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
-                    <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
-                        <Heart />
-                    </Button>
+                    {
+                        likeItems.length > 0 ? (
+                            <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+                            </Button>
+                        ) : (
+                            <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                <Heart className="h-6 w-6" />
+                            </Button>
+                        )
+                    }
 
                     <Button variant="ghost" size="icon" className="relative -ml-3" onClick={() => { navigate('products/cartitems') }}>
                         <ShoppingCart />
@@ -357,9 +365,13 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button className="rounded-full border-2 hover:bg-green-600 bg-green-500 border-green-500 cursor-pointer text-xl p-1 h-8 w-8">
-                                        {user?.user?.name[0]?.toUpperCase() || "User"}
-                                    </Button>
+                                    <div className="rounded-full flex p-0 items-center justify-center border cursor-pointer text-xl h-8 w-8">
+                                        {user?.user?.profile ? (
+                                            <img src={user?.user?.profile || ""} alt="Profile" className="w-full h-full rounded-full" />
+                                        ) : (
+                                            user?.user?.name[0]?.toUpperCase() || "U"
+                                        )}
+                                    </div>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuItem>

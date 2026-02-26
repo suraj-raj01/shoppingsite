@@ -39,11 +39,23 @@ export default function DashboardLayout() {
 
           </div>
           <div className="flex items-center gap-2">
-            <Button size='icon' className="rounded-full overflow-hidden" variant='outline'>
+            <Button size="icon" variant="outline" className="rounded-full overflow-hidden">
               {user?.user?.roleId ? (
-                <img src={user.user.profile} alt="" />
+                <img
+                  src={user?.user?.profile}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : user?.user?.profile ? (
+                <img
+                  src={user?.user?.profile}
+                  alt="Profile"
+                  className="w-full h-full object-cover rounded-full"
+                />
               ) : (
-                <span className="font-bold text-lg">{user?.user?.name?.charAt(0).toUpperCase() || "G"}</span>
+                <div className="font-bold text-lg flex items-center justify-center w-full h-full">
+                  {user?.user?.name?.[0]?.toUpperCase() || "G"}
+                </div>
               )}
             </Button>
             <Separator

@@ -47,7 +47,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: ShieldUser,
         isActive: false,
         items: [
-          { title: "Profile", url: "/dashboard" },
+          { title: "Profile", url: "/dashboard/profile" },
           { title: "Vouchers", url: "/dashboard/vouchers" },
           { title: "Billing", url: "/dashboard/billing" },
           { title: "Settings", url: "/dashboard/settings" },

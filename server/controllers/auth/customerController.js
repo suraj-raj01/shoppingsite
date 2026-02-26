@@ -124,6 +124,7 @@ export const updateUser = async (req, res) => {
     try {
         const { id } = req.params
         const data = req.body
+        console.log(data)
 
         if (!id) {
             return res.status(400).json({ message: "User id is required" })

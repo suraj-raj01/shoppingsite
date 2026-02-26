@@ -13,6 +13,7 @@ export default function CustomerView() {
             const res = await axios.get(
                 `${BASE_URL}/api/customers/${id}`
             );
+            console.log(res.data.data)
             setUser(res.data.data); // ✅ important fix
         } catch (error) {
             console.log(error);
@@ -33,7 +34,7 @@ export default function CustomerView() {
                 {/* Header */}
                 <div className="md:mt-8 md:absolute text-right top-13 md:left-88">
                     <Button variant='outline' className="px-5 py-2 rounded-xs transition">
-                        <Link to={`/auth/signup/${user._id}`}>Edit User</Link>
+                        <Link to={`/dashboard/profile/${user._id}`}>Edit User</Link>
                     </Button>
                 </div>
                 <div className="flex items-center gap-6">
