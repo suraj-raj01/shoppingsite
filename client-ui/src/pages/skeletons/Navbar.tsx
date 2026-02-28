@@ -26,6 +26,7 @@ export default function NavbarSkeleton() {
             <ShoppingCart />
             <Skeleton className="absolute -top-1 -right-1 h-4 w-4 rounded-full" />
           </Button>
+            <Skeleton className="h-8 w-8 rounded-full" />
         </div>
 
         {/* Location (desktop) */}
@@ -48,7 +49,7 @@ export default function NavbarSkeleton() {
           <Skeleton className="h-9 w-24" />
           <Skeleton className="h-9 w-9 rounded-md" />
           <Skeleton className="h-9 w-9 rounded-md" />
-          <Skeleton className="h-9 w-24 rounded-md" />
+          <Skeleton className="h-9 w-9 rounded-full" />
         </div>
       </div>
 
@@ -57,6 +58,7 @@ export default function NavbarSkeleton() {
         <div className="flex w-full gap-2">
           <Skeleton className="h-10 w-24" />
           <Skeleton className="h-10 flex-1" />
+          <Skeleton className="h-10 w-12" />
           <Skeleton className="h-10 w-12" />
         </div>
       </div>

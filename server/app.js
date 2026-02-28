@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8000;
 
 connectDB();
 app.use(cors({
-    // origin:'http://localhost:5173',
-    origin:'https://shoppingweb-beryl.vercel.app',
+    origin:'http://localhost:5173',
+    // origin:'https://shoppingweb-beryl.vercel.app',
     credentials:true
 }))
 app.use(bodyparser.json());
@@ -30,6 +30,7 @@ import userRoutes from './routes/auth/userRoutes.js'
 import customerRoutes from './routes/auth/customerRouets.js'
 import locationRoutes from './routes/location/locationRoutes.js'
 import authRoutes from './routes/auth/authRoutes.js'
+import paymentRoutes from './routes/paymentRoute.js'
 
 app.get("/", (req, res) => {
     res.send("SERVER IS RUNNING ✅");
@@ -50,7 +51,9 @@ app.use('/api/customers', customerRoutes)
 app.use('/api/location', locationRoutes)
 // auth route
 app.use('/api/auth', authRoutes)
+// payment route
+app.use('/api/payment', paymentRoutes)
 
 app.listen(PORT, () => {
-    console.log(`Server run on port ${PORT}`);
+    console.log(`Server running on port ${PORT} 🚀`);
 });

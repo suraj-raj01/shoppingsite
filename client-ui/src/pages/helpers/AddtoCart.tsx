@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { addCartData } from "@/redux-toolkit/CartSlice";
+import { IndianRupee, ShoppingCart } from "lucide-react";
 import { useDispatch } from 'react-redux';
 
 type Product = {
@@ -27,8 +28,10 @@ type Product = {
 };
 
 export default function AddToCart({
+    className,
     product,
 }: {
+    className?: string;
     product: Product;
 }) {
     const dispatch = useDispatch();
@@ -48,26 +51,26 @@ export default function AddToCart({
     };
 
     return (
-        <div className="space-y-4">
+        <div className={`${className} space-y-4`}>
             {/* Buttons */}
-            <div className="flex flex-col md:flex-row gap-4 w-full">
+            <div  className={`${className} flex flex-col md:items-center justify-start md:justify-between gap-2 w-full`}>
 
                 <Button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className={`flex py-6 font-semibold w-full rounded-xs ${isOutOfStock
+                    className={`flex py-3 font-semibold w-full rounded-xs ${isOutOfStock
                             ? "bg-gray-400 cursor-not-allowed"
                             : "bg-green-600 hover:bg-green-700 text-white"
                         }`}
                 >
-                    {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                  <ShoppingCart/>  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </Button>
 
                 <Button
                     variant="outline"
-                    className="flex py-6 font-semibold rounded-xs w-full"
+                    className="flex py-3 font-semibold rounded-xs w-full"
                 >
-                    Buy Now
+                  <IndianRupee/>  Buy Now
                 </Button>
             </div>
         </div>

@@ -38,7 +38,7 @@ export default function TrandingProducts() {
     if (loading) return null
 
     return (
-        <section className="w-full absolute top-95 py-5">
+        <section className="w-full relative -mt-55 md:-mt-65 py-5">
             <div className="max-w-full mx-auto px-2 md:px-2">
 
                 {/* Grid */}
@@ -49,13 +49,13 @@ export default function TrandingProducts() {
                             className="overflow-hidden flex items-start justify-between p-1 rounded-xs hover:shadow-md transition"
                         >
                             {/* Image */}
-                            <div className="w-full aspect-3/2 overflow-hidden">
+                            <div className="w-full aspect-3/2 p-1 backdrop-blur-xl overflow-hidden">
                                 <img
                                     src={product.defaultImage}
                                     alt={product.title}
                                     loading="lazy"
                                     onClick={() => { navigate(`/products/view/${product._id}`) }}
-                                    className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                                    className="w-auto mx-auto h-full object-cover hover:scale-105 transition duration-500"
                                 />
                             </div>
 

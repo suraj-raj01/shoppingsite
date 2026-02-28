@@ -60,7 +60,7 @@ export default function Hero() {
 
   return (
     <section className="w-full">
-      <div className="fixed top-15 z-35 w-full border-b backdrop-blur-md bg-background/50">
+      <div className="fixed top-15 bg-background z-35 w-full border-b">
       <Categories />
       </div>
 

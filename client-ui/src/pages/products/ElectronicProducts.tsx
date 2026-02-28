@@ -55,7 +55,7 @@ export default function ElectronicProducts() {
     if (!products.length) return null
 
     return (
-        <section className="w-full py-6 mt-350 md:mt-30">
+        <section className="w-full py-6">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
                     Electronics Products

@@ -20,7 +20,7 @@ export default function CartItems() {
 
     // ✅ total price
     let totalAmount = 0;
-    if (cartItems.length >=1) {
+    if (cartItems.length >= 1) {
         totalAmount = cartItems.reduce(
             (acc, item) => acc + item.salePrice * (item.qnty ?? 0),
             0
@@ -48,13 +48,13 @@ export default function CartItems() {
                         className="flex overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
                     >
                         {/* image */}
-                        <img
-                            src={item.defaultImage}
-                            alt={item.name}
-                            onClick={() => navigate(`/products/view/${item._id}`)}
-                            loading="lazy"
-                            className="w-38 h-30 object-cover mx-auto rounded-xs"
-                        />
+                            <img
+                                src={item.defaultImage}
+                                alt={item.name}
+                                onClick={() => navigate(`/products/view/${item._id}`)}
+                                loading="lazy"
+                                className="md:w-38 md:h-30 w-25 h-20 object-cover mx-auto rounded-xs"
+                            />
 
                         <Separator orientation="vertical" className="h-40 mx-2" />
                         {/* details */}

@@ -29,7 +29,7 @@ export const saveProduct = async (req, res) => {
         url: file.path || file.secure_url || file.url,
       }));
     }
-
+    // console.log(req.body,'body')
     // ================= MERGE IMAGES =================
     const finalImages =
       uploadedImages.length > 0
@@ -184,7 +184,7 @@ export const getProducts = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      data:products,
+      data: products,
       currentPage: page,
       totalPages,
       totalItems: total,
@@ -264,6 +264,30 @@ export const getProductById = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// ============== SEARCH ====================
+
+export const searchProducts = async (req, res) => {
+  try {
+    const { query } = req.params;
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { category: { $regex: query, $options: "i" } },
+        { brand: { $regex: query, $options: "i" } },
+      ],
+    });
+    return res.status(200).json({
+      success: true,
+      data: products,
+      message: "Products fetched ✅",
+    });
+  } catch (error) {
+    console.error("SEARCH PRODUCTS ERROR:", error);
+    return res.status(500).json({ message: error.message });
+  }
+}
+
 // ================= DELETE =================
 export const deleteProduct = async (req, res) => {
   try {

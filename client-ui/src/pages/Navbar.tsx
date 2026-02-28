@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Search, ShoppingCart, Heart, MapPin, LucideMenu } from "lucide-react"
+import { ShoppingCart, Heart, LucideMenu } from "lucide-react"
 import BASE_URL from "@/Config"
 import {
     DropdownMenu,
@@ -17,28 +17,15 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Input } from "@/components/ui/input"
 import { DialogTitle } from "@/components/ui/dialog"
 import { Link, useNavigate } from "react-router-dom"
 import NavbarSkeleton from "./skeletons/Navbar"
 import { toast } from "sonner"
-import { getAddress } from "./helpers/getAddress"
 import Translation from "./helpers/Translate"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux-toolkit/Store"
-
-type CategoryType = {
-    _id: string
-    categories: string
-}
+import SearchProducts from "./helpers/SearchProducts"
 
 type NavbarType = {
     _id: string
@@ -50,105 +37,20 @@ type NavbarType = {
 
 export default function Navbar() {
     const [navbar, setNavbar] = useState<NavbarType | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState("all")
-    const [category, setCategory] = useState<CategoryType[] | null>(null)
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
 
     const cartItems = useSelector((state: RootState) => state.addtoCart.cart);
     const likeItems = useSelector((state: RootState) => state.addtoLike.likes);
 
-    const [address, setAddress] = useState<{
-        suburb?: string
-        postcode?: string
-        city?: string
-    } | null>(null)
-    const [detecting, setDetecting] = useState(false)
-
-    const [coords, setCoords] = useState<{
-        latitude: number
-        longitude: number
-    } | null>(null)
-
-    // ✅ get location
-    const getUserLocation = () => {
-        if (!navigator.geolocation) {
-            toast.error("Geolocation not supported")
-            return
-        }
-
-        setDetecting(true)
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude
-                const lng = position.coords.longitude
-
-                const locationObj = { latitude: lat, longitude: lng }
-
-                setCoords(locationObj)
-
-                // ✅ persist
-                localStorage.setItem("userLocation", JSON.stringify(locationObj))
-                toast.success("Location detected")
-                setDetecting(false)
-            },
-            () => {
-                // toast.error("Permission denied or failed")
-                setDetecting(false)
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 1000,
-                maximumAge: 0,
-            }
-        )
-    }
-
-    // ✅ restore location after refresh
-    useEffect(() => {
-        const saved = localStorage.getItem("userLocation")
-        if (saved) {
-            try {
-                setCoords(JSON.parse(saved))
-            } catch (err) {
-                console.error("Failed to parse saved location:", err)
-            }
-        }
-    }, [])
-
-    // ✅ fetch address when coords change
-    useEffect(() => {
-        if (!coords) return
-
-        const fetchAddress = async () => {
-            try {
-                const fullAddress = await getAddress(
-                    coords.latitude,
-                    coords.longitude
-                )
-                setAddress(fullAddress as { suburb?: string; postcode?: string; city?: string })
-            } catch (err) {
-                console.log("Address fetch failed:", err)
-            }
-        }
-
-        fetchAddress()
-    }, [coords])
-
     // ✅ fetch navbar + category together (fix loading bug)
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const [navRes, catRes] = await Promise.all([
+                const [navRes] = await Promise.all([
                     axios.get(`${BASE_URL}/api/admin/navbar`),
-                    axios.get(`${BASE_URL}/api/admin/category`),
                 ])
-
                 setNavbar(navRes.data?.data?.[0] || null)
-                // console.log(navRes.data.data[0])
-                // console.log(catRes.data)
-                setCategory(catRes.data || null)
             } catch (err) {
                 console.error(err)
             } finally {
@@ -183,7 +85,7 @@ export default function Navbar() {
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b bg-background backdrop-blur-2xl">
-            <div className="max-w-full mx-auto md:px-10 px-3 py-3 flex items-center gap-3">
+            <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-10 px-3 py-3 gap-3">
                 {/* Mobile Menu */}
                 <Sheet>
                     <SheetTrigger asChild>
@@ -287,66 +189,18 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant='outline' className="ml-1">{navbar?.signin}</Button>
+                            <Button variant='outline' className="ml-1 -mr-2">{navbar?.signin}</Button>
                         )}
                     </Link>
                 </div>
 
-                {/* ✅ Location */}
-                <div className="hidden px-8 md:flex md:flex-col items-center text-sm text-muted-foreground">
-                    <span>
-                        {address
-                            ? `${address.suburb ?? ""}, ${address.postcode ?? ""}, ${address.city ?? ""}`.trim()
-                            : navbar?.location}
-                    </span>
-
-                    <div
-                        onClick={getUserLocation}
-                        className="flex items-center cursor-pointer justify-center gap-2 font-bold"
-                    >
-                        <MapPin size={16} />
-                        {detecting ? "Detecting..." : "Use Current Location"}
-                    </div>
-                </div>
-
-                {/* Search */}
-                <div className="flex-1 hidden md:flex">
-                    <div className="flex w-full items-center justify-center">
-                        <Select
-                            value={selectedCategory}
-                            onValueChange={setSelectedCategory}
-                        >
-                            <SelectTrigger className="w-fit shadow-none border-r-0">
-                                <SelectValue placeholder="All" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectItem value="all">All</SelectItem>
-                                {category?.map((item) => (
-                                    <SelectItem key={item._id} value={item.categories}>
-                                        {item.categories}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-
-                        <Input
-                            type="text"
-                            placeholder="Search products..."
-                            className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
-                        />
-
-                        <Button variant='outline' className="w-18 border-l-0 px-8">
-                            <Search className=" font-bold" />
-                        </Button>
-                    </div>
-                </div>
+                <SearchProducts />
 
                 {/* Right Icons */}
                 <div className="hidden md:flex items-center gap-3">
                     {/* Translation components */}
                     <Translation />
-                    <Button variant="ghost" size="icon" className="relative ml-3" onClick={() => { navigate('products/likeditems') }}>
+                    <div className="relative ml-0" onClick={() => { navigate('products/likeditems') }}>
                         {
                             likeItems.length > 0 ? (
                                 <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
@@ -358,7 +212,7 @@ export default function Navbar() {
                                 </Button>
                             )
                         }
-                    </Button>
+                    </div>
 
                     <Button variant="ghost" size="icon" className="relative -ml-3" onClick={() => { navigate('products/cartitems') }}>
                         <ShoppingCart />

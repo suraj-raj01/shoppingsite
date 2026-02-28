@@ -57,15 +57,15 @@ export default function Categories() {
             </NavigationMenuTrigger>
 
             {/* SUBCATEGORY PANEL */}
-            <NavigationMenuContent>
-              <div className="grid w-85 md:w-125 grid-cols-2 md:grid-cols-3 gap-2 p-3">
+            <NavigationMenuContent className='w-300'>
+              <div className="grid w-85 md:w-125 grid-cols-3 md:grid-cols-3 gap-2 p-3">
 
                 {category.subcategories?.map((sub) => (
                   <div key={sub._id} className="space-y-2">
 
                     {/* SUBCATEGORY */}
-                    <p className="font-medium text-sm cursor-pointer">
-                      <Link to={`/product/subcategories/${sub._id}`}>{sub.name}</Link>
+                    <p className="font-medium text-md md:text-xl cursor-pointer">
+                      <Link to={`/products/${sub._id}`}>{sub.name}</Link>
                     </p>
 
                     {/* BRANDS */}
@@ -73,9 +73,9 @@ export default function Categories() {
                       {sub.brands?.map((brand) => (
                         <span
                           key={brand}
-                          className="text-sm text-muted-foreground hover:text-foreground cursor-pointer"
+                          className="text-md md:text-xl text-muted-foreground hover:text-foreground cursor-pointer"
                         >
-                          <Link to={`/product/subcategories/${brand}`}>{brand}</Link>
+                          <Link to={`/products/${brand}`}>{brand}</Link>
                         </span>
                       ))}
                     </div>

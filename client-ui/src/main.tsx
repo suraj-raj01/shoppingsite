@@ -18,6 +18,6 @@ createRoot(document.getElementById('root')!).render(
         </PersistGate>
       </Provider>
     </UserProvider>
-    <Toaster position="top-right" />
+    <Toaster position="top-center" />
   </StrictMode>
 )

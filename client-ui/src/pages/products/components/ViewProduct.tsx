@@ -222,20 +222,14 @@ export default function ViewProduct() {
           {/* Variants */}
           {product.variants && (
             <div className="mt-6">
-              <h2 className="font-semibold mb-3">Available Options</h2>
+              <h2 className="font-semibold mb-3">Available Colors</h2>
               <div className="flex gap-3 flex-wrap">
                 {product.variants.map((variant, i) => (
                   <div
                     key={i}
-                    style={{ borderColor: variant.value }}
-                    className="border-3 rounded-xs px-4 py-1 cursor-pointer hover:border-green-600 transition"
+                    style={{backgroundColor: variant.value }}
+                    className="border-3 rounded-full px-3 py-3 cursor-pointer transition"
                   >
-                    <p className="text-sm font-medium">
-                      {variant.name}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      ₹{variant.price.toLocaleString()}
-                    </p>
                   </div>
                 ))}
               </div>
@@ -253,8 +247,8 @@ export default function ViewProduct() {
           )}
 
           {/* Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 mt-8">
-            <AddtoCart product={product} />
+          <div className="mt-8">
+            <AddtoCart product={product} className="flex md:flex-row w-full md:w-fit"/>
           </div>
         </div>
       </div>
@@ -265,7 +259,7 @@ export default function ViewProduct() {
           <h2 className="text-2xl font-bold mb-4">
             Product Description
           </h2>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+          <p className="text-gray-700 md:max-w-2xl leading-relaxed whitespace-pre-line">
             {product.description}
           </p>
         </div>
