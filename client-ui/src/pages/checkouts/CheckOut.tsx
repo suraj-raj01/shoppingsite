@@ -234,7 +234,7 @@ export default function CheckOut() {
             description: "Order Payment",
             image: myProImg,
             notes: {
-                "Shipping Address": mydata.address,
+                "Shipping Address": useCurrentLocation ? address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
             },
             order_id: data.id,
 
@@ -402,8 +402,8 @@ export default function CheckOut() {
                                 Email : {mydata.email}
                             </p>
 
-                            <div className="flex items-start gap-2 sm:col-span-2">
-                                <HomeIcon size={16} className="mt-0.5 text-green-500" />
+                            <div className="flex items-center gap-2 sm:col-span-2">
+                                <HomeIcon size={16} className="h-8 w-8 md:h-4 md:w-4 text-green-500" />
                                 {useCurrentLocation ? (
                                     <p>Current Location : {detecting ? "Detecting..." : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
                                 ) : (

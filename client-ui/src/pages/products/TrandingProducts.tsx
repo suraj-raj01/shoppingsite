@@ -42,14 +42,14 @@ export default function TrandingProducts() {
             <div className="max-w-full mx-auto px-2 md:px-2">
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     {products.map((product) => (
                         <Card
                             key={product._id}
-                            className="overflow-hidden flex items-start justify-between p-1 rounded-xs hover:shadow-md transition"
+                            className="overflow-hidden flex items-start justify-between md:p-1 p-0 rounded-sm hover:shadow-md transition"
                         >
                             {/* Image */}
-                            <div className="w-full aspect-3/2 p-1 backdrop-blur-xl overflow-hidden">
+                            <div className="w-full md:aspect-3/2 aspect-3/2 p-1 backdrop-blur-xl overflow-hidden">
                                 <img
                                     src={product.defaultImage}
                                     alt={product.title}
@@ -60,15 +60,15 @@ export default function TrandingProducts() {
                             </div>
 
                             {/* Content */}
-                            <CardContent className="p-1 space-y-1">
-                                <h3 className="text-lg font-semibold line-clamp-1">
+                            <CardContent className="md:px-1 px-2 space-y-1 md:pb-2">
+                                <h3 className="md:text-lg text-sm font-semibold line-clamp-1">
                                     {product.name}
                                 </h3>
 
-                                <p className="text-sm text-muted-foreground line-clamp-2">
+                                <p className="md:text-sm text-xs text-muted-foreground line-clamp-2">
                                     {product.description}
                                 </p>
-                                <Link to={`/products/${product.category.toLocaleLowerCase()}`} className="font-semibold text-sm text-green-400">View Details</Link>
+                                <Link to={`/products/${product.category.toLocaleLowerCase()}`} className="font-semibold md:text-sm text-xs text-green-400">View Details</Link>
                             </CardContent>
                         </Card>
                     ))}

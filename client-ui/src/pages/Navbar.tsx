@@ -159,7 +159,7 @@ export default function Navbar() {
                                     <div className="rounded-full text-green-600 text-md p-1">
                                         <div className="rounded-full flex p-0 items-center justify-center border cursor-pointer text-xl h-7 w-full">
                                             {user?.user?.profile ? (
-                                                <img src={user?.user?.profile || ""} alt="Profile" className="w-full h-full rounded-full" />
+                                                <img src={user?.user?.profile || ""} alt="Profile" className="w-full object-cover h-full rounded-full" />
                                             ) : (
                                                 user?.user?.name[0]?.toUpperCase() || "U"
                                             )}

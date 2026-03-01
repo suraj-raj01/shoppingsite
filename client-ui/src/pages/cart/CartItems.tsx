@@ -48,13 +48,13 @@ export default function CartItems() {
                         className="flex overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
                     >
                         {/* image */}
-                            <img
-                                src={item.defaultImage}
-                                alt={item.name}
-                                onClick={() => navigate(`/products/view/${item._id}`)}
-                                loading="lazy"
-                                className="md:w-38 md:h-30 w-25 h-20 object-cover mx-auto rounded-xs"
-                            />
+                        <img
+                            src={item.defaultImage}
+                            alt={item.name}
+                            onClick={() => navigate(`/products/view/${item._id}`)}
+                            loading="lazy"
+                            className="md:w-38 md:h-30 w-25 h-20 object-cover mx-auto rounded-xs"
+                        />
 
                         <Separator orientation="vertical" className="h-40 mx-2" />
                         {/* details */}
@@ -67,7 +67,7 @@ export default function CartItems() {
                                 Brand: {item.brand}
                             </p>
 
-                            <div className="font-bold text-lg mt-1">
+                            <div className="font-bold flex items-center gap-2 text-lg mt-1">
                                 ₹{item.salePrice.toLocaleString()}
                                 <span className="line-through text-muted-foreground text-xs mx-5">
                                     ₹{item.price.toLocaleString()}
@@ -84,33 +84,38 @@ export default function CartItems() {
                         </div>
 
                         {/* ✅ quantity controls */}
-                        <div className="flex items-center md:justify-end gap-3 mt-3">
-                            <Button
-                                variant='outline'
-                                disabled={item.qnty === 1}
-                                onClick={() => dispatch(decrementQty({ id: item._id }))}
-                                className="px-3 py-1 border rounded-xs"
-                            >
-                                −
-                            </Button>
+                        <div className="flex flex-col md:flex-row items-center md:justify-end gap-3 mt-3">
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant='outline'
+                                    disabled={item.qnty === 1}
+                                    onClick={() => dispatch(decrementQty({ id: item._id }))}
+                                    size="sm"
+                                    className="px-3 py-1 border rounded-xs"
+                                >
+                                    −
+                                </Button>
 
-                            <span className="font-semibold px-3 py-1 border rounded-xs">{item.qnty}</span>
+                                <span className="font-semibold px-3 py-1 border rounded-xs">{item.qnty}</span>
 
-                            <Button
-                                variant='outline'
-                                onClick={() => dispatch(incrementQty({ id: item._id }))}
-                                className="px-3 py-1 border rounded-xs"
-                            >
-                                +
-                            </Button>
+                                <Button
+                                    variant='outline'
+                                    onClick={() => dispatch(incrementQty({ id: item._id }))}
+                                    size="sm"
+                                    className="px-3 py-1 border rounded-xs"
+                                >
+                                    +
+                                </Button>
+                            </div>
 
                             {/* remove */}
                             <Button
                                 variant='destructive'
                                 onClick={() => dispatch(removeFromCart({ id: item._id }))}
+                                size="sm"
                                 className="text-sm"
                             >
-                                <Trash />
+                                <Trash /> Remove
                             </Button>
                         </div>
                         {/* item total */}

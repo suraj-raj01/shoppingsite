@@ -12,7 +12,7 @@ export default function ElectronicProductsSkeleton() {
                     {Array.from({ length: 5 }).map((_, index) => (
                         <Card
                             key={index}
-                            className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 border p-0"
+                            className="basis-2/3 sm:basis-2/3 md:basis-3/4 lg:basis-3/4 border p-0"
                         >
                             <div className="w-full aspect-4/3 bg-gray-200 rounded" />
                         </Card>

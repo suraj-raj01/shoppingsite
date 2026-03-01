@@ -56,7 +56,7 @@ export default function ProductFilters({ products }: { products: any[] }) {
   }, [search, category, inStock, priceRange, sortBy, products])
 
   return (
-    <div className="space-y-5 sticky top-15 h-screen w-full border-r pr-5 pt-2">
+    <div className="space-y-5 md:sticky top-15 h-screen w-full border-r pr-5 pt-2">
       
       {/* 🔍 Search */}
       <div className="space-y-2">
