@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
-import CartItems from "./pages/cart/CartItems";
-import LikeItems from "./pages/cart/LikeItems";
-import UserLikeItems from "./dashboard/cart/LikeItems";
-import UserCartItems from "./dashboard/cart/CartItems";
-import EditProfile from "./dashboard/users/customers/EditProfile";
-import Orders from "./dashboard/users/customers/components/orders/Orders";
-import Returns from "./dashboard/users/customers/components/Returns";
-import Reviews from "./dashboard/users/customers/components/Reviews";
-import CheckOut from "./pages/checkouts/CheckOut";
-import OrdersView from "./dashboard/users/customers/components/orders/OrdersView";
-import PaymentSuccess from "./pages/components/PaymentSuccess";
-import PaymentFailed from "./pages/components/PaymentFailed";
+const CartItems = lazy(() => import("./pages/cart/CartItems"));
+const LikeItems = lazy(() => import("./pages/cart/LikeItems"));
+const UserLikeItems = lazy(() => import("./dashboard/cart/LikeItems"));
+const UserCartItems = lazy(() => import("./dashboard/cart/CartItems"));
+const EditProfile = lazy(() => import("./dashboard/users/customers/EditProfile"));
+const Orders = lazy(() => import("./dashboard/users/customers/components/orders/Orders"));
+const Returns = lazy(() => import("./dashboard/users/customers/components/Returns"));
+const Reviews = lazy(() => import("./dashboard/users/customers/components/Reviews"));
+const CheckOut = lazy(() => import("./pages/checkouts/CheckOut"));
+const OrdersView = lazy(() => import("./dashboard/users/customers/components/orders/OrdersView"));
+const PaymentSuccess = lazy(() => import("./pages/components/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("./pages/components/PaymentFailed"));
 
 /* =========================================================
    🔐 AUTH (Lazy Loaded)

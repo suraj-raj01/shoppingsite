@@ -17,7 +17,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useState } from "react"
 import { Separator } from "@/components/ui/separator"
-import { useAuth } from "@/contexts/loginContext"
 
 // ✅ Zod schema
 const loginSchema = z.object({
@@ -37,7 +36,6 @@ export function LoginForm() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState("")
-  const { login, } = useAuth()
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -57,7 +55,6 @@ export function LoginForm() {
       )
 
       const user = response.data
-      login(user)
       localStorage.setItem("user", JSON.stringify(user))
       localStorage.setItem("token", user.token)
       toast.success(response.data.message)

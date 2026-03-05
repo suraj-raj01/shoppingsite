@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
-import { useAuth } from '@/contexts/loginContext'
 
 
 type Orders = {
@@ -41,15 +40,8 @@ export default function OrdersTable() {
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
-    const { isAuthenticated } = useAuth()
     // console.log(user, "user data");
     // console.log(isAuthenticated, "isAuthenticated data");
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/auth/login')
-        }
-    }, [isAuthenticated])
 
     const fetchCategories = async () => {
         try {
