@@ -56,7 +56,7 @@ export default function OrdersTable() {
                 setOrders(response?.data?.data || [])
                 setPage(response.data.currentPage)
                 setPageCount(response.data.totalPages)
-                // console.log("userdata data", response.data)
+                console.log("userdata data", response.data)
             }
             const { data } = response
             setPageCount(data.totalPages || 1)
@@ -72,7 +72,7 @@ export default function OrdersTable() {
     }, [page, searchQuery])
 
 
-    const deleteUser = async (id: any) => {
+    const delteOrders = async (id: any) => {
         try {
             await axios.delete(`${api}/api/payment/orders/${id}`)
             toast.success('Order deleted successfully')
@@ -152,7 +152,7 @@ export default function OrdersTable() {
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Order
                         </DropdownMenuItem> */}
-                        <DropdownMenuItem onClick={() => deleteUser(row.original._id)}>
+                        <DropdownMenuItem onClick={() => delteOrders(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
                             Delete
                         </DropdownMenuItem>
@@ -179,7 +179,7 @@ export default function OrdersTable() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Orders</h1>
                                 <p className="text-muted-foreground">
                                     Manage and track all the orders
                                 </p>
@@ -191,7 +191,7 @@ export default function OrdersTable() {
                     <Skeleton className="h-10 w-32" />
                 ) : (
                     <Button disabled>
-                        All Orders
+                       Your All Orders
                     </Button>
                 )}
             </div>

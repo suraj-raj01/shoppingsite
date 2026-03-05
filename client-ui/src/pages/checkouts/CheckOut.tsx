@@ -494,7 +494,7 @@ export default function CheckOut() {
                         <div className="flex justify-between items-center mt-6">
                             <h3 className="text-xl font-bold">Total: ₹{totalAmount}</h3>
 
-                            <Button disabled={payLoading} onClick={handlePay}>
+                            <Button disabled={payLoading} onClick={handlePay} className="bg-green-500 hover:bg-green-600 text-white">
                                 {payLoading ? "Processing..." : "Pay Now"}
                             </Button>
                         </div>

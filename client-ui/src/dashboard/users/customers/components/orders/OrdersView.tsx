@@ -5,7 +5,7 @@ import api from "@/Config"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Package, CalendarDays, IndianRupee, MapPin } from "lucide-react"
+import { Package, CalendarDays, IndianRupee, MapPin, CreditCard, ShieldCheck } from "lucide-react"
 
 export default function OrdersView() {
   const { id } = useParams()
@@ -47,14 +47,16 @@ export default function OrdersView() {
             Order Details
           </CardTitle>
 
-          <Badge className={`capitalize ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}>
+          <Badge className={`capitalize text-sm font-medium px-2 py-1 rounded-xs ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}>
             {order.paymentStatus}
           </Badge>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="flex items-start gap-2">
-            <CalendarDays size={16} className="mt-0.5 text-muted-foreground" />
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
+
+          {/* Order Date */}
+          <div className="flex items-center gap-3">
+            <CalendarDays className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Order Date</p>
               <p className="font-medium">
@@ -63,8 +65,9 @@ export default function OrdersView() {
             </div>
           </div>
 
-          <div className="flex items-start gap-2">
-            <IndianRupee size={16} className="mt-0.5 text-muted-foreground" />
+          {/* Total Amount */}
+          <div className="flex items-center gap-3">
+            <IndianRupee className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Total Amount</p>
               <p className="font-semibold text-lg">
@@ -73,24 +76,55 @@ export default function OrdersView() {
             </div>
           </div>
 
-          <div className="flex items-start gap-2">
-            <MapPin size={16} className="mt-0.5 text-muted-foreground" />
+          {/* Shipping Address */}
+          <div className="flex items-center gap-3">
+            <MapPin className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Shipping Address</p>
-              <p className="font-medium">{order.shippingAddress}</p>
+              <p className="font-medium break-words">{order.shippingAddress}</p>
             </div>
           </div>
+
+          {/* Razorpay Order ID */}
+          <div className="flex items-center gap-3">
+            <Package className="h-6 w-6 text-muted-foreground flex-shrink-0" />
+            <div>
+              <p className="text-muted-foreground">Razorpay Order ID</p>
+              <p className="font-medium break-all">{order.razorpay_order_id}</p>
+            </div>
+          </div>
+
+          {/* Payment ID */}
+          <div className="flex items-center gap-3">
+            <CreditCard className="h-6 w-6 text-muted-foreground flex-shrink-0" />
+            <div>
+              <p className="text-muted-foreground">Payment ID</p>
+              <p className="font-medium break-all">{order.razorpay_payment_id}</p>
+            </div>
+          </div>
+
+          {/* Signature */}
+          <div className="flex items-center gap-3">
+            <ShieldCheck className="h-6 w-6 text-muted-foreground flex-shrink-0" />
+            <div>
+              <p className="text-muted-foreground">Payment Signature</p>
+              <p className="font-medium break-all text-xs sm:text-sm">
+                {order.razorpay_signature}
+              </p>
+            </div>
+          </div>
+
         </CardContent>
       </Card>
 
       {/* 🔷 ORDER ITEMS */}
       <Card className="rounded-xs shadow-sm">
         <CardHeader>
-          <CardTitle>Order Items</CardTitle>
+          <CardTitle className="-mt-1 text-lg">Order Items</CardTitle>
         </CardHeader>
 
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 -mt-3 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {order.items?.map((item: any) => (
               <div
                 key={item._id}
@@ -113,7 +147,7 @@ export default function OrdersView() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="mt-4 w-full"
+                  className="mt-4 w-full cursor-pointer"
                   onClick={() =>
                     navigate(`/products/view/${item.productId}`)
                   }
