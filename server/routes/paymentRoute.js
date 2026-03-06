@@ -106,44 +106,54 @@ router.post("/verify", async (req, res) => {
     });
   }
 });
-router.get("/orders", async (req, res) => {
-    try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
-        const orders = await Orders.find().skip((page - 1) * limit).limit(limit);
-        const total = await Orders.countDocuments();
-        const totalPages = Math.ceil(total / limit);
-        res.status(200).json({
-            data: orders,
-            currentPage: page,
-            totalPages: totalPages
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error!" });
-    }
+router.get("/orders/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const orders = await Orders.find({ userId: id })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const total = await Orders.countDocuments({ userId: id });
+    const totalPages = Math.ceil(total / limit);
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+      currentPage: page,
+      totalPages: totalPages,
+      totalOrders: total
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+  }
 });
 
-router.get("/orders/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const order = await Orders.findById(id);
-        res.status(200).json({ data: order });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error!" });
-    }
+router.get("/orders/view/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const order = await Orders.findById(id);
+    res.status(200).json({ data: order });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+  }
 });
 
 router.delete("/orders/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        await Orders.findByIdAndDelete(id);
-        res.status(200).json({ message: "Order deleted successfully" });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Internal Server Error!" });
-    }
+  try {
+    const { id } = req.params;
+    await Orders.findByIdAndDelete(id);
+    res.status(200).json({ message: "Order deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error!" });
+  }
 })
 
 export default router;

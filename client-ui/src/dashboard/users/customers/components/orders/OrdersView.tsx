@@ -16,7 +16,7 @@ export default function OrdersView() {
 
   const fetchOrder = async () => {
     try {
-      const response = await axios.get(`${api}/api/payment/orders/${id}`)
+      const response = await axios.get(`${api}/api/payment/orders/view/${id}`)
       setOrder(response.data.data)
     } catch (error) {
       console.error("Error fetching order:", error)

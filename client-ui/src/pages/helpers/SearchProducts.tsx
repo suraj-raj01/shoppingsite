@@ -12,6 +12,7 @@ import BASE_URL from "@/Config"
 import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import ProductFilters from "./Filtering"
 type CategoryType = {
     _id: string
     categories: string
@@ -31,20 +32,18 @@ export default function SearchProducts() {
                 setSuggestions([])
                 return
             }
-
             try {
                 setLoading(true)
-
                 const res = await axios.get(`${BASE_URL}/api/admin/products/search/${search}`)
-                console.log(res.data)
                 setSuggestions(res?.data?.data || [])
                 setShowDropdown(true)
+                ProductFilters(res?.data?.data || [])
             } catch (err) {
                 console.log(err)
             } finally {
                 setLoading(false)
             }
-        }, 400) // 🔥 debounce
+        }, 800) // 🔥 debounce
 
         return () => clearTimeout(delayDebounce)
     }, [search])

@@ -13,7 +13,6 @@ export default function ProductFilters({ products }: { products: any[] }) {
   const [inStock, setInStock] = useState(false)
   const [priceRange, setPriceRange] = useState([100000])
   const [sortBy, setSortBy] = useState("")
-
   // ✅ dynamic categories
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category))

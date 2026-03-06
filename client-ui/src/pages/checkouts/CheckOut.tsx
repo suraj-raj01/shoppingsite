@@ -244,6 +244,7 @@ export default function CheckOut() {
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
+                        productId: Data.map((item) => item.id),
                     })
                     if (res.data.success) {
                         toast.success(res.data.message || "Payment successful 🎉")

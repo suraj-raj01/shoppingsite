@@ -33,7 +33,6 @@ type Orders = {
     paymentStatus: string,
 }
 
-
 export default function OrdersTable() {
     const [orders, setOrders] = useState<Orders[]>([])
     const [page, setPage] = useState(1)
@@ -43,40 +42,63 @@ export default function OrdersTable() {
     // console.log(user, "user data");
     // console.log(isAuthenticated, "isAuthenticated data");
 
-    const fetchCategories = async () => {
+    const [userId, setUserId] = useState<string | null>(null)
+
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem("user")
+
+            if (userData) {
+                const parsedData = JSON.parse(userData)
+                setUserId(parsedData.user?._id)
+            }
+        } catch (err) {
+            console.error("Invalid user in localStorage")
+        }
+    }, [])
+
+    const fetchOrders = async () => {
         try {
             setLoading(true)
+
             let response
+
             if (searchQuery) {
-                response = await axios.post(`${api}/api/payment/orders/searchorder/${searchQuery}`)
+                response = await axios.post(
+                    `${api}/api/payment/orders/searchorder/${searchQuery}`
+                )
+
                 setOrders(response?.data?.data || [])
-                // console.log(response.data, "search data");
+                setPageCount(response?.data?.totalPages || 1)
+
             } else {
-                response = await axios.get(`${api}/api/payment/orders?page=${page}&limit=5`)
+                response = await axios.get(
+                    `${api}/api/payment/orders/${userId}?page=${page}&limit=5`
+                )
                 setOrders(response?.data?.data || [])
+                setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
-                setPageCount(response.data.totalPages)
-                console.log("userdata data", response.data)
             }
-            const { data } = response
-            setPageCount(data.totalPages || 1)
+
         } catch (error) {
-            console.error('Error fetching users:', error)
+            console.error("Error fetching orders:", error)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchCategories();
-    }, [page, searchQuery])
+        if (userId) {
+            fetchOrders()
+        }
+    }, [userId, page, searchQuery])
 
 
     const delteOrders = async (id: any) => {
         try {
             await axios.delete(`${api}/api/payment/orders/${id}`)
             toast.success('Order deleted successfully')
-            fetchCategories();
+            fetchOrders();
         } catch (error) {
             console.error('Error deleting order:', error)
             alert('Failed to delete Order. Please try again.')
@@ -90,7 +112,7 @@ export default function OrdersTable() {
 
 
     const columns: ColumnDef<Orders>[] = [
-        
+
         {
             accessorKey: 'paymentStatus',
             header: "Payment Status",
@@ -108,7 +130,7 @@ export default function OrdersTable() {
             accessorKey: 'shippingAddress',
             header: "Shipping Address",
         },
-        
+
         {
             accessorKey: 'items',
             header: "Items",
@@ -191,7 +213,7 @@ export default function OrdersTable() {
                     <Skeleton className="h-10 w-32" />
                 ) : (
                     <Button disabled>
-                       Your All Orders
+                        Your All Orders
                     </Button>
                 )}
             </div>

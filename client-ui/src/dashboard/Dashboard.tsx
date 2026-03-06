@@ -146,7 +146,7 @@ export default function Dashboard() {
                 <p className="font-medium">{user.address}</p>
               </div>
               <Badge variant='outline' className="bg-green-500 p-2 px-5 cursor-pointer">
-                <Link to={`/dashboard/orders`} className="text-sm text-white">Orders</Link>
+                <Link to={`/dashboard/orders`} className="text-sm text-white">Your Orders</Link>
               </Badge>
             </div>
           </div>

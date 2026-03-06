@@ -6,14 +6,15 @@ import dotenv from 'dotenv'
 dotenv.config();
 import connectDB from './config/db.js';
 import './config/passport.js';
+import { loginLimiter } from './lib/rateLimiter.js';
 
 const PORT = process.env.PORT || 8000;
 
 connectDB();
 app.use(cors({
-    // origin:'http://localhost:5173',
+    // origin: 'http://localhost:5173',
     origin:'https://shoppingsite-chi.vercel.app',
-    credentials:true
+    credentials: true
 }))
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -50,7 +51,7 @@ app.use('/api/customers', customerRoutes)
 // location route
 app.use('/api/location', locationRoutes)
 // auth route
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', authRoutes, loginLimiter)
 // payment route
 app.use('/api/payment', paymentRoutes)
 
