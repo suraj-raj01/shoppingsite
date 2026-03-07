@@ -22,14 +22,14 @@ type Product = {
     more: string
 }
 
-export default function ElectronicProducts() {
+export default function GrossoryProducts() {
     const [products, setProducts] = useState<Product[]>([])
     const navigate = useNavigate()
     const [loading, setLoading] = useState<boolean>(true)
 
     const loadProducts = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/admin/products/search/electronics`)
+            const res = await axios.get(`${BASE_URL}/api/admin/products/search/footwear`)
             setProducts(res.data.data || [])
         } catch (error) {
             console.log(error)
@@ -58,9 +58,9 @@ export default function ElectronicProducts() {
         <section className="w-full py-6">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
-                    Electronics Products
+                    Footwear Products
                     <span className="text-sm ml-5 text-green-400 cursor-pointer">
-                        <Link to="/products/electronics">View all</Link>
+                        <Link to="/products/footwear">View all</Link>
                     </span>
                 </h2>
 

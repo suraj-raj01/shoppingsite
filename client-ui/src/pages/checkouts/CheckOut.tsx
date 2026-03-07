@@ -288,13 +288,12 @@ export default function CheckOut() {
                 `${BASE_URL}/api/payment/orders`,
                 {
                     id: mydata._id,
-                    shippingaddress: mydata.address,
+                    shippingaddress: useCurrentLocation ? address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
                     amount: totalAmount,
                     defaultImage: myProImg,
                     product: Data,
                 }
             )
-            console.log(data)
 
             if (!data?.order?.id) {
                 toast.error("Invalid order response")

@@ -48,11 +48,11 @@ export default function ProductsTable() {
             setLoading(true)
             let response
             if (searchQuery) {
-                response = await axios.get(`${api}/api/admin/products/${searchQuery}`)
-                setCategories(response?.data || [])
+                response = await axios.get(`${api}/api/admin/products/search/${searchQuery}`)
+                setCategories(response?.data?.data || [])
                 // console.log(response.data, "search data");
             } else {
-                response = await axios.get(`${api}/api/admin/products?page=${page}&limit=10`)
+                response = await axios.get(`${api}/api/admin/products?page=${page}&limit=5`)
                 setCategories(response?.data?.data || [])
                 setPage(response.data.currentPage)
                 setPageCount(response.data.totalPages)
