@@ -21,7 +21,7 @@ router.get("/reverse", async (req, res) => {
           format: "json",
         },
         headers: {
-          "User-Agent": "your-app-name", // REQUIRED by OSM
+          "User-Agent": "E-SHOPING", // REQUIRED by OSM
         },
       }
     )

@@ -32,9 +32,10 @@ import customerRoutes from './routes/auth/customerRouets.js'
 import locationRoutes from './routes/location/locationRoutes.js'
 import authRoutes from './routes/auth/authRoutes.js'
 import paymentRoutes from './routes/paymentRoute.js'
+import reviewRoutes from './routes/reviews/reviewRating.js'
 
 app.get("/", (req, res) => {
-    res.send("SERVER IS RUNNING ✅");
+    res.send(`SERVER IS RUNNING ✅ ON PORT ${PORT}`);
 });
 
 app.use('/api/admin/category', categoryRoutes)
@@ -54,6 +55,8 @@ app.use('/api/location', locationRoutes)
 app.use('/api/auth', authRoutes, loginLimiter)
 // payment route
 app.use('/api/payment', paymentRoutes)
+// review route
+app.use('/api/reviews', reviewRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} 🚀`);

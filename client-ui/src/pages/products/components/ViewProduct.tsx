@@ -10,6 +10,19 @@ import { Heart } from "lucide-react";
 import { likelikesData, removelikesData } from "@/redux-toolkit/LikeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux-toolkit/Store";
+import ReviewRating from "@/pages/helpers/reviewRating";
+import ReviewForm from "@/pages/helpers/reviewForm";
+
+type Reviews = {
+  _id: string,
+  userId: string,
+  productId: string,
+  ratings: number,
+  images: [],
+  message: string,
+  createdAt: string,
+  updatedAt: string,
+}
 
 type Product = {
   _id: string;
@@ -35,12 +48,62 @@ type Product = {
   }[];
 };
 
+type Role = {
+  _id: string
+  role: string
+}
+
+type User = {
+  _id: string
+  name: string
+  email: string
+  profile: string
+  roleId?: Role[]
+  contact: string
+  address: string
+}
+
 export default function ViewProduct() {
   const [product, setProduct] = useState<Product | null>(null);
   const [activeImage, setActiveImage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [reviews, setReviews] = useState<Reviews[]>([])
   const { id } = useParams();
+
+  const fetchReview = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.get(
+        `${BASE_URL}/api/reviews`
+      )
+      setReviews(response?.data?.data || [])
+
+    } catch (error) {
+      console.error("Error fetching reviews:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchReview()
+  }, [])
+
+  // ================ Get User Id =====================
+
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem("user")
+      if (userData) {
+        const parsedData = JSON.parse(userData)
+        setUser(parsedData.user)
+      }
+    } catch (err) {
+      console.error("Invalid user in localStorage")
+    }
+  }, [])
 
   const fetchProduct = async (id: string) => {
     try {
@@ -227,7 +290,7 @@ export default function ViewProduct() {
                 {product.variants.map((variant, i) => (
                   <div
                     key={i}
-                    style={{backgroundColor: variant.value }}
+                    style={{ backgroundColor: variant.value }}
                     className="border-3 rounded-full px-3 py-3 cursor-pointer transition"
                   >
                   </div>
@@ -248,22 +311,27 @@ export default function ViewProduct() {
 
           {/* Buttons */}
           <div className="mt-8">
-            <AddtoCart product={product} className="flex md:flex-row w-full md:w-fit"/>
+            <AddtoCart product={product} className="flex md:flex-row w-full md:w-fit" />
           </div>
         </div>
       </div>
 
       {/* Full Description */}
       {product.description && (
-        <div className="mt-16 border-t pt-8">
-          <h2 className="text-2xl font-bold mb-4">
-            Product Description
-          </h2>
-          <p className="text-gray-700 md:max-w-2xl leading-relaxed whitespace-pre-line">
-            {product.description}
-          </p>
+        <div className="mt-16 border-t pt-8 md:flex items-center justify-between">
+          <div className="mb-5 md:mb-0">
+            <h2 className="text-2xl font-bold mb-4">
+              Product Description
+            </h2>
+            <p className="text-gray-700 md:max-w-2xl leading-relaxed whitespace-pre-line">
+              {product.description}
+            </p>
+          </div>
+          {/* product ratings */}
+          <ReviewRating />
         </div>
       )}
+      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews}/>
     </div>
   );
 }

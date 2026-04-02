@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { ShoppingCart, Heart, LucideMenu } from "lucide-react"
+import { ShoppingCart, Heart, LucideMenu, LayoutDashboardIcon } from "lucide-react"
 import BASE_URL from "@/Config"
 import {
     DropdownMenu,
@@ -236,7 +236,7 @@ export default function Navbar() {
                                 <DropdownMenuContent>
                                     <DropdownMenuItem>
                                         <Link to="/dashboard" className="flex items-center gap-2">
-                                            <UserIcon />
+                                            <LayoutDashboardIcon />
                                             Dashboard
                                         </Link>
                                     </DropdownMenuItem>

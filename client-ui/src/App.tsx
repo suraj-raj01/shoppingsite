@@ -1,5 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import Voucher from "./dashboard/users/customers/components/Vouchers";
+import Billings from "./dashboard/users/customers/components/Bilings";
+import Settings from "./dashboard/users/customers/components/Settings";
+import Payments from "./dashboard/users/customers/components/orders/Payments";
+import Allorders from "./dashboard/orders/AllOrders";
+import AllReviews from "./dashboard/orders/AllReviews";
+import ReviewView from "./dashboard/users/customers/components/ViewReview";
 
 const CartItems = lazy(() => import("./pages/cart/CartItems"));
 const LikeItems = lazy(() => import("./pages/cart/LikeItems"));
@@ -168,6 +175,9 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
+            <Route path="vouchers" element={<Voucher />} />
+            <Route path="billing" element={<Billings />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="profile/:id" element={<EditProfile />} />
 
             {/* 🔑 Roles & Permissions */}
@@ -212,10 +222,14 @@ export default function App() {
 
             <Route path="likeitems" element={<UserLikeItems />} />
             <Route path="cartitems" element={<UserCartItems />} />
-            <Route path="orders" element={<Orders />} />
+            <Route path="orders" element={<Orders />} />  {/* for users */}
+            <Route path="allorders" element={<Allorders />} />  {/* for admins */}
+            <Route path="payments" element={<Payments />} />
             <Route path="orders/:id/view" element={<OrdersView />} />
             <Route path="returns" element={<Returns />} />
-            <Route path="reviews" element={<Reviews />} />
+            <Route path="reviews" element={<Reviews />} />     {/* for users */}
+            <Route path="reviews/:id/view" element={<ReviewView />} />     
+            <Route path="allreviews" element={<AllReviews />} />   {/* for admins */}
 
             <Route path="*" element={<PageNotFound url="/dashboard" />} />
           </Route>

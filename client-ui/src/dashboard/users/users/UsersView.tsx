@@ -30,7 +30,7 @@ export default function UsersView() {
 
     return (
         <div className="p-3 w-full">
-            <div className="max-w-md border shadow-md rounded-xs p-5">
+            <div className="max-w-md border shadow-xs rounded-xs p-5">
                 {/* Header */}
                 <div className="md:mt-8 md:absolute text-right top-13 md:left-99">
                     <Button variant='outline' className="px-5 py-2 border-0 rounded-xs transition">

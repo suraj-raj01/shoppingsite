@@ -137,6 +137,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           { title: "Users", url: "/dashboard/userstable" },
         ],
       },
+      {
+        title: "Orders",
+        url: "#",
+        icon: ShoppingBasket,
+        items: [
+          { title: "All Orders", url: "/dashboard/allorders" },
+          { title: "All Review", url: "/dashboard/allreviews" },
+          { title: "Returns", url: "/dashboard/returns" },
+          { title: "Payments", url: "/dashboard/payments" },
+        ],
+      },
     ]
   }
 
@@ -152,7 +163,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, [])
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="border-b-1">
         <TeamSwitcher teams={
           user?.user.contact ? data1.teams : data2.teams
         } />

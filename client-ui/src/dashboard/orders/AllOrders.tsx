@@ -9,91 +9,133 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, Edit, MoreHorizontal, Eye } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
 import { toast } from 'sonner'
+import { Badge } from '@/components/ui/badge'
 
 
-type Customers = {
+type Orders = {
     _id: string,
     name: string,
     email: string,
     contact: string,
     address: string,
+    items: {
+        productId: string,
+        quantity: number,
+        price: number
+    }[],
+    totalAmount: number,
+    shippingAddress: string,
+    paymentStatus: string,
 }
 
-
-export default function CustomerTable() {
-    const [navbar, setNavbar] = useState<Customers[]>([])
+export default function AllOrders() {
+    const [orders, setOrders] = useState<Orders[]>([])
     const [page, setPage] = useState(1)
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    // console.log(user, "user data");
+    // console.log(isAuthenticated, "isAuthenticated data");
 
-    const fetchCategories = async () => {
+    const fetchOrders = async () => {
         try {
             setLoading(true)
+
             let response
+
             if (searchQuery) {
-                response = await axios.post(`${api}/api/customers/searchuser/${searchQuery}`)
-                setNavbar(response?.data?.data || [])
-                // console.log(response.data, "search data");
+                response = await axios.post(
+                    `${api}/api/payment/orders/searchorder/${searchQuery}`
+                )
+
+                setOrders(response?.data?.data || [])
+                setPageCount(response?.data?.totalPages || 1)
+
             } else {
-                response = await axios.get(`${api}/api/customers?page=${page}&limit=10`)
-                setNavbar(response?.data?.data || [])
+                response = await axios.get(
+                    `${api}/api/payment/orders?page=${page}&limit=5`
+                )
+                setOrders(response?.data?.data || [])
+                setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
-                setPageCount(response.data.totalPages)
-                // console.log("userdata data", response.data)
             }
-            const { data } = response
-            setPageCount(data.totalPages || 1)
+
         } catch (error) {
-            console.error('Error fetching users:', error)
+            console.error("Error fetching orders:", error)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchCategories();
+        fetchOrders()
     }, [page, searchQuery])
 
 
-    const deleteUser = async (id: any) => {
+    const delteOrders = async (id: any) => {
         try {
-            await axios.delete(`${api}/api/customers/${id}`)
-            toast.success('User deleted successfully')
-            fetchCategories();
+            await axios.delete(`${api}/api/payment/orders/${id}`)
+            toast.success('Order deleted successfully')
+            fetchOrders();
         } catch (error) {
-            console.error('Error deleting permission:', error)
-            alert('Failed to delete Role. Please try again.')
+            console.error('Error deleting order:', error)
+            alert('Failed to delete Order. Please try again.')
         }
     }
 
     const navigate = useNavigate();
     const viewpage = (id: any) => {
-        navigate(`/dashboard/customers/${id}/view`)
+        navigate(`/dashboard/orders/${id}/view`)
     }
 
 
-    const columns: ColumnDef<Customers>[] = [
+    const columns: ColumnDef<Orders>[] = [
+
         {
-            accessorKey: 'contact',
-            header: "Contact",
+            accessorKey: 'paymentStatus',
+            header: "Payment Status",
+            cell: ({ row }) => (
+                <div>
+                    <Badge
+                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
+                    >
+                        {row.original.paymentStatus}
+                    </Badge>
+                </div>
+            ),
         },
         {
-            accessorKey: 'name',
-            header: "Name",
+            accessorKey: 'shippingAddress',
+            header: "Shipping Address",
+        },
+
+        {
+            accessorKey: 'items',
+            header: "Items",
+            cell: ({ row }) => (
+                <div>
+                    {row.original.items.map((item) => (
+                        <div key={item.productId} className='flex gap-2 mb-1'>
+                            <Badge variant="outline">Quantity: {item.quantity}</Badge>
+                            <Badge variant="outline">Price: ₹{item.price}</Badge>
+                        </div>
+                    ))}
+                </div>
+            ),
         },
         {
-            accessorKey: 'email',
-            header: "Email",
-        },
-        {
-            accessorKey: 'address',
-            header: "Address",
+            accessorKey: 'totalAmount',
+            header: "Total Amount",
+            cell: ({ row }) => (
+                <div>
+                    <p>₹{row.original.items.map((item) => (item.price * item.quantity)).reduce((a, b) => a + b, 0)}</p>
+                </div>
+            ),
         },
         {
             header: "Action",
@@ -109,15 +151,15 @@ export default function CustomerTable() {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
-                            View Customer
+                            View Order
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
+                        {/* <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
                             <Edit className="mr-2 h-4 w-4" />
-                            Edit Customer
-                        </DropdownMenuItem>
-                        <DropdownMenuItem disabled onClick={() => deleteUser(row.original._id)}>
+                            Edit Order
+                        </DropdownMenuItem> */}
+                        <DropdownMenuItem onClick={() => delteOrders(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Disable Customer
+                            Delete
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -142,9 +184,9 @@ export default function CustomerTable() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Orders</h1>
                                 <p className="text-muted-foreground">
-                                    Manage and track all the customers
+                                    Manage and track all the orders
                                 </p>
                             </div>
                         </>
@@ -153,8 +195,8 @@ export default function CustomerTable() {
                 {loading ? (
                     <Skeleton className="h-10 w-32" />
                 ) : (
-                    <Button onClick={() => { navigate("/auth/signup") }}>
-                        Create Customer
+                    <Button disabled>
+                        Your All Orders
                     </Button>
                 )}
             </div>
@@ -162,7 +204,7 @@ export default function CustomerTable() {
             <div className="w-full overflow-x-auto">
                 <DataTable
                     columns={columns}
-                    data={navbar}
+                    data={orders}
                     pageCount={pageCount}
                     currentPage={page}
                     onPageChange={setPage}

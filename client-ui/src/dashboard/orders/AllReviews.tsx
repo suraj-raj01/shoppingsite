@@ -9,95 +9,115 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, Edit, MoreHorizontal, Eye } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, Star, User2Icon, Package } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
 import { toast } from 'sonner'
 
 
-type Customers = {
+type Reviews = {
     _id: string,
-    name: string,
-    email: string,
-    contact: string,
-    address: string,
+    userId: string,
+    productId: string,
+    ratings: number,
+    review: string,
+    createdAt: string,
+    updatedAt: string,
 }
 
-
-export default function CustomerTable() {
-    const [navbar, setNavbar] = useState<Customers[]>([])
+export default function AllReviews() {
+    const [reviews, setReviews] = useState<Reviews[]>([])
     const [page, setPage] = useState(1)
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    // console.log(user, "user data");
+    // console.log(isAuthenticated, "isAuthenticated data");
 
-    const fetchCategories = async () => {
+    const fetchReview = async () => {
         try {
             setLoading(true)
+
             let response
+
             if (searchQuery) {
-                response = await axios.post(`${api}/api/customers/searchuser/${searchQuery}`)
-                setNavbar(response?.data?.data || [])
-                // console.log(response.data, "search data");
+                response = await axios.post(
+                    `${api}/api/reviews/searchreviews/${searchQuery}`
+                )
+
+                setReviews(response?.data?.data || [])
+                setPageCount(response?.data?.totalPages || 1)
+
             } else {
-                response = await axios.get(`${api}/api/customers?page=${page}&limit=10`)
-                setNavbar(response?.data?.data || [])
+                response = await axios.get(
+                    `${api}/api/reviews?page=${page}&limit=5`
+                )
+                setReviews(response?.data?.data || [])
+                setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
-                setPageCount(response.data.totalPages)
-                // console.log("userdata data", response.data)
             }
-            const { data } = response
-            setPageCount(data.totalPages || 1)
+
         } catch (error) {
-            console.error('Error fetching users:', error)
+            console.error("Error fetching reviews:", error)
         } finally {
             setLoading(false)
         }
     }
 
     useEffect(() => {
-        fetchCategories();
+        fetchReview()
     }, [page, searchQuery])
 
 
-    const deleteUser = async (id: any) => {
+    const deleteReviews = async (id: any) => {
         try {
-            await axios.delete(`${api}/api/customers/${id}`)
-            toast.success('User deleted successfully')
-            fetchCategories();
+            await axios.delete(`${api}/api/reviews/${id}`)
+            toast.success('Order deleted successfully')
+            fetchReview();
         } catch (error) {
-            console.error('Error deleting permission:', error)
-            alert('Failed to delete Role. Please try again.')
+            console.error('Error deleting order:', error)
+            alert('Failed to delete Order. Please try again.')
         }
     }
 
     const navigate = useNavigate();
     const viewpage = (id: any) => {
-        navigate(`/dashboard/customers/${id}/view`)
+        navigate(`/dashboard/reviews/${id}/view`)
     }
 
 
-    const columns: ColumnDef<Customers>[] = [
+    const columns: ColumnDef<Reviews>[] = [
         {
-            accessorKey: 'contact',
-            header: "Contact",
+            accessorKey: 'userId',
+            header: "User ID",
         },
         {
-            accessorKey: 'name',
-            header: "Name",
+            accessorKey: 'productId',
+            header: "Product ID",
         },
         {
-            accessorKey: 'email',
-            header: "Email",
+            accessorKey: 'ratings',
+            header: "Ratings",
+            cell: ({ row }) => (
+                <div className="flex items-center gap-1">
+                    {Array.from({ length: row.original.ratings }).map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-green-500 text-green-500" />
+                    ))}
+                </div>
+            ),
         },
         {
-            accessorKey: 'address',
-            header: "Address",
+            accessorKey: 'message',
+            header: "Message",
+        },
+        {
+            accessorKey: 'updatedAt',
+            header: "Updated At",
         },
         {
             header: "Action",
-            id: "actions",
+            accessorKey: "actions",
             cell: ({ row }) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -109,15 +129,19 @@ export default function CustomerTable() {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
-                            View Customer
+                            View Review
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Customer
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/customers/${row.original.userId}/view`)}>
+                            <User2Icon className="mr-2 h-4 w-4" />
+                            View User
                         </DropdownMenuItem>
-                        <DropdownMenuItem disabled onClick={() => deleteUser(row.original._id)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/products/${row.original.productId}/view`)}>
+                            <Package className="mr-2 h-4 w-4" />
+                            View Product
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => deleteReviews(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Disable Customer
+                            Delete Review
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -142,9 +166,9 @@ export default function CustomerTable() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Reviews</h1>
                                 <p className="text-muted-foreground">
-                                    Manage and track all the customers
+                                    Manage and track all the reviews
                                 </p>
                             </div>
                         </>
@@ -153,8 +177,8 @@ export default function CustomerTable() {
                 {loading ? (
                     <Skeleton className="h-10 w-32" />
                 ) : (
-                    <Button onClick={() => { navigate("/auth/signup") }}>
-                        Create Customer
+                    <Button disabled>
+                        Your All Reviews
                     </Button>
                 )}
             </div>
@@ -162,7 +186,7 @@ export default function CustomerTable() {
             <div className="w-full overflow-x-auto">
                 <DataTable
                     columns={columns}
-                    data={navbar}
+                    data={reviews}
                     pageCount={pageCount}
                     currentPage={page}
                     onPageChange={setPage}

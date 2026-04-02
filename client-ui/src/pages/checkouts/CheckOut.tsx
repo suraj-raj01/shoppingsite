@@ -58,6 +58,7 @@ export default function CheckOut() {
         city?: string
         state?: string
         country?: string
+        county?: string
     } | null>(null)
     const [detecting, setDetecting] = useState(false)
 
@@ -99,9 +100,10 @@ export default function CheckOut() {
                             suburb?: string
                             postcode?: string
                             city?: string
+                            county?: string
                         }
                     )
-
+                    console.log(fullAddress,'address')
                     toast.success("Location detected")
                 } catch (err) {
                     console.error("Address fetch failed:", err)
@@ -153,7 +155,7 @@ export default function CheckOut() {
                     coords.latitude,
                     coords.longitude
                 )
-                setAddress(fullAddress as { suburb?: string; postcode?: string; city?: string })
+                setAddress(fullAddress as { suburb?: string; county?:string; postcode?: string; city?: string })
             } catch (err) {
                 console.log("Address fetch failed:", err)
             }
@@ -198,7 +200,7 @@ export default function CheckOut() {
                 return
             }
             const script = document.createElement("script")
-            script.src = "https://checkout.razorpay.com/v1/checkout.js"
+            script.src = import.meta.env.VITE_RAZORPAY_API;
             script.onload = () => resolve(true)
             script.onerror = () => resolve(false)
             document.body.appendChild(script)
@@ -234,7 +236,7 @@ export default function CheckOut() {
             description: "Order Payment",
             image: myProImg,
             notes: {
-                "Shipping Address": useCurrentLocation ? address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
+                "Shipping Address": useCurrentLocation ? address?.suburb ? address.county:address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
             },
             order_id: data.id,
 
@@ -288,7 +290,7 @@ export default function CheckOut() {
                 `${BASE_URL}/api/payment/orders`,
                 {
                     id: mydata._id,
-                    shippingaddress: useCurrentLocation ? address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
+                    shippingaddress: useCurrentLocation ? address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
                     amount: totalAmount,
                     defaultImage: myProImg,
                     product: Data,
@@ -403,9 +405,9 @@ export default function CheckOut() {
                             </p>
 
                             <div className="flex items-center gap-2 sm:col-span-2">
-                                <HomeIcon size={16} className="h-8 w-8 md:h-4 md:w-4 text-green-500" />
+                                <HomeIcon size={16} className="text-green-500 h-6 w-6 md:h-4 md:w-4" />
                                 {useCurrentLocation ? (
-                                    <p>Current Location : {detecting ? "Detecting..." : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
+                                    <p>Current Location : {detecting ? "Detecting..." : address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
                                 ) : (
                                     <p>Default Address : {mydata.address ? (mydata.address) : (address?.suburb + ", " + address?.postcode + ", " + address?.city)}</p>
                                 )}

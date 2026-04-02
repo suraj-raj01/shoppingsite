@@ -1,9 +1,8 @@
-
 import Category from "../models/Categories.js";
 
-/**
- * Create Category
- */
+/* 
+Create Category
+*/
 export const createCategory = async (req, res) => {
   try {
     const { categories, subcategories } = req.body;
@@ -28,21 +27,21 @@ export const createCategory = async (req, res) => {
   }
 };
 
-/**
- * Get All Categories
- */
+/*
+Get All Categories
+*/
 export const getAllCategories = async (_req, res) => {
   try {
     const data = await Category.find().sort({ createdAt: -1 });
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-/**
- * Get Category By ID
- */
+/*
+Get Category By ID
+*/
 export const getCategoryById = async (req, res) => {
   try {
     const data = await Category.findById(req.params.id);
@@ -57,9 +56,9 @@ export const getCategoryById = async (req, res) => {
   }
 };
 
-/**
- * Update Category Name
- */
+/*
+Update Category Name
+*/
 export const updateCategory = async (req, res) => {
   try {
     const { id } = req.params
@@ -89,10 +88,9 @@ export const updateCategory = async (req, res) => {
   }
 }
 
-
-/**
- * Delete Category
- */
+/*
+Delete Category
+*/
 export const deleteCategory = async (req, res) => {
   try {
     const deleted = await Category.findByIdAndDelete(req.params.id);
@@ -100,16 +98,15 @@ export const deleteCategory = async (req, res) => {
     if (!deleted) {
       return res.status(404).json({ message: "Category not found" });
     }
-
-    res.json({ message: "Category deleted successfully" });
+    res.status(200).json({ message: "Category deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-/**
- * Add Subcategory
- */
+/*
+Add Subcategory
+*/
 export const addSubcategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -124,15 +121,15 @@ export const addSubcategory = async (req, res) => {
 
     await category.save();
 
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-/**
- * Add Brand to Subcategory
- */
+/*
+Add Brand to Subcategory
+*/
 export const addBrand = async (req, res) => {
   try {
     const { subcategoryName, brand } = req.body;
@@ -155,15 +152,15 @@ export const addBrand = async (req, res) => {
 
     await category.save();
 
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-/**
- * Remove Brand
- */
+/*
+Remove Brand
+*/
 export const removeBrand = async (req, res) => {
   try {
     const { subcategoryName, brand } = req.body;
@@ -186,15 +183,15 @@ export const removeBrand = async (req, res) => {
 
     await category.save();
 
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-/**
- * Remove Subcategory
- */
+/*
+Remove Subcategory
+*/
 export const removeSubcategory = async (req, res) => {
   try {
     const { subcategoryName } = req.body;
@@ -211,7 +208,7 @@ export const removeSubcategory = async (req, res) => {
 
     await category.save();
 
-    res.json(category);
+    res.status(200).json(category);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }

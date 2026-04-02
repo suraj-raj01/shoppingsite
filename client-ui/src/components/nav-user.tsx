@@ -13,9 +13,9 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
+  LayoutDashboardIcon,
   LogOutIcon,
   TvMinimal,
-  UserIcon,
 } from "lucide-react"
 
 import {
@@ -102,7 +102,7 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Link to='/dashboard' className="flex items-center justify-center gap-2">
-                  <UserIcon />
+                  <LayoutDashboardIcon />
                   Profile
                 </Link>
               </DropdownMenuItem>

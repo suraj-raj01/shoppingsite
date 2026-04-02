@@ -92,6 +92,10 @@ router.post("/verify", async (req, res) => {
       }
     );
 
+    // // Invoice Generator function.
+    // const data = await Orders.findOne(razorpay_order_id);
+    // if(isValid) generateInvoice(data);
+
     return res.status(isValid ? 200 : 400).json({
       message: isValid
         ? "Payment verified successfully"
@@ -104,6 +108,32 @@ router.post("/verify", async (req, res) => {
       message: "Internal Server Error!",
       success: false,
     });
+  }
+});
+
+router.get("/orders", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const orders = await Orders.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const total = await Orders.countDocuments();
+    const totalPages = Math.ceil(total / limit);
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+      currentPage: page,
+      totalPages: totalPages,
+      totalOrders: total
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error!" });
   }
 });
 router.get("/orders/:id", async (req, res) => {

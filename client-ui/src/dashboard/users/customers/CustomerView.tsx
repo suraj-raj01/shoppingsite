@@ -13,7 +13,6 @@ export default function CustomerView() {
             const res = await axios.get(
                 `${BASE_URL}/api/customers/${id}`
             );
-            console.log(res.data.data)
             setUser(res.data.data); // ✅ important fix
         } catch (error) {
             console.log(error);

@@ -1,3 +1,4 @@
+import { deleteFromCloudinary } from "../config/delete-from-cloudinary.js";
 import Hero from "../models/Hero.js";
 
 // ================= CREATE HERO =================
@@ -80,8 +81,9 @@ export const getHeroById = async (req, res) => {
 // ================= DELETE =================
 export const deleteHero = async (req, res) => {
   try {
+    const data = await Hero.findById(req.params.id);
+    deleteFromCloudinary(data.image);
     await Hero.findByIdAndDelete(req.params.id);
-
     res.status(200).json({
       success: true,
       message: "Hero deleted 🗑️",

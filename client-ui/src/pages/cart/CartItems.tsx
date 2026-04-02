@@ -29,7 +29,7 @@ export default function CartItems() {
 
     if (cartItems.length < 1) {
         return (
-            <div className="p-10 text-center text-gray-500 text-xl">
+            <div className="p-10 text-center text-gray-500 md:text-2xl">
                 🛒 Your cart is empty
             </div>
         )
