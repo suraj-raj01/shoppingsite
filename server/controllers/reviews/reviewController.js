@@ -63,7 +63,7 @@ export const getReviewById = async (req, res) => {
         {productId:id}
       ]
     })
-    console.log(data,'data')
+    // console.log(data,'data')
     if (!data) {
       return res.status(404).json({ message: "Review not found" });
     }
