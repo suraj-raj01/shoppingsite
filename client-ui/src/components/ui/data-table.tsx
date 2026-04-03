@@ -188,7 +188,7 @@ export function DataTable<TData, TValue>({
                               alt="Image"
                               width={50}
                               height={50}
-                              className="object-cover h-auto rounded border"
+                              className="object-cover h-auto rounded-xs border"
                             />
                           );
                         }

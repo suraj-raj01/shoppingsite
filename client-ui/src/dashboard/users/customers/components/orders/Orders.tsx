@@ -73,7 +73,7 @@ export default function OrdersTable() {
 
             } else {
                 response = await axios.get(
-                    `${api}/api/payment/orders/${userId}?page=${page}&limit=5`
+                    `${api}/api/payment/orders/${userId}?page=${page}&limit=8`
                 )
                 setOrders(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)

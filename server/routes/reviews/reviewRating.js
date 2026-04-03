@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.post("/", createReview);
-router.put("/:id", updateReview);
+router.patch("/:id", updateReview);
 router.get("/", getReviews);
 router.get("/:id", getReviewById);
 router.delete("/:id", deleteReview);

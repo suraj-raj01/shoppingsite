@@ -111,7 +111,7 @@ export default function Roles() {
         setRoles(response?.data?.data || [])
         setPageCount(1)
       } else {
-        response = await axios.get(`${BASE_URL}/api/admin/roles/getrole?page=${page}&limit=5`)
+        response = await axios.get(`${BASE_URL}/api/admin/roles/getrole?page=${page}&limit=8`)
         setRoles(response?.data?.data || [])
         setPage(response.data.currentPage || page)
         setPageCount(response.data.pageCount || response.data.totalPages || 1)
@@ -159,9 +159,9 @@ export default function Roles() {
 
   const deleteRole = async (id: string) => {
     try {
-        await axios.delete(`${BASE_URL}/api/admin/roles/deleterole/${id}`)
-        toast.success("Role deleted successfully")
-        fetchRoles()
+      await axios.delete(`${BASE_URL}/api/admin/roles/deleterole/${id}`)
+      toast.success("Role deleted successfully")
+      fetchRoles()
     } catch (error) {
       console.error('Error deleting role:', error)
     }

@@ -328,7 +328,7 @@ export default function ViewProduct() {
             </p>
           </div>
           {/* product ratings */}
-          <ReviewRating />
+          <ReviewRating rating={4.5} totalReviews={reviews.length}/>
         </div>
       )}
       <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews}/>

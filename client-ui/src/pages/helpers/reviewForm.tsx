@@ -6,6 +6,7 @@ import BASE_URL from "@/Config";
 import axios from "axios";
 import { toast } from "sonner";
 import { UserInfo } from "./UserInfo";
+import { Input } from "@/components/ui/input";
 
 type Reviews = {
   _id: string,
@@ -24,6 +25,9 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [images, setImages] = useState<any[]>([]); // store uploaded URLs
+
+  // filter by productId
+  const filteredData = reviews.filter((item)=>item.productId==productId);
 
   // ================= IMAGE UPLOAD =================
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,9 +93,9 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
   return (
     <section className="grid md:grid-cols-2 gap-8 mb-5">
       {/* USER PREVIEW */}
-      <div className=" grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className=" grid grid-cols-1 md:grid-cols-1 gap-5">
         {
-          reviews.map((item) => {
+          filteredData.map((item) => {
             return (
               <div key={item._id}>
                 <section className="w-full border h-full p-2 md:max-w-2xl">
@@ -137,13 +141,13 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                           <h2 className="text-lg font-semibold mb-2">
                             Images
                           </h2>
-                          <div className="grid grid-cols-5 md:grid-cols-5 gap-3">
+                          <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
                             {item?.images?.map((img: any, index: number) => (
                               <img
                                 key={index}
                                 src={img.url}
                                 alt="review"
-                                className="w-full h-10 w-12 object-cover rounded-xs border"
+                                className="w-full h-12 w-12 object-cover rounded-xs border"
                               />
                             ))}
                           </div>
@@ -200,13 +204,13 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
         <div>
           <label className="block mb-2 font-medium">Upload Images</label>
 
-          <input
+          <Input
             type="file"
             multiple
             disabled={loading}
             accept="image/*"
             onChange={handleImageUpload}
-            className="border p-2"
+            className="border"
           />
 
           {/* PREVIEW */}

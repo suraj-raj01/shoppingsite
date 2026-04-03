@@ -94,9 +94,9 @@ export default function Permission() {
 
   const deletePermission = async (id: string) => {
     try {
-     
-        await axios.delete(`${BASE_URL}/api/admin/permissions/deletepermission/${id}`)
-        fetchPermission()
+
+      await axios.delete(`${BASE_URL}/api/admin/permissions/deletepermission/${id}`)
+      fetchPermission()
     } catch (error) {
       console.error("Error deleting permission:", error)
     }
@@ -113,7 +113,7 @@ export default function Permission() {
         // For search, we might not have pagination info
         setPageCount(1)
       } else {
-        response = await axios.get(`${BASE_URL}/api/admin/permissions/getpermission?page=${page}&limit=5`)
+        response = await axios.get(`${BASE_URL}/api/admin/permissions/getpermission?page=${page}&limit=8`)
         setPermissions(response?.data?.data || [])
         setPage(response.data.currentPage || page)
         setPageCount(response.data.pageCount || response.data.totalPages || 1)

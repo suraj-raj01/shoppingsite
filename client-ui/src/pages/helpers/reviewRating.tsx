@@ -6,18 +6,18 @@ type Props = {
 };
 
 export default function ReviewRating({
-  rating = 4.5,
-  totalReviews = 123,
+  rating = 0,
+  totalReviews = 0,
 }: Props) {
   const totalStars = 5;
 
   // Example static breakdown (you can make dynamic later)
   const breakdown = [
-    { star: 5, percent: 70 },
-    { star: 4, percent: 15 },
-    { star: 3, percent: 8 },
-    { star: 2, percent: 4 },
-    { star: 1, percent: 3 },
+    { star: 5, percent: 80 },
+    { star: 4, percent: 10 },
+    { star: 3, percent: 5 },
+    { star: 2, percent: 3 },
+    { star: 1, percent: 2 },
   ];
 
   return (
@@ -36,9 +36,9 @@ export default function ReviewRating({
                 key={i}
                 className={`h-5 w-5 ${
                   isFilled
-                    ? "fill-yellow-500 text-yellow-500"
+                    ? "fill-green-500 text-green-500"
                     : isHalf
-                    ? "fill-yellow-300 text-yellow-500"
+                    ? "fill-green-300 text-green-500"
                     : "text-gray-300"
                 }`}
               />

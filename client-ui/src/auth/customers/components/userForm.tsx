@@ -1,5 +1,5 @@
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -38,7 +38,7 @@ type Props = {
 
 export default function UserForm({ editData, onSuccess }: Props) {
     const isEdit = !!editData
-
+    const [loading, setLoading] = useState(false);
     const form = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
         defaultValues: {
@@ -67,6 +67,7 @@ export default function UserForm({ editData, onSuccess }: Props) {
     const navigate = useNavigate();
     const onSubmit = async (values: UserFormValues) => {
         try {
+            setLoading(true)
             if (isEdit) {
                 await axios.put(`${BASE_URL}/api/customers/${editData._id}`, values)
             } else {
@@ -78,6 +79,8 @@ export default function UserForm({ editData, onSuccess }: Props) {
             onSuccess?.()
         } catch (err) {
             console.error(err)
+        } finally {
+            setLoading(false);;
         }
     }
 
@@ -166,7 +169,8 @@ export default function UserForm({ editData, onSuccess }: Props) {
                     )}
                 />
 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading?"Submitting form":""}
                     {isEdit ? "Update User" : "Register User"}
                 </Button>
 

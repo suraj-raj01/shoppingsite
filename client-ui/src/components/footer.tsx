@@ -1,4 +1,5 @@
 import BASE_URL from "@/Config";
+import FooterSkeleton from "@/pages/skeletons/FooterSkeleton";
 import axios from "axios";
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,10 +19,11 @@ type Category = {
 
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {
     try {
+      setLoading(true)
       const res = await axios.get(`${BASE_URL}/api/admin/category`);
       setCategories(res.data || []);
     } catch (err) {
@@ -40,8 +42,8 @@ export default function Footer() {
       <div className="mx-auto md:px-10 px-5 py-10">
 
         {/* TOP SECTION */}
-        <div className="grid gap-8 grid-cols-2 md:grid-cols-3">
-          
+        <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+
           {/* ABOUT */}
           <div>
             <h3 className="text-lg font-semibold mb-3">About Us</h3>
@@ -66,7 +68,7 @@ export default function Footer() {
                 <Link
                   key={i}
                   to="#"
-                  className="border border-gray-500 p-2 rounded-full hover:bg-white hover:text-black transition"
+                  className="border border-gray-500 p-2 rounded-full hover:bg-white hover:text-green-500 transition"
                 >
                   <Icon size={18} />
                 </Link>
@@ -80,7 +82,7 @@ export default function Footer() {
 
         {/* CATEGORY SECTION */}
         {loading ? (
-          <p className="text-gray-400 text-center">Loading categories...</p>
+          <FooterSkeleton />
         ) : (
           <div className="grid gap-0 grid-cols-2 md:grid-cols-5 w-full lg:grid-cols-5">
             {categories.map((category) => (

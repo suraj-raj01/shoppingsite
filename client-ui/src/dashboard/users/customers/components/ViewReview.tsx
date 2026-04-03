@@ -77,7 +77,7 @@ export default function ReviewView() {
                             loadingUser ? (
                                 user?.name?.charAt(0) || "U"
                             ) : (
-                                <img src={user?.profile} alt="profile" loading="lazy" />
+                                <img src={user?.profile} alt="profile" loading="lazy" className="w-full h-full object-cover" />
                             )
                         }
                     </div>
@@ -124,13 +124,13 @@ export default function ReviewView() {
                         <h2 className="text-lg font-semibold mb-2">
                             Images
                         </h2>
-                        <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+                        <div className="grid grid-cols-3 md:grid-cols-8 gap-3">
                             {review.images.map((img: any, index: number) => (
                                 <img
                                     key={index}
                                     src={img.url}
                                     alt="review"
-                                    className="w-full md:h-25 md:w-30 object-cover rounded-xs border"
+                                    className="w-full md:h-15 md:w-20 object-cover rounded-xs border"
                                 />
                             ))}
                         </div>

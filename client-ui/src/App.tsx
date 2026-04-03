@@ -1,12 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import Voucher from "./dashboard/users/customers/components/Vouchers";
-import Billings from "./dashboard/users/customers/components/Bilings";
-import Settings from "./dashboard/users/customers/components/Settings";
-import Payments from "./dashboard/users/customers/components/orders/Payments";
-import Allorders from "./dashboard/orders/AllOrders";
-import AllReviews from "./dashboard/orders/AllReviews";
-import ReviewView from "./dashboard/users/customers/components/ViewReview";
+
+const Voucher = lazy(() => import("./dashboard/users/customers/components/Coupon"));
+const Billings = lazy(() => import("./dashboard/users/customers/components/Bilings"));
+const Settings = lazy(() => import("./dashboard/users/customers/components/Settings"));
+const Allorders = lazy(() => import("./dashboard/orders/AllOrders"));
+const AllReviews = lazy(() => import("./dashboard/orders/AllReviews"));
+const ReviewView = lazy(() => import("./dashboard/users/customers/components/ViewReview"));
+const UpdateReview = lazy(() => import("./dashboard/orders/UpdateReview"));
+const PaymentsTable = lazy(() => import("./dashboard/users/customers/components/orders/Payments"));
+const AllPaymentsTable = lazy(() => import("./dashboard/orders/AllPayments"));
 
 const CartItems = lazy(() => import("./pages/cart/CartItems"));
 const LikeItems = lazy(() => import("./pages/cart/LikeItems"));
@@ -176,7 +179,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
             <Route path="vouchers" element={<Voucher />} />
-            <Route path="billing" element={<Billings />} />
+            <Route path="billing" element={<Billings subtotal={0} discount={0} delivery={0}/>} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile/:id" element={<EditProfile />} />
 
@@ -224,12 +227,14 @@ export default function App() {
             <Route path="cartitems" element={<UserCartItems />} />
             <Route path="orders" element={<Orders />} />  {/* for users */}
             <Route path="allorders" element={<Allorders />} />  {/* for admins */}
-            <Route path="payments" element={<Payments />} />
+            <Route path="payments" element={<PaymentsTable />} />
             <Route path="orders/:id/view" element={<OrdersView />} />
             <Route path="returns" element={<Returns />} />
             <Route path="reviews" element={<Reviews />} />     {/* for users */}
             <Route path="reviews/:id/view" element={<ReviewView />} />     
+            <Route path="reviews/:id/edit" element={<UpdateReview />} />     
             <Route path="allreviews" element={<AllReviews />} />   {/* for admins */}
+            <Route path="allpayments" element={<AllPaymentsTable />} />   {/* for admins */}
 
             <Route path="*" element={<PageNotFound url="/dashboard" />} />
           </Route>

@@ -42,53 +42,50 @@ export default function Categories() {
     fetchCategories()
   }, [])
 
-  if (loading) return <CategoriesSkeleton/>
+  if (loading) return <CategoriesSkeleton />
 
   return (
-    <NavigationMenu className="w-full px-1 md:px-10 bg-transparent">
-      <NavigationMenuList>
-        {categories.map((category) => (
-          <NavigationMenuItem key={category._id}>
+    <NavigationMenu className="w-full bg-transparent">
+      <div className="w-full overflow-x-auto no-scrollbar">
+        <NavigationMenuList className="flex min-w-max gap-0 px-0">
 
-            {/* CATEGORY */}
-            <NavigationMenuTrigger className="text-sm p-1 font-semibold bg-transparent">
-              {/* <Link to={`/product/categories/${category._id}`}>{category.categories}</Link> */}
-              {category.categories}
-            </NavigationMenuTrigger>
+          {categories.map((category) => (
+            <NavigationMenuItem key={category._id}>
 
-            {/* SUBCATEGORY PANEL */}
-            <NavigationMenuContent className='w-300'>
-              <div className="grid w-85 md:w-125 grid-cols-3 md:grid-cols-3 gap-2 p-3">
+              <NavigationMenuTrigger className="text-sm px-3 py-1 font-semibold whitespace-nowrap bg-transparent">
+                {category.categories}
+              </NavigationMenuTrigger>
 
-                {category.subcategories?.map((sub) => (
-                  <div key={sub._id} className="space-y-2">
+              <NavigationMenuContent className='w-300'>
+                <div className="grid w-85 md:w-125 grid-cols-3 md:grid-cols-3 p-3">
+                  {category.subcategories?.map((sub) => (
+                    <div key={sub._id} className="space-y-1">
 
-                    {/* SUBCATEGORY */}
-                    <p className="font-medium text-md md:text-xl cursor-pointer">
-                      <Link to={`/products/${sub._id}`}>{sub.name}</Link>
-                    </p>
+                      <p className="font-medium text-md cursor-pointer">
+                        <Link to={`/products/${sub._id}`}>{sub.name}</Link>
+                      </p>
 
-                    {/* BRANDS */}
-                    <div className="flex flex-col gap-1">
-                      {sub.brands?.map((brand) => (
-                        <span
-                          key={brand}
-                          className="text-md md:text-xl text-muted-foreground hover:text-foreground cursor-pointer"
-                        >
-                          <Link to={`/products/${brand}`}>{brand}</Link>
-                        </span>
-                      ))}
+                      <div className="flex flex-col gap-1">
+                        {sub.brands?.map((brand) => (
+                          <span
+                            key={brand}
+                            className="text-md text-muted-foreground hover:text-foreground cursor-pointer"
+                          >
+                            <Link to={`/products/${brand}`}>{brand}</Link>
+                          </span>
+                        ))}
+                      </div>
+
                     </div>
+                  ))}
+                </div>
+              </NavigationMenuContent>
 
-                  </div>
-                ))}
+            </NavigationMenuItem>
+          ))}
 
-              </div>
-            </NavigationMenuContent>
-
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
+        </NavigationMenuList>
+      </div>
     </NavigationMenu>
   )
 }

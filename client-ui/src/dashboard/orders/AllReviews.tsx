@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye, Star, User2Icon, Package } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, Star, User2Icon, Package, Edit2Icon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -51,7 +51,7 @@ export default function AllReviews() {
 
             } else {
                 response = await axios.get(
-                    `${api}/api/reviews?page=${page}&limit=5`
+                    `${api}/api/reviews?page=${page}&limit=8`
                 )
                 setReviews(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)
@@ -130,6 +130,10 @@ export default function AllReviews() {
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
                             View Review
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/reviews/${row.original._id}/edit`)}>
+                            <Edit2Icon className="mr-2 h-4 w-4" />
+                            Update Review
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => navigate(`/dashboard/customers/${row.original.userId}/view`)}>
                             <User2Icon className="mr-2 h-4 w-4" />

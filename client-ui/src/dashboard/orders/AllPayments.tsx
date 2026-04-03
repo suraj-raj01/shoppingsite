@@ -33,7 +33,7 @@ type Orders = {
     paymentStatus: string,
 }
 
-export default function AllOrders() {
+export default function AllPaymentsTable() {
     const [orders, setOrders] = useState<Orders[]>([])
     const [page, setPage] = useState(1)
     const [pageCount, setPageCount] = useState(1)
@@ -41,6 +41,21 @@ export default function AllOrders() {
     const [searchQuery, setSearchQuery] = useState<string>('')
     // console.log(user, "user data");
     // console.log(isAuthenticated, "isAuthenticated data");
+
+    const [userId, setUserId] = useState<string | null>(null)
+
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem("user")
+
+            if (userData) {
+                const parsedData = JSON.parse(userData)
+                setUserId(parsedData.user?._id)
+            }
+        } catch (err) {
+            console.error("Invalid user in localStorage")
+        }
+    }, [])
 
     const fetchOrders = async () => {
         try {
@@ -63,6 +78,7 @@ export default function AllOrders() {
                 setOrders(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
+                console.log(response.data, "response data");
             }
 
         } catch (error) {
@@ -73,8 +89,10 @@ export default function AllOrders() {
     }
 
     useEffect(() => {
-        fetchOrders()
-    }, [page, searchQuery])
+        if (userId) {
+            fetchOrders()
+        }
+    }, [userId, page, searchQuery])
 
 
     const delteOrders = async (id: any) => {
@@ -110,32 +128,16 @@ export default function AllOrders() {
             ),
         },
         {
-            accessorKey: 'shippingAddress',
-            header: "Shipping Address",
-        },
-
-        {
-            accessorKey: 'items',
-            header: "Items",
-            cell: ({ row }) => (
-                <div>
-                    {row.original.items.map((item) => (
-                        <div key={item.productId} className='flex gap-2 mb-1'>
-                            <Badge variant="outline">Quantity: {item.quantity}</Badge>
-                            <Badge variant="outline">Price: ₹{item.price}</Badge>
-                        </div>
-                    ))}
-                </div>
-            ),
-        },
-        {
             accessorKey: 'totalAmount',
             header: "Total Amount",
-            cell: ({ row }) => (
-                <div>
-                    <p>₹{row.original.items.map((item) => (item.price * item.quantity)).reduce((a, b) => a + b, 0)}</p>
-                </div>
-            ),
+        },
+        {
+            accessorKey: 'razorpay_order_id',
+            header: "Razorpay Order Id",
+        },
+        {
+            accessorKey: 'razorpay_payment_id',
+            header: "Razorpay Payment Id",
         },
         {
             header: "Action",
@@ -184,9 +186,9 @@ export default function AllOrders() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Your All Orders</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Payments</h1>
                                 <p className="text-muted-foreground">
-                                    Manage and track all the orders
+                                    You can track all the payment records
                                 </p>
                             </div>
                         </>
@@ -196,7 +198,7 @@ export default function AllOrders() {
                     <Skeleton className="h-10 w-32" />
                 ) : (
                     <Button disabled>
-                        Your All Orders
+                        Your All Payments
                     </Button>
                 )}
             </div>

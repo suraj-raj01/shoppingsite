@@ -4,7 +4,7 @@ import Review from "../../models/reviews/reviewModel.js";
 export const createReview = async (req, res) => {
   try {
     const data = req.body;
-    console.log(data,'data')
+    // console.log(data,'data')
     const review = await Review.create(data);
     return res.status(201).json({
       success: true,
