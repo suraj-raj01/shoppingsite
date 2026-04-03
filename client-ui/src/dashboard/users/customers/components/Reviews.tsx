@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, Star } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -28,7 +28,7 @@ type Reviews = {
     _id: string,
     userId: string,
     productId: string,
-    rating: number,
+    ratings: number,
     review: string,
     createdAt: string,
     updatedAt: string,
@@ -122,6 +122,13 @@ export default function Reviews() {
         {
             accessorKey: 'ratings',
             header: "Rating",
+            cell: ({ row }) => (
+                <div className="flex items-center gap-1">
+                    {Array.from({ length: row.original.ratings }).map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-green-500 text-green-500" />
+                    ))}
+                </div>
+            ),
         },
         {
             accessorKey: 'message',

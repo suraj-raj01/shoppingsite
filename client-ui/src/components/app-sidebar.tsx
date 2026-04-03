@@ -2,12 +2,10 @@ import {
   LayoutDashboardIcon,
   UserCheck,
   BarChart3,
-  Layout,
-  Image,
-  Package,
   Users,
   ShoppingBasket,
   ShieldUser,
+  Settings,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -103,31 +101,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
       {
-        title: "Navbar",
+        title: "Site Settings",
         url: "#",
-        icon: Layout, // ✅ better
+        icon: Settings, // ✅ better
         items: [
-          { title: "Navbar", url: "/dashboard/navbartable" },
-        ],
-      },
-      {
-        title: "Hero",
-        url: "#",
-        icon: Image, // ✅ better
-        items: [
-          { title: "Hero", url: "/dashboard/herotable" },
-          { title: "Create Hero", url: "/dashboard/hero" },
-        ],
-      },
-      {
-        title: "Products",
-        url: "#",
-        icon: Package, // ✅ better
-        items: [
-          { title: "Products", url: "/dashboard/productstable" },
           { title: "Categories", url: "/dashboard/categoriestable" },
+          { title: "Footer", url: "/dashboard/footertable" },
+          { title: "Hero", url: "/dashboard/herotable" },
+          { title: "Navbar", url: "/dashboard/navbartable" },
+          { title: "Products", url: "/dashboard/productstable" },
         ],
       },
+      // {
+      //   title: "Products",
+      //   url: "#",
+      //   icon: Package, // ✅ better
+      //   items: [
+      //     { title: "Products", url: "/dashboard/productstable" },
+      //     { title: "Categories", url: "/dashboard/categoriestable" },
+      //   ],
+      // },
       {
         title: "Users",
         url: "#",

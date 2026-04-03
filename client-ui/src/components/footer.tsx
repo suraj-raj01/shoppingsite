@@ -1,7 +1,8 @@
 import BASE_URL from "@/Config";
 import FooterSkeleton from "@/pages/skeletons/FooterSkeleton";
+import Footer1Skeleton from "@/pages/skeletons/FooterSkeleton1";
 import axios from "axios";
-import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
+import { icons } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -17,14 +18,28 @@ type Category = {
   subcategories: Subcategories[];
 };
 
+type Footer = {
+  aboutTitle: string;
+  aboutDesc: string;
+  contactTitle: string;
+  contactDesc: string;
+  followus: string;
+  icons: {title:string,url:string}[];
+  copyright: string;
+}
+
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [footer, setFooter] = useState<Footer>();
   const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {
     try {
       setLoading(true)
       const res = await axios.get(`${BASE_URL}/api/admin/category`);
+      const footer = await axios.get(`${BASE_URL}/api/admin/footer`);
+      setFooter(footer?.data?.data[0] || {aboutTitle:"",aboutDesc:"",contactTitle:"",contactDesc:"",socialTitle:"",socialDesc:""})
+      // console.log(footer.data?.data[0],'footer');
       setCategories(res.data || []);
     } catch (err) {
       console.error(err);
@@ -42,40 +57,45 @@ export default function Footer() {
       <div className="mx-auto md:px-10 px-5 py-10">
 
         {/* TOP SECTION */}
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+       {loading ? (
+        <Footer1Skeleton />
+       ) : (
+         <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
 
           {/* ABOUT */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">About Us</h3>
+            <h3 className="text-lg font-semibold mb-3">{footer?.aboutTitle}</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              We are a family owned business serving across India since 2025.
-              We are committed to delivering high-quality products and excellent service.
+              {footer?.aboutDesc}
             </p>
           </div>
 
           {/* CONTACT */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Contact</h3>
-            <p className="text-gray-400 text-sm">+91 6206546029</p>
-            <p className="text-gray-400 text-sm">surajk2526@gmail.com</p>
+            <h3 className="text-lg font-semibold mb-3">{footer?.contactTitle}</h3>
+            <p className="text-gray-400 text-sm">{footer?.contactDesc}</p>
           </div>
 
           {/* SOCIAL */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
+            <h3 className="text-lg font-semibold mb-3">{footer?.followus}</h3>
             <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Youtube, Linkedin].map((Icon, i) => (
-                <Link
-                  key={i}
-                  to="#"
-                  className="border border-gray-500 p-2 rounded-full hover:bg-white hover:text-green-500 transition"
-                >
-                  <Icon size={18} />
-                </Link>
-              ))}
+              {footer?.icons.map((icon, i) => {
+                const IconComponent = icons[icon.title as keyof typeof icons];
+                return (
+                  <Link
+                    key={i}
+                    to={icon.url}
+                    className="border border-gray-500 p-2 h-10 w-10 flex items-center justify-center rounded-full hover:bg-white hover:text-green-500 transition"
+                  >
+                    {IconComponent ? <IconComponent size={18} className="capitalize"/> : <span className="">{icon.title}</span>}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
+       )}
 
         {/* DIVIDER */}
         <div className="border-t border-gray-700 my-8"></div>
@@ -130,7 +150,7 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} www.shopingsite.com | All rights reserved.
+         {footer?.copyright}
         </div>
 
       </div>

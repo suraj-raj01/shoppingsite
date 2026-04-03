@@ -78,7 +78,7 @@ export default function AllPaymentsTable() {
                 setOrders(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
-                console.log(response.data, "response data");
+                // console.log(response.data, "response data");
             }
 
         } catch (error) {
@@ -120,7 +120,7 @@ export default function AllPaymentsTable() {
             cell: ({ row }) => (
                 <div>
                     <Badge
-                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
+                        className={`capitalize text-xs w-25 font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
                     >
                         {row.original.paymentStatus}
                     </Badge>
@@ -130,6 +130,15 @@ export default function AllPaymentsTable() {
         {
             accessorKey: 'totalAmount',
             header: "Total Amount",
+            cell: ({ row }) => (
+                <div>
+                    <Badge
+                        className={`capitalize text-xs w-25 font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-gray-500"}`}
+                    >
+                       ₹ {row.original.totalAmount}
+                    </Badge>
+                </div>
+            ),
         },
         {
             accessorKey: 'razorpay_order_id',

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { toast } from "sonner"
 
 export default function Settings() {
 
@@ -16,7 +17,7 @@ export default function Settings() {
     })
 
     const [preferences, setPreferences] = useState({
-        notifications: true,
+        notifications: false,
         darkMode: false,
     })
 
@@ -32,7 +33,7 @@ export default function Settings() {
         try {
             // 🔥 Replace with API call
             await new Promise((res) => setTimeout(res, 1000))
-            alert("Settings saved successfully ✅")
+            toast.success("Settings saved successfully ✅")
         } catch (err) {
             console.error(err)
         } finally {

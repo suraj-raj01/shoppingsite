@@ -33,6 +33,7 @@ import locationRoutes from './routes/location/locationRoutes.js'
 import authRoutes from './routes/auth/authRoutes.js'
 import paymentRoutes from './routes/paymentRoute.js'
 import reviewRoutes from './routes/reviews/reviewRating.js'
+import footerRoutes from './routes/footerRoutes.js'
 
 app.get("/", (req, res) => {
     res.send(`SERVER IS RUNNING ✅ ON PORT ${PORT}`);
@@ -43,6 +44,7 @@ app.use('/api/admin/upload', uploadRoutes)
 app.use('/api/admin/products', productRoutes)
 app.use('/api/admin/heroes', heroRoutes)
 app.use('/api/admin/navbar', navbarRoutes)
+app.use('/api/admin/footer', footerRoutes)
 app.use('/api/admin/roles', roleRoutes)
 app.use('/api/admin/permissions', permissionRoutes)
 // user route

@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
+const FooterForm = lazy(() => import("./dashboard/footer/FooterForm"));
+const FooterView = lazy(() => import("./dashboard/footer/FooterView"));
+const FooterTable = lazy(() => import("./dashboard/footer/FooterTable"));
+
 const Voucher = lazy(() => import("./dashboard/users/customers/components/Coupon"));
 const Billings = lazy(() => import("./dashboard/users/customers/components/Bilings"));
 const Settings = lazy(() => import("./dashboard/users/customers/components/Settings"));
@@ -208,6 +212,12 @@ export default function App() {
             <Route path="hero/:id" element={<HeroForm />} />
             <Route path="hero/:id/view" element={<HeroView />} />
             <Route path="herotable" element={<HeroTable />} />
+
+            {/* Footer */}
+            <Route path="footer" element={<FooterForm />} />
+            <Route path="footer/:id" element={<FooterForm />} />
+            <Route path="footer/:id/view" element={<FooterView />} />
+            <Route path="footertable" element={<FooterTable />} />
 
             {/* 🧭 Navbar */}
             <Route path="navbar" element={<NavbarForm />} />
