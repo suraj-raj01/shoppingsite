@@ -27,7 +27,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
   const [images, setImages] = useState<any[]>([]); // store uploaded URLs
 
   // filter by productId
-  const filteredData = reviews.filter((item)=>item.productId==productId);
+  const filteredData = reviews.filter((item) => item.productId == productId);
 
   // ================= IMAGE UPLOAD =================
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,12 +93,12 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
   return (
     <section className="grid md:grid-cols-2 gap-8 mb-5">
       {/* USER PREVIEW */}
-      <div className=" grid grid-cols-1 md:grid-cols-1 gap-5">
+      <div className=" grid grid-cols-1 md:grid-cols-2 gap-5">
         {
           filteredData.map((item) => {
             return (
               <div key={item._id}>
-                <section className="w-full border h-full p-2 md:max-w-2xl">
+                <section className="w-full border-0 h-full p-2 md:max-w-2xl">
                   <div className="bg-white shadow-none rounded-xs space-y-4">
 
                     {/* 👤 USER INFO */}
@@ -141,7 +141,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                           <h2 className="text-lg font-semibold mb-2">
                             Images
                           </h2>
-                          <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
+                          <div className="grid grid-cols-5 md:grid-cols-4 gap-3">
                             {item?.images?.map((img: any, index: number) => (
                               <img
                                 key={index}
@@ -162,87 +162,89 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
         }
       </div>
       {/* FORM */}
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-3 max-w-full h-fit border bg-white p-3 rounded-xs shadow"
-      >
-        <h2 className="text-xl font-semibold">Write a Review</h2>
-
-        {/* ⭐ STAR RATING */}
-        <div>
-          <label className="block mb-2 font-medium">Your Rating</label>
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                onClick={() => setRating(star)}
-                onMouseEnter={() => setHover(star)}
-                onMouseLeave={() => setHover(0)}
-                className={`h-7 w-7 cursor-pointer transition ${(hover || ratings) >= star
-                  ? "fill-green-500 text-green-500"
-                  : "text-gray-300"
-                  }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* MESSAGE */}
-        <div>
-          <label className="block mb-2 font-medium">Your Review</label>
-          <Textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Share your experience..."
-            className="focus:ring-2 focus:ring-green-500"
-            rows={5}
-            required
-          />
-        </div>
-
-        {/* IMAGE UPLOAD */}
-        <div>
-          <label className="block mb-2 font-medium">Upload Images</label>
-
-          <Input
-            type="file"
-            multiple
-            disabled={loading}
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="border"
-          />
-
-          {/* PREVIEW */}
-          <div className="flex gap-3 mt-3 flex-wrap">
-            {images.map((img, index) => (
-              <div key={index} className="relative">
-                <img
-                  src={img.url}
-                  className="h-20 w-20 object-cover rounded border"
-                />
-
-                {/* REMOVE BTN */}
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1"
-                >
-                  <X size={12} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={loading}
-          className="w-full mb-5 text-white cursor-pointer bg-green-500 hover:bg-green-600"
+      <div className="space-y-3 max-w-full grid h-fit border-0 bg-white p-3 rounded-xs shadow-0">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-full md:pl-50 h-fit border-0 bg-white rounded-xs shadow-none"
         >
-          {loading ? "Uploading..." : "Submit Review"}
-        </Button>
-      </form>
+          <h2 className="text-xl font-semibold">Write a Review</h2>
+
+          {/* ⭐ STAR RATING */}
+          <div>
+            <label className="block mb-2 font-medium">Your Rating</label>
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  onClick={() => setRating(star)}
+                  onMouseEnter={() => setHover(star)}
+                  onMouseLeave={() => setHover(0)}
+                  className={`h-7 w-7 cursor-pointer transition ${(hover || ratings) >= star
+                    ? "fill-green-500 text-green-500"
+                    : "text-gray-300"
+                    }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* MESSAGE */}
+          <div>
+            <label className="block mb-2 font-medium">Your Review</label>
+            <Textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Share your experience..."
+              className="focus:ring-2 focus:ring-green-500"
+              rows={5}
+              required
+            />
+          </div>
+
+          {/* IMAGE UPLOAD */}
+          <div>
+            <label className="block mb-2 font-medium">Upload Images</label>
+
+            <Input
+              type="file"
+              multiple
+              disabled={loading}
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="border"
+            />
+
+            {/* PREVIEW */}
+            <div className="flex gap-3 mt-3 flex-wrap">
+              {images.map((img, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={img.url}
+                    className="h-20 w-20 object-cover rounded border"
+                  />
+
+                  {/* REMOVE BTN */}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full mb-5 text-white cursor-pointer bg-green-500 hover:bg-green-600"
+          >
+            {loading ? "Uploading..." : "Submit Review"}
+          </Button>
+        </form>
+      </div>
     </section>
   );
 }

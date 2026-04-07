@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Package, CalendarDays, IndianRupee, MapPin, CreditCard, ShieldCheck } from "lucide-react"
+import OrdersViewSkeleton from "../skeleton/OrdersViewSkeleton"
 
 export default function OrdersView() {
   const { id } = useParams()
@@ -30,7 +31,7 @@ export default function OrdersView() {
   }, [id])
 
   if (loading) {
-    return <div className="p-6 text-center">Loading order...</div>
+    return <OrdersViewSkeleton />
   }
 
   if (!order) {

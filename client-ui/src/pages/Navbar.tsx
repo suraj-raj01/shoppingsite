@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { ShoppingCart, Heart, LucideMenu, LayoutDashboardIcon } from "lucide-react"
+import { ShoppingCart, Heart, LucideMenu, LayoutDashboardIcon, SearchIcon, CreditCardIcon, LogOutIcon, SettingsIcon, X, } from "lucide-react"
 import BASE_URL from "@/Config"
 import {
     DropdownMenu,
@@ -9,16 +9,19 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import {
-    CreditCardIcon,
-    LogOutIcon,
-    SettingsIcon,
-    UserIcon,
-} from "lucide-react"
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
 
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { DialogTitle } from "@/components/ui/dialog"
 import { Link, useNavigate } from "react-router-dom"
 import NavbarSkeleton from "./skeletons/Navbar"
 import { toast } from "sonner"
@@ -26,6 +29,7 @@ import Translation from "./helpers/Translate"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux-toolkit/Store"
 import SearchProducts from "./helpers/SearchProducts"
+import SearchProductsMobileView from "./helpers/SearchProductsMobileView"
 
 type NavbarType = {
     _id: string
@@ -39,6 +43,7 @@ export default function Navbar() {
     const [navbar, setNavbar] = useState<NavbarType | null>(null)
     const [user, setUser] = useState<any>(null)
     const [loading, setLoading] = useState(true)
+    const [open, setOpen] = useState(false)
 
     const cartItems = useSelector((state: RootState) => state.addtoCart.cart);
     const likeItems = useSelector((state: RootState) => state.addtoLike.likes);
@@ -134,6 +139,27 @@ export default function Navbar() {
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
+                            <SearchIcon
+                                className="h-4 w-4 cursor-pointer"
+                                onClick={() => setOpen(true)}
+                            />
+                        </DialogTrigger>
+                        <DialogContent showCloseButton={false} className="w-full">
+                            <DialogHeader>
+                                <DialogTitle>Search Products</DialogTitle>
+                                <div className="mt-5">
+                                    <SearchProductsMobileView onClose={() => setOpen(false)} />
+                                </div>
+                            </DialogHeader>
+                            <DialogFooter className="mt-5">
+                                <DialogClose asChild className="absolute top-2 right-2">
+                                    <Button variant="destructive"><X /></Button>
+                                </DialogClose>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                     {
                         likeItems.length > 0 ? (
                             <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
@@ -169,7 +195,7 @@ export default function Navbar() {
                                 <DropdownMenuContent>
                                     <DropdownMenuItem>
                                         <Link to="/dashboard" className="flex items-center gap-2">
-                                            <UserIcon />
+                                            <LayoutDashboardIcon />
                                             Dashboard
                                         </Link>
                                     </DropdownMenuItem>
@@ -193,7 +219,6 @@ export default function Navbar() {
                         )}
                     </Link>
                 </div>
-
                 <SearchProducts />
 
                 {/* Right Icons */}
@@ -245,8 +270,10 @@ export default function Navbar() {
                                         Billing
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <SettingsIcon />
-                                        Settings
+                                        <Link to="/dashboard/settings" className="flex items-center gap-2">
+                                            <SettingsIcon />
+                                            Settings
+                                        </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem variant="destructive" onClick={logout} className="cursor-pointer">

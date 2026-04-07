@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, NotepadText } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -170,13 +170,13 @@ export default function OrdersTable() {
                             <Eye className="mr-2 h-4 w-4" />
                             View Order
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Order
-                        </DropdownMenuItem> */}
-                        <DropdownMenuItem onClick={() => delteOrders(row.original._id)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/invoice/${row.original._id}`)}>
+                            <NotepadText className="mr-2 h-4 w-4" />
+                            Generate Invoice
+                        </DropdownMenuItem>
+                        <DropdownMenuItem disabled onClick={() => delteOrders(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Delete
+                            Delete Order
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

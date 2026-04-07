@@ -1,41 +1,77 @@
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { toast } from "sonner"
+import axios from "axios"
+import BASE_URL from "@/Config"
+import { useNavigate } from "react-router-dom"
 
 export default function Settings() {
 
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        newPassword: "",
-    })
+    const [user, setUser] = useState<any>(null)
 
-    const [preferences, setPreferences] = useState({
-        notifications: false,
-        darkMode: false,
+    const [form, setForm] = useState({
+        notification: false,
+        theme: false
     })
 
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [e.target.name]: e.target.value })
+    // ✅ LOAD USER
+    useEffect(() => {
+        try {
+            const userData = localStorage.getItem("user")
+            if (userData) {
+                const parsed = JSON.parse(userData)
+                setUser(parsed.user)
+
+                // initialize form here
+                setForm({
+                    notification: parsed.user.notification,
+                    theme: parsed.user.theme
+                })
+            }
+        } catch (err) {
+            console.error("Invalid user in localStorage")
+        }
+    }, [])
+
+    // ✅ TOGGLE
+    const handleToggle = (field: "notification" | "theme", value: boolean) => {
+        setForm(prev => ({ ...prev, [field]: value }))
     }
 
+    // ✅ SAVE
     const handleSave = async () => {
+        if (!user?._id) return
+
         setLoading(true)
 
         try {
-            // 🔥 Replace with API call
-            await new Promise((res) => setTimeout(res, 1000))
+            await axios.patch(
+                `${BASE_URL}/api/customers/profile-setting/${user._id}`,
+                form
+            )
+
+            // ✅ update localStorage AFTER success
+            const updatedUser = {
+                ...user,
+                notification: form.notification,
+                theme: form.theme
+            }
+
+            localStorage.setItem("user", JSON.stringify({ user: updatedUser }))
+            setUser(updatedUser)
+
             toast.success("Settings saved successfully ✅")
-        } catch (err) {
+            navigate("/dashboard")
+
+        } catch (err: any) {
             console.error(err)
+            toast.error(err?.response?.data?.message || "Something went wrong ❌")
         } finally {
             setLoading(false)
         }
@@ -43,59 +79,9 @@ export default function Settings() {
 
     return (
         <div className="p-3">
-            <section className="max-w-2xl bg-white p-5 rounded-xs shadow-sm border space-y-4">
+            <section className="max-w-xl bg-white p-5 rounded-xs shadow-sm border space-y-4">
 
                 <h2 className="text-xl font-semibold">Account Settings</h2>
-
-                {/* PROFILE */}
-                <div className="space-y-2">
-                    <h3 className="text-md font-medium">Profile Information</h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                            name="name"
-                            placeholder="Full Name"
-                            value={form.name}
-                            onChange={handleChange}
-                        />
-                        <Input
-                            name="email"
-                            placeholder="Email Address"
-                            value={form.email}
-                            onChange={handleChange}
-                        />
-                        <Input
-                            name="phone"
-                            placeholder="Phone Number"
-                            value={form.phone}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-
-                <Separator />
-
-                {/* PASSWORD */}
-                <div className="space-y-2">
-                    <h3 className="text-md font-medium">Change Password</h3>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                            type="password"
-                            name="password"
-                            placeholder="Current Password"
-                            value={form.password}
-                            onChange={handleChange}
-                        />
-                        <Input
-                            type="password"
-                            name="newPassword"
-                            placeholder="New Password"
-                            value={form.newPassword}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
 
                 <Separator />
 
@@ -106,20 +92,16 @@ export default function Settings() {
                     <div className="flex items-center justify-between">
                         <Label>Enable Notifications</Label>
                         <Switch
-                            checked={preferences.notifications}
-                            onCheckedChange={(val) =>
-                                setPreferences({ ...preferences, notifications: val })
-                            }
+                            checked={form.notification}
+                            onCheckedChange={(val) => handleToggle("notification", val)}
                         />
                     </div>
 
                     <div className="flex items-center justify-between">
                         <Label>Dark Mode</Label>
                         <Switch
-                            checked={preferences.darkMode}
-                            onCheckedChange={(val) =>
-                                setPreferences({ ...preferences, darkMode: val })
-                            }
+                            checked={form.theme}
+                            onCheckedChange={(val) => handleToggle("theme", val)}
                         />
                     </div>
                 </div>

@@ -19,11 +19,11 @@ import { Badge } from '@/components/ui/badge'
 
 type Footer = {
     _id: string,
-    icons:{
-        title:string,
-        url:string
+    icons: {
+        title: string,
+        url: string
     }[]
-    copyright:string
+    copyright: string
 }
 
 
@@ -105,17 +105,51 @@ export default function FooterTable() {
             header: "Icons",
             cell: ({ row }) => {
                 const icons = row.original?.icons || [];
+                const [showAll, setShowAll] = useState(false);
+
+                const visibleIcons = showAll ? icons : icons.slice(0, 2);
+                const remainingCount = icons.length - 2;
+
                 return (
-                    <div className="grid grid-cols-1 md:grid-cols-2">
+                    <div className="flex flex-col gap-2 w-full">
+
                         {icons.length === 0 ? (
-                            <span className="text-muted-foreground">No icons</span>
+                            <span className="text-muted-foreground text-sm">
+                                No icons
+                            </span>
                         ) : (
-                            icons.map((icon: any, index: number) => (
-                                <div key={index} className="flex items-center gap-2 px-3 py-1 rounded-xs">
-                                    <Badge className="font-medium bg-green-500">{icon.title}</Badge>
-                                    <Link to={icon.url} className="text-blue-500 text-sm">{icon.url}</Link>
-                                </div>
-                            ))
+                            <>
+                                {visibleIcons.map((icon: any, index: number) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-1 sm:gap-3 border rounded-xs px-3 py-2"
+                                    >
+                                        <Badge className="font-medium bg-green-500 text-white">
+                                            {icon.title}
+                                        </Badge>
+
+                                        <Link
+                                            to={icon.url}
+                                            className="text-blue-500 text-xs sm:text-sm break-all hover:underline"
+                                            target="_blank"
+                                        >
+                                            {icon.url}
+                                        </Link>
+                                    </div>
+                                ))}
+
+                                {/* SHOW MORE / LESS */}
+                                {icons.length > 2 && (
+                                    <button
+                                        onClick={() => setShowAll(!showAll)}
+                                        className="text-xs text-blue-500 hover:underline text-left"
+                                    >
+                                        {showAll
+                                            ? "Show less"
+                                            : `+${remainingCount} more`}
+                                    </button>
+                                )}
+                            </>
                         )}
                     </div>
                 );
@@ -179,7 +213,7 @@ export default function FooterTable() {
                 {loading ? (
                     <Skeleton className="h-10 w-32" />
                 ) : (
-                    <Button disabled={footer.length>=1} onClick={() => { navigate("/dashboard/footer") }}>
+                    <Button disabled={footer.length >= 1} onClick={() => { navigate("/dashboard/footer") }}>
                         Create Footer
                     </Button>
                 )}
@@ -191,7 +225,7 @@ export default function FooterTable() {
                     data={footer}
                     pageCount={1}
                     currentPage={1}
-                    onPageChange={()=>{}}
+                    onPageChange={() => { }}
                     onSearch={handleSearch}
                     isLoading={loading}
                 />

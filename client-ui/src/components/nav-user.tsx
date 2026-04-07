@@ -107,12 +107,16 @@ export function NavUser({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <CreditCard />
-                Billing
+                <Link to='/dashboard/billing' className="flex items-center justify-center gap-2">
+                  <CreditCard />
+                  Billing
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Bell />
-                Notifications
+                <Link to='/dashboard/notifications' className="flex items-center justify-center gap-2">
+                  <Bell />
+                  Notifications
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link to='/' className="flex items-center gap-2">

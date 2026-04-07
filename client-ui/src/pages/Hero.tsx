@@ -14,7 +14,6 @@ import {
 import Autoplay from "embla-carousel-autoplay"
 
 import TrandingProducts from "./products/TrandingProducts"
-import Categories from "./products/Categories"
 import HeroSkeleton from "./skeletons/HeroSkeleton"
 import { Link } from "react-router-dom"
 
@@ -60,10 +59,6 @@ export default function Hero() {
 
   return (
     <section className="w-full">
-      <div className="fixed top-15 bg-background z-35 w-full border-b">
-      <Categories />
-      </div>
-
       {/* ✅ PASS plugins */}
       <Carousel
         opts={{ loop: true }}

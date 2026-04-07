@@ -137,7 +137,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: "All Orders", url: "/dashboard/allorders" },
           { title: "All Review", url: "/dashboard/allreviews" },
-          { title: "All Returns", url: "/dashboard/returns" },
+          { title: "All Returns", url: "/dashboard/allreturns" },
           { title: "All Payments", url: "/dashboard/allpayments" },
         ],
       },

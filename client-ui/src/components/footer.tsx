@@ -54,7 +54,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="mx-auto md:px-10 px-5 py-10">
+      <div className="mx-auto md:px-10 px-5 py-8">
 
         {/* TOP SECTION */}
        {loading ? (
@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* ABOUT */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">{footer?.aboutTitle}</h3>
+            <h3 className="text-lg font-semibold mb-2">{footer?.aboutTitle}</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               {footer?.aboutDesc}
             </p>
@@ -72,13 +72,15 @@ export default function Footer() {
 
           {/* CONTACT */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">{footer?.contactTitle}</h3>
-            <p className="text-gray-400 text-sm">{footer?.contactDesc}</p>
+            <h3 className="text-lg font-semibold mb-2">{footer?.contactTitle}</h3>
+            <p className="text-gray-400 text-sm">{footer?.contactDesc.split(",").map((line, i) => (
+              <span key={i}>{line}<br/></span>
+            ))}</p>
           </div>
 
           {/* SOCIAL */}
           <div>
-            <h3 className="text-lg font-semibold mb-3">{footer?.followus}</h3>
+            <h3 className="text-lg font-semibold mb-2">{footer?.followus}</h3>
             <div className="flex gap-3">
               {footer?.icons.map((icon, i) => {
                 const IconComponent = icons[icon.title as keyof typeof icons];

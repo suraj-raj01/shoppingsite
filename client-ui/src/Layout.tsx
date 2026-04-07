@@ -1,13 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./pages/Navbar";
 import Footer from "./components/footer";
+import Categories from "./pages/products/Categories";
 
 export default function Layout() {
   return (
     <div>
-      <Navbar/>
-      <Outlet/>
-      <Footer/>
+      <Navbar />
+      <div className="sticky top-15 z-35 bg-white">
+        <Categories />
+      </div>
+      <Outlet />
+      <Footer />
     </div>
   )
 }

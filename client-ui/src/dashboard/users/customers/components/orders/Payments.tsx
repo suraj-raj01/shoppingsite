@@ -78,7 +78,7 @@ export default function PaymentsTable() {
                 setOrders(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)
                 setPage(response.data.currentPage)
-                console.log(response.data, "response data");
+                // console.log(response.data, "response data");
             }
 
         } catch (error) {

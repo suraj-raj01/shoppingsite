@@ -28,7 +28,12 @@ export function UserInfo(userId: { userId: string }) {
     return (
         <div className="flex gap-3">
             <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold">
-                {user?.name?.charAt(0) || "U"}
+                {/* {user?.name?.charAt(0) || "U"} */}
+                {user?.profile ? (
+                    <img src={user?.profile} alt="" className="w-full h-full object-cover rounded-full" />
+                ) : (
+                    user?.name?.charAt(0) || "U"
+                )}
             </div>
 
             <div>

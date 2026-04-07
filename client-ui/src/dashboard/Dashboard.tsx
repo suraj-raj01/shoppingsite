@@ -44,14 +44,14 @@ export default function Dashboard() {
     <div className="flex items-center md:flex-row flex-col justify-start gap-2 p-2">
       {
         user.roleId?.length ? (
-          <div className="md:w-md w-full flex justify-start">
+          <div className="md:w-1/2 w-full flex justify-start">
             <div className="w-full max-w-auto h-85 border shadow-xs rounded-xs p-5 bg-white">
 
               {/* Header with button */}
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-semibold">User Profile</h3>
+                <h3 className="text-lg font-semibold">{user.roleId[0]?.role || "GUEST"} Profile</h3>
 
-                <Button variant="outline" size="sm">
+                <Button size="sm" className="px-3 py-2 border border-green-100 bg-transparent text-green-500 hover:bg-green-500 hover:text-white rounded-xs transition">
                   <Link to={`/dashboard/users/${user._id}`}>
                     <Edit2Icon />
                   </Link>
@@ -63,7 +63,7 @@ export default function Dashboard() {
                 <img
                   src={user.profile}
                   alt={user.name}
-                  className="w-24 h-24 rounded-full object-cover border-3 border-green-500"
+                  className="w-20 h-20 rounded-full object-cover border-3 border-green-500"
                 />
 
                 <div>
@@ -75,18 +75,18 @@ export default function Dashboard() {
               </div>
 
               {/* Divider */}
-              <div className="my-6 border-t" />
+              <div className="my-3 border-t" />
 
               {/* Details */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
                 <div>
-                  <p className="text-sm text-gray-400">User ID</p>
+                  <p className="text-sm text-gray-400">ID</p>
                   <p className="font-medium text-green-500 break-all">{user._id}</p>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-400">Roles</p>
-                  <div className="flex flex-wrap gap-2 mt-1">
+                  <div className="flex flex-wrap gap-2">
                     {user.roleId?.length ? (
                       user.roleId.map((role) => (
                         <Button
@@ -108,10 +108,11 @@ export default function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="md:w-1/3 w-full border shadow-xs rounded-xs p-5">
+          <div className="md:w-1/2 w-full border shadow-xs rounded-xs p-5">
             {/* Header */}
-            <div className="md:mt-8 md:absolute text-right top-12 md:left-95">
-              <Button variant='outline' className="px-3 py-2 rounded-xs transition">
+            <div className="flex mb-1 items-center justify-between">
+              <h3 className="text-lg font-semibold">User Profile</h3>
+              <Button className="px-3 py-2 bg-transparent text-green-500 border border-green-100 hover:bg-green-500 hover:text-white rounded-xs transition">
                 <Link to={`/dashboard/profile/${user._id}`}><Edit2Icon /></Link>
               </Button>
             </div>
@@ -144,6 +145,8 @@ export default function Dashboard() {
               <div>
                 <p className="text-sm text-gray-500">Address</p>
                 <p className="font-medium">{user.address}</p>
+                <p className="text-sm text-gray-500">User ID</p>
+                <p className="font-medium">{user._id}</p>
               </div>
               <Badge variant='outline' className="bg-green-500 p-2 px-5 cursor-pointer">
                 <Link to={`/dashboard/orders`} className="text-sm text-white">Your Orders</Link>

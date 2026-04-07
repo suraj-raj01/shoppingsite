@@ -38,7 +38,15 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "products",
       require: false,
-    },]
+    },],
+  notification:{
+    type:Boolean,
+    default: true
+  },
+  theme:{
+    type:Boolean,
+    default: false
+  }
 });
 
 export default mongoose.models.customers || mongoose.model("customers", userSchema);

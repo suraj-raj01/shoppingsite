@@ -1,5 +1,5 @@
 import express from 'express'
-import { createUser, deleteUser, forgotPassword, getUserById, getUsers, searchUser, updatePassword, updateUser, userLogin, verifyEmail } from '../../controllers/auth/customerController.js';
+import { createUser, deleteUser, forgotPassword, getUserById, getUsers, searchUser, updatePassword, updateUser, userLogin, verifyEmail,profileSetting } from '../../controllers/auth/customerController.js';
 const route = express.Router();
 
 route.post("/",createUser)
@@ -9,6 +9,7 @@ route.post("/searchuser/:id",searchUser)
 route.put("/:id",updateUser)
 route.delete("/:id",deleteUser)
 route.post("/login",userLogin)
+route.patch("/profile-setting/:id",profileSetting)
 route.post("/verify-email",verifyEmail)
 route.post("/forgot-password",forgotPassword)
 route.post("/update-password",updatePassword)

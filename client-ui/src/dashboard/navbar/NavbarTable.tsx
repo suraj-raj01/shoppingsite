@@ -26,8 +26,6 @@ type Navbar = {
 
 export default function NavbarTable() {
     const [navbar, setNavbar] = useState<Navbar[]>([])
-    const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
 
@@ -42,12 +40,8 @@ export default function NavbarTable() {
             } else {
                 response = await axios.get(`${api}/api/admin/navbar`)
                 setNavbar(response?.data?.data || [])
-                setPage(response.data.currentPage)
-                setPageCount(response.data.pageCount)
                 // console.log("navbar data", response.data)
             }
-            const { data } = response
-            setPageCount(data.totalPages || 1)
         } catch (error) {
             console.error('Error fetching navbar:', error)
         } finally {
@@ -57,7 +51,7 @@ export default function NavbarTable() {
 
     useEffect(() => {
         fetchCategories();
-    }, [page, searchQuery])
+    }, [searchQuery])
 
 
     const deleteCategory = async (id: any) => {
@@ -79,6 +73,10 @@ export default function NavbarTable() {
 
     const columns: ColumnDef<Navbar>[] = [
         {
+            accessorKey: '_id',
+            header: "ID",
+        },
+        {
             accessorKey: 'logo',
             header: "Logo",
         },
@@ -89,6 +87,10 @@ export default function NavbarTable() {
         {
             accessorKey: 'signin',
             header: "Signin",
+        },
+        {
+            accessorKey: 'createdAt',
+            header: "Created At",
         },
         {
             header: "Action",
@@ -158,9 +160,9 @@ export default function NavbarTable() {
                 <DataTable
                     columns={columns}
                     data={navbar}
-                    pageCount={pageCount}
-                    currentPage={page}
-                    onPageChange={setPage}
+                    pageCount={1}
+                    currentPage={1}
+                    onPageChange={()=>{}}
                     onSearch={handleSearch}
                     isLoading={loading}
                 />

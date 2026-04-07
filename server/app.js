@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8000;
 connectDB();
 app.use(cors({
     // origin: 'http://localhost:5173',
-    origin:'https://shoppingsite-chi.vercel.app',
+    origin: 'https://shoppingsite-chi.vercel.app',
     credentials: true
 }))
 app.use(bodyparser.json());
@@ -32,8 +32,9 @@ import customerRoutes from './routes/auth/customerRouets.js'
 import locationRoutes from './routes/location/locationRoutes.js'
 import authRoutes from './routes/auth/authRoutes.js'
 import paymentRoutes from './routes/paymentRoute.js'
-import reviewRoutes from './routes/reviews/reviewRating.js'
+import reviewRoutes from './routes/reviews/reviewRoutes.js'
 import footerRoutes from './routes/footerRoutes.js'
+import returnRoutes from './routes/returns/returnRoutes.js'
 
 app.get("/", (req, res) => {
     res.send(`SERVER IS RUNNING ✅ ON PORT ${PORT}`);
@@ -59,6 +60,8 @@ app.use('/api/auth', authRoutes, loginLimiter)
 app.use('/api/payment', paymentRoutes)
 // review route
 app.use('/api/reviews', reviewRoutes)
+// return route
+app.use('/api/returns', returnRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} 🚀`);

@@ -53,19 +53,19 @@ export default function Coupon() {
 
     return (
         <div className="p-3">
-            <section className="border md:max-w-xl mx-auto mt-20 shadow-sm border-gray-200 py-10 w-full rounded-xs p-6">
+            <section className="border md:max-w-xl shadow-sm border-gray-200 py-10 w-full rounded-xs p-6">
 
-                <h2 className="text-lg font-semibold">Apply Coupon</h2>
+                <h2 className="text-lg font-bold mb-3">Apply Coupon</h2>
 
-                {/* INPUT */}
                 {!appliedCoupon && (
-                    <div className="flex gap-2">
+                    <div className="flex md:flex-row flex-col items-center justify-between gap-2">
                         <Input
                             placeholder="Enter coupon code"
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
+                            className="w-full"
                         />
-                        <Button onClick={handleApply} disabled={loading} className="bg-green-500 hover:bg-green-600">
+                        <Button onClick={handleApply} disabled={loading} className="bg-green-500 cursor-pointer md:w-fit w-full hover:bg-green-600">
                             {loading ? "Applying..." : "Apply Coupon"}
                         </Button>
                     </div>

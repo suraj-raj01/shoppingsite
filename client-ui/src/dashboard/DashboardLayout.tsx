@@ -6,9 +6,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { BellDot } from "lucide-react"
 
 export default function DashboardLayout() {
 
@@ -29,7 +30,7 @@ export default function DashboardLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex px-3 items-center justify-between border-b shadow-xs sticky top-0 backdrop-blur-2xl h-16 shrink-0 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+        <header className="flex px-3 items-center justify-between border-b shadow-xs sticky z-30 top-0 backdrop-blur-2xl h-16 shrink-0 gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center justify-start">
             <SidebarTrigger className="-ml-1" />
             <Separator
@@ -39,18 +40,21 @@ export default function DashboardLayout() {
 
           </div>
           <div className="flex items-center gap-2">
+            <div className="p-2 cursor-pointer border text-gray-500 hover:bg-green-100 hover:text-gray-800 rounded-full transition">
+              <Link to="/dashboard/notifications"><BellDot className="text-gray-500 h-4 w-4 hover:text-gray-800" /></Link>
+            </div>
             <Button size="icon" variant="outline" className="rounded-full overflow-hidden">
               {user?.user?.roleId ? (
                 <img
                   src={user?.user?.profile}
                   alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full bg-green-100 object-cover rounded-full"
                 />
               ) : user?.user?.profile ? (
                 <img
                   src={user?.user?.profile}
                   alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full bg-green-100 object-cover rounded-full"
                 />
               ) : (
                 <div className="font-bold text-lg flex items-center justify-center w-full h-full">

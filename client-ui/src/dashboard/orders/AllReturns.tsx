@@ -9,79 +9,56 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye, Star } from 'lucide-react'
+import { Trash, MoreHorizontal, CheckCircle2Icon, LucideEye } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useNavigate } from 'react-router-dom'
-import api from "@/Config"
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { Badge } from '@/components/ui/badge'
+import BASE_URL from '@/Config'
 
-type User = {
-    _id: string
-    name: string
-    email: string
-    profile: string
-    contact: string
-    address: string
-}
-
-type Reviews = {
+type Returns = {
     _id: string,
     userId: string,
     productId: string,
-    ratings: number,
-    review: string,
+    orderId: string,
+    reason: string,
+    message: string,
+    images: string[],
+    status: string,
     createdAt: string,
     updatedAt: string,
 }
 
-export default function Reviews() {
-    const [reviews, setReviews] = useState<Reviews[]>([])
+export default function AllReturns() {
+    const [returns, setReturns] = useState<Returns[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
+    const [currentPage, setCurrentPage] = useState(1)
 
-    const [user, setUser] = useState<User | null>(null)
-
-    // ✅ Load user safely
-    useEffect(() => {
-        try {
-            const userData = localStorage.getItem("user")
-            if (userData) {
-                const parsedData = JSON.parse(userData)
-                setUser(parsedData.user)
-            }
-        } catch (err) {
-            console.error("Invalid user in localStorage")
-        }
-    }, [])
-
-    // ✅ Fetch reviews
-    const fetchReviews = async () => {
-        // 🚫 prevent API call if user not ready
-        if (!user && !searchQuery) return
-
+    // ✅ Fetch returns
+    const fetchReturns = async () => {
         try {
             setLoading(true)
-
-            let response
-
+            let response;
             if (searchQuery) {
-                response = await axios.post(
-                    `${api}/api/reviews/searchreviews`,
-                    {
-                        query: searchQuery
-                    }
+                response = await axios.get(
+                    `${BASE_URL}/api/returns/${searchQuery}`
                 )
             } else {
                 response = await axios.get(
-                    `${api}/api/reviews/${user?._id}`
+                    `${BASE_URL}/api/returns?page=${page}&limit=8`
                 )
             }
-
-            setReviews(response?.data || [])
+            setReturns(response?.data?.data || [])
+            setPage(response?.data?.currentPage || 1)
+            setTotalPages(response?.data?.totalPages || 1)
+            setCurrentPage(response?.data?.currentPage || 1)
             // console.log(response.data,'data')
 
         } catch (error) {
-            console.error("Error fetching reviews:", error)
+            console.error("Error fetching returns:", error)
         } finally {
             setLoading(false)
         }
@@ -89,28 +66,28 @@ export default function Reviews() {
 
     // ✅ Add user dependency
     useEffect(() => {
-        fetchReviews()
-    }, [searchQuery, user])
+        fetchReturns()
+    }, [searchQuery])
 
 
-    const deleteReviews = async (id: any) => {
+    const deleteReturns = async (id: any) => {
         try {
-            await axios.delete(`${api}/api/reviews/${id}`)
-            toast.success('Order deleted successfully')
-            fetchReviews();
+            await axios.delete(`${BASE_URL}/api/returns/${id}`)
+            toast.success('Returns deleted successfully')
+            fetchReturns();
         } catch (error) {
-            console.error('Error deleting order:', error)
-            alert('Failed to delete Order. Please try again.')
+            console.error('Error deleting returns:', error)
+            toast.error('Failed to delete Returns. Please try again.')
         }
     }
 
     const navigate = useNavigate();
     const viewpage = (id: any) => {
-        navigate(`/dashboard/reviews/${id}/view`)
+        navigate(`/dashboard/returns/${id}/view`)
     }
 
 
-    const columns: ColumnDef<Reviews>[] = [
+    const columns: ColumnDef<Returns>[] = [
         {
             accessorKey: 'userId',
             header: "User ID",
@@ -120,15 +97,12 @@ export default function Reviews() {
             header: "Product ID",
         },
         {
-            accessorKey: 'ratings',
-            header: "Rating",
-            cell: ({ row }) => (
-                <div className="flex items-center gap-1">
-                    {Array.from({ length: row.original.ratings }).map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-green-500 text-green-500" />
-                    ))}
-                </div>
-            ),
+            accessorKey: 'orderId',
+            header: "Order ID",
+        },
+        {
+            accessorKey: 'reason',
+            header: "Reason",
         },
         {
             accessorKey: 'message',
@@ -137,6 +111,22 @@ export default function Reviews() {
         {
             accessorKey: 'updatedAt',
             header: "Updated At",
+        },
+        {
+            accessorKey: 'status',
+            header: "Status",
+            cell: ({ row }) => (
+                <Badge
+                    className={`capitalize ${row.original.status === "pending"
+                        ? "bg-yellow-500"
+                        : row.original.status === "approved"
+                            ? "bg-green-500"
+                            : "bg-red-600"
+                        }`}
+                >
+                    {row.original.status}
+                </Badge>
+            ),
         },
         {
             header: "Action",
@@ -151,16 +141,16 @@ export default function Reviews() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Review
+                            <LucideEye className="mr-2 h-4 w-4" />
+                            View Returns
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit Order
-                        </DropdownMenuItem> */}
-                        <DropdownMenuItem onClick={() => deleteReviews(row.original._id)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/returns/${row.original._id}`)}>
+                            <CheckCircle2Icon className="mr-2 h-4 w-4" />
+                            Update Status
+                        </DropdownMenuItem>
+                        <DropdownMenuItem disabled onClick={() => deleteReturns(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Delete Review
+                            Delete Returns
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -185,9 +175,9 @@ export default function Reviews() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Your All Reviews</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Returns</h1>
                                 <p className="text-muted-foreground">
-                                    Manage and track all the reviews
+                                    Manage and track your return items
                                 </p>
                             </div>
                         </>
@@ -197,7 +187,7 @@ export default function Reviews() {
                     <Skeleton className="h-10 w-32" />
                 ) : (
                     <Button disabled>
-                        Your All Reviews
+                        <Link to="/dashboard/returns">Update return status</Link>
                     </Button>
                 )}
             </div>
@@ -205,10 +195,10 @@ export default function Reviews() {
             <div className="w-full overflow-x-auto">
                 <DataTable
                     columns={columns}
-                    data={reviews}
-                    pageCount={1}
-                    currentPage={1}
-                    onPageChange={() => { }}
+                    data={returns}
+                    pageCount={totalPages}
+                    currentPage={currentPage}
+                    onPageChange={(page) => setPage(page)}
                     onSearch={handleSearch}
                     isLoading={loading}
                 />

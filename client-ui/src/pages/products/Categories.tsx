@@ -45,14 +45,14 @@ export default function Categories() {
   if (loading) return <CategoriesSkeleton />
 
   return (
-    <NavigationMenu className="w-full bg-transparent">
+    <NavigationMenu className="w-full">
       <div className="w-full overflow-x-auto no-scrollbar">
-        <NavigationMenuList className="flex min-w-max gap-0 px-0">
+        <NavigationMenuList className="flex min-w-max gap-0 md:px-6 px-2">
 
           {categories.map((category) => (
             <NavigationMenuItem key={category._id}>
 
-              <NavigationMenuTrigger className="text-sm px-3 py-1 font-semibold whitespace-nowrap bg-transparent">
+              <NavigationMenuTrigger className="text-xs md:text-sm px-1 py-1 font-semibold whitespace-nowrap bg-transparent">
                 {category.categories}
               </NavigationMenuTrigger>
 

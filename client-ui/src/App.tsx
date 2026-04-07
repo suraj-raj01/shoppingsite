@@ -1,7 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
+const Notification = lazy(() => import("./dashboard/helpers/Notifications"));
+const ReturnView = lazy(() => import("./dashboard/users/customers/components/returns/returnView"));
+const ReturnForm = lazy(() => import("./dashboard/users/customers/components/returns/ReturnsForm"));
+const AllReturns = lazy(() => import("./dashboard/orders/AllReturns"));
+
 const FooterForm = lazy(() => import("./dashboard/footer/FooterForm"));
+const Invoice = lazy(() => import("./dashboard/users/customers/components/orders/Invoice"));
 const FooterView = lazy(() => import("./dashboard/footer/FooterView"));
 const FooterTable = lazy(() => import("./dashboard/footer/FooterTable"));
 
@@ -21,7 +27,7 @@ const UserLikeItems = lazy(() => import("./dashboard/cart/LikeItems"));
 const UserCartItems = lazy(() => import("./dashboard/cart/CartItems"));
 const EditProfile = lazy(() => import("./dashboard/users/customers/EditProfile"));
 const Orders = lazy(() => import("./dashboard/users/customers/components/orders/Orders"));
-const Returns = lazy(() => import("./dashboard/users/customers/components/Returns"));
+const Returns = lazy(() => import("./dashboard/users/customers/components/returns/Returns"));
 const Reviews = lazy(() => import("./dashboard/users/customers/components/Reviews"));
 const CheckOut = lazy(() => import("./pages/checkouts/CheckOut"));
 const OrdersView = lazy(() => import("./dashboard/users/customers/components/orders/OrdersView"));
@@ -182,8 +188,9 @@ export default function App() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
+            <Route path="notifications" element={<Notification />} />
             <Route path="vouchers" element={<Voucher />} />
-            <Route path="billing" element={<Billings subtotal={0} discount={0} delivery={0}/>} />
+            <Route path="billing" element={<Billings subtotal={0} discount={0} delivery={0} />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile/:id" element={<EditProfile />} />
 
@@ -239,12 +246,19 @@ export default function App() {
             <Route path="allorders" element={<Allorders />} />  {/* for admins */}
             <Route path="payments" element={<PaymentsTable />} />
             <Route path="orders/:id/view" element={<OrdersView />} />
-            <Route path="returns" element={<Returns />} />
             <Route path="reviews" element={<Reviews />} />     {/* for users */}
-            <Route path="reviews/:id/view" element={<ReviewView />} />     
-            <Route path="reviews/:id/edit" element={<UpdateReview />} />     
+            <Route path="reviews/:id/view" element={<ReviewView />} />
+            <Route path="reviews/:id/edit" element={<UpdateReview />} />
             <Route path="allreviews" element={<AllReviews />} />   {/* for admins */}
             <Route path="allpayments" element={<AllPaymentsTable />} />   {/* for admins */}
+            <Route path="invoice/:id" element={<Invoice />} />
+
+            <Route path="allreturns" element={<AllReturns />} />    {/* for admins */}
+
+            <Route path="returns" element={<Returns />} />
+            <Route path="returns/:id/view" element={<ReturnView />} />
+            <Route path="returns/add" element={<ReturnForm />} />
+            <Route path="returns/:id" element={<ReturnForm />} />
 
             <Route path="*" element={<PageNotFound url="/dashboard" />} />
           </Route>

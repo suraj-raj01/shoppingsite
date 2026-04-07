@@ -11,53 +11,58 @@ import {
 import { Button } from '@/components/ui/button'
 import { Trash, MoreHorizontal, Eye } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from "@/Config"
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 
-
-type Orders = {
-    _id: string,
-    name: string,
-    email: string,
-    contact: string,
-    address: string,
-    items: {
-        productId: string,
-        quantity: number,
-        price: number
-    }[],
-    totalAmount: number,
-    shippingAddress: string,
-    paymentStatus: string,
+type User = {
+    _id: string
+    name: string
+    email: string
+    profile: string
+    contact: string
+    address: string
 }
 
-export default function AllPaymentsTable() {
-    const [orders, setOrders] = useState<Orders[]>([])
-    const [page, setPage] = useState(1)
-    const [pageCount, setPageCount] = useState(1)
+type Returns = {
+    _id: string,
+    userId: string,
+    productId: string,
+    orderId: string,
+    reason: string,
+    message: string,
+    images: string[],
+    status: string,
+    createdAt: string,
+    updatedAt: string,
+}
+
+export default function Returns() {
+    const [returns, setReturns] = useState<Returns[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
-    // console.log(user, "user data");
-    // console.log(isAuthenticated, "isAuthenticated data");
 
-    const [userId, setUserId] = useState<string | null>(null)
+    const [user, setUser] = useState<User | null>(null)
 
+    // ✅ Load user safely
     useEffect(() => {
         try {
             const userData = localStorage.getItem("user")
-
             if (userData) {
                 const parsedData = JSON.parse(userData)
-                setUserId(parsedData.user?._id)
+                setUser(parsedData.user)
             }
         } catch (err) {
             console.error("Invalid user in localStorage")
         }
     }, [])
 
-    const fetchOrders = async () => {
+    // ✅ Fetch returns
+    const fetchReviews = async () => {
+        // 🚫 prevent API call if user not ready
+        if (!user && !searchQuery) return
+
         try {
             setLoading(true)
 
@@ -65,41 +70,38 @@ export default function AllPaymentsTable() {
 
             if (searchQuery) {
                 response = await axios.post(
-                    `${api}/api/payment/orders/searchorder/${searchQuery}`
+                    `${api}/api/returns/searchreviews`,
+                    {
+                        query: searchQuery
+                    }
                 )
-
-                setOrders(response?.data?.data || [])
-                setPageCount(response?.data?.totalPages || 1)
-
             } else {
                 response = await axios.get(
-                    `${api}/api/payment/orders?page=${page}&limit=8`
+                    `${api}/api/returns/${user?._id}`
                 )
-                setOrders(response?.data?.data || [])
-                setPageCount(response?.data?.totalPages || 1)
-                setPage(response.data.currentPage)
-                // console.log(response.data, "response data");
             }
 
+            setReturns(response?.data?.data || [])
+            // console.log(response.data,'data')
+
         } catch (error) {
-            console.error("Error fetching orders:", error)
+            console.error("Error fetching returns:", error)
         } finally {
             setLoading(false)
         }
     }
 
+    // ✅ Add user dependency
     useEffect(() => {
-        if (userId) {
-            fetchOrders()
-        }
-    }, [userId, page, searchQuery])
+        fetchReviews()
+    }, [searchQuery, user])
 
 
-    const delteOrders = async (id: any) => {
+    const deleteReturns = async (id: any) => {
         try {
-            await axios.delete(`${api}/api/payment/orders/${id}`)
+            await axios.delete(`${api}/api/reviews/${id}`)
             toast.success('Order deleted successfully')
-            fetchOrders();
+            fetchReviews();
         } catch (error) {
             console.error('Error deleting order:', error)
             alert('Failed to delete Order. Please try again.')
@@ -108,45 +110,50 @@ export default function AllPaymentsTable() {
 
     const navigate = useNavigate();
     const viewpage = (id: any) => {
-        navigate(`/dashboard/orders/${id}/view`)
+        navigate(`/dashboard/returns/${id}/view`)
     }
 
 
-    const columns: ColumnDef<Orders>[] = [
-
+    const columns: ColumnDef<Returns>[] = [
         {
-            accessorKey: 'paymentStatus',
-            header: "Payment Status",
+            accessorKey: 'userId',
+            header: "User ID",
+        },
+        {
+            accessorKey: 'productId',
+            header: "Product ID",
+        },
+        {
+            accessorKey: 'orderId',
+            header: "Order ID",
+        },
+        {
+            accessorKey: 'reason',
+            header: "Reason",
+        },
+        {
+            accessorKey: 'message',
+            header: "Message",
+        },
+        {
+            accessorKey: 'updatedAt',
+            header: "Updated At",
+        },
+        {
+            accessorKey: 'status',
+            header: "Status",
             cell: ({ row }) => (
-                <div>
-                    <Badge
-                        className={`capitalize text-xs w-25 font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
-                    >
-                        {row.original.paymentStatus}
-                    </Badge>
-                </div>
+                <Badge
+                    className={`capitalize ${row.original.status === "pending"
+                            ? "bg-yellow-500"
+                            : row.original.status === "approved"
+                                ? "bg-green-500"
+                                : "bg-red-600"
+                        }`}
+                >
+                    {row.original.status}
+                </Badge>
             ),
-        },
-        {
-            accessorKey: 'totalAmount',
-            header: "Total Amount",
-            cell: ({ row }) => (
-                <div>
-                    <Badge
-                        className={`capitalize text-xs w-25 font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-gray-500"}`}
-                    >
-                       ₹ {row.original.totalAmount}
-                    </Badge>
-                </div>
-            ),
-        },
-        {
-            accessorKey: 'razorpay_order_id',
-            header: "Razorpay Order Id",
-        },
-        {
-            accessorKey: 'razorpay_payment_id',
-            header: "Razorpay Payment Id",
         },
         {
             header: "Action",
@@ -162,15 +169,15 @@ export default function AllPaymentsTable() {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
-                            View Payment
+                            View Returns
                         </DropdownMenuItem>
                         {/* <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Order
                         </DropdownMenuItem> */}
-                        <DropdownMenuItem disabled onClick={() => delteOrders(row.original._id)}>
+                        <DropdownMenuItem onClick={() => deleteReturns(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Delete Payment
+                            Delete Returns
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -195,9 +202,9 @@ export default function AllPaymentsTable() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Your All Payments</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Your All Returns</h1>
                                 <p className="text-muted-foreground">
-                                    You can track all the payment records
+                                    Manage and track your return items
                                 </p>
                             </div>
                         </>
@@ -206,8 +213,8 @@ export default function AllPaymentsTable() {
                 {loading ? (
                     <Skeleton className="h-10 w-32" />
                 ) : (
-                    <Button disabled>
-                        Your All Payments
+                    <Button>
+                        <Link to="/dashboard/returns/add">Apply For Return</Link>
                     </Button>
                 )}
             </div>
@@ -215,10 +222,10 @@ export default function AllPaymentsTable() {
             <div className="w-full overflow-x-auto">
                 <DataTable
                     columns={columns}
-                    data={orders}
-                    pageCount={pageCount}
-                    currentPage={page}
-                    onPageChange={setPage}
+                    data={returns}
+                    pageCount={1}
+                    currentPage={1}
+                    onPageChange={() => { }}
                     onSearch={handleSearch}
                     isLoading={loading}
                 />

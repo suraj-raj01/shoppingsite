@@ -17,11 +17,10 @@ export default function Billings({
 
     return (
         <div className="p-3">
-            <section className="border md:max-w-xl mx-auto rounded-xs p-5 bg-white shadow-sm space-y-4 w-full">
+            <section className="border md:max-w-xl rounded-xs p-5 bg-white shadow-sm space-y-4 w-full">
 
                 <h2 className="text-lg font-semibold">Order Summary</h2>
 
-                {/* PRICE DETAILS */}
                 <div className="space-y-2 text-sm">
 
                     <div className="flex justify-between">

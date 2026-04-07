@@ -1,173 +1,337 @@
-import BASE_URL from "@/Config"
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
+import BASE_URL from "@/Config";
+import AddtoCart from "@/pages/helpers/AddtoCart";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
+import { likelikesData, removelikesData } from "@/redux-toolkit/LikeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/redux-toolkit/Store";
+import ReviewRating from "@/pages/helpers/reviewRating";
+import ReviewForm from "@/pages/helpers/reviewForm";
+import ProductDetailsSkeleton from "@/pages/skeletons/products/ProductViewSkeleton";
 
-export default function ProductView() {
-  const [product, setProduct] = useState<any | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [activeImage, setActiveImage] = useState<string>("")
+type Reviews = {
+  _id: string,
+  userId: string,
+  productId: string,
+  ratings: number,
+  images: [],
+  message: string,
+  createdAt: string,
+  updatedAt: string,
+}
 
-  const { id } = useParams()
+type Product = {
+  _id: string;
+  name: string;
+  brand: string;
+  category: string;
+  subcategory: string;
+  price: number;
+  salePrice: number;
+  defaultImage: string;
+  images?: { url: string }[];
+  description?: string;
+  shortDescription?: string;
+  stock?: number;
+  slug: string;
+  currency: string;
+  tags?: string[];
+  variants?: {
+    name: string;
+    value: string;
+    price: number;
+    currency: string;
+  }[];
+};
 
-  // ================= FETCH =================
-  const fetchProducts = async () => {
+type Role = {
+  _id: string
+  role: string
+}
+
+type User = {
+  _id: string
+  name: string
+  email: string
+  profile: string
+  roleId?: Role[]
+  contact: string
+  address: string
+}
+
+export default function ViewProduct() {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [activeImage, setActiveImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [reviews, setReviews] = useState<Reviews[]>([])
+  const { id } = useParams();
+
+  const fetchReview = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/api/admin/products/${id}`)
-      const data = res.data.data[0] || null
-      // console.log(data,'data')
-      setProduct(data)
-      setActiveImage(data?.defaultImage || data?.images?.[0]?.url || "")
-    } catch (err) {
-      console.error(err)
+      setLoading(true)
+      const response = await axios.get(
+        `${BASE_URL}/api/reviews`
+      )
+      setReviews(response?.data?.data || [])
+
+    } catch (error) {
+      console.error("Error fetching reviews:", error)
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (id) fetchProducts()
-  }, [id])
+    fetchReview()
+  }, [])
 
-  // ================= STATES =================
-  if (loading) return <div className="p-6">Loading product...</div>
-  if (!product) return <div className="p-6">Product not found</div>
+  // ================ Get User Id =====================
 
-  // ================= UI =================
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    try {
+      const userData = localStorage.getItem("user")
+      if (userData) {
+        const parsedData = JSON.parse(userData)
+        setUser(parsedData.user)
+      }
+    } catch (err) {
+      console.error("Invalid user in localStorage")
+    }
+  }, [])
+
+  const fetchProduct = async (id: string) => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${BASE_URL}/api/admin/products/${id}`
+      );
+      // console.log(res.data.data[0]);
+      setProduct(res.data.data[0] || null);
+      setActiveImage(res.data.data[0]?.defaultImage || "");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cartItems = useSelector(
+    (state: RootState) => state.addtoLike.likes
+  );
+
+  const isLiked = cartItems?.some((item) => item._id === product?._id);
+
+  const dispatch = useDispatch();
+  const addtoLike = (product: Product) => {
+    dispatch(
+      likelikesData({
+        ...product,
+        id: product._id,
+        qnty: 1,
+      })
+    );
+  }
+
+  const removeFromLike = (product: Product) => {
+    dispatch(
+      removelikesData({
+        id: product._id,
+      })
+    );
+  }
+
+
+  useEffect(() => {
+    if (id) fetchProduct(id);
+  }, [id]);
+
+  if (loading) {
+    return <ProductDetailsSkeleton />;
+  }
+  if (!product) {
+    return null;
+  }
+
+
   return (
-    <div className="p-3 space-y-6">
-      {/* ===== TOP SECTION ===== */}
-      <div className="grid md:grid-cols-2 gap-6">
-        
-        {/* ===== IMAGE GALLERY ===== */}
-        <div className="space-y-2">
-          <img
-            src={activeImage}
-            alt={product.name}
-            className="w-full h-[350px] object-cover rounded-xs border"
-          />
+    <div className="p-3 max-w-full mx-auto">
+      <div className="grid lg:grid-cols-2 gap-12">
 
-          <div className="flex gap-2 flex-wrap">
-            {product.images?.map((img: any) => (
+        {/* ================= LEFT SIDE ================= */}
+        <div className="lg:sticky top-24 h-fit">
+
+          {/* Main Image */}
+          <div className="border rounded-xs p-4 bg-white">
+            <img
+              src={activeImage || product.defaultImage}
+              alt={product.name}
+              className="w-full md:h-112.5 object-contain"
+            />
+          </div>
+
+          {/* Thumbnails */}
+          <div className="flex gap-3 mt-4 flex-wrap">
+            <div className="absolute top-32 left-5 md:top-8 cursor-pointer border-0 shadow-none -translate-y-1/2 md:left-2 z-15 rounded-full">
+              {isLiked ? (
+                <Button
+                  onClick={() => removeFromLike(product)}
+                  variant="outline"
+                  size='icon'
+                  className="bg-transparent border rounded-full cursor-pointer shadow-none"
+                >
+                  <Heart className="h-6 w-6 text-red-500 fill-red-500" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => addtoLike(product)}
+                  variant="outline"
+                  size='icon'
+                  className="bg-transparent border rounded-full cursor-pointer shadow-none"
+                >
+                  <Heart className="h-6 w-6" />
+                </Button>
+              )}
+            </div>
+
+            {product.images && product.images?.map((img, i) => (
               <img
-                alt={product.name}
-                key={img._id}
+                key={i}
                 src={img.url}
-                onClick={() => setActiveImage(img.url)}
-                className={`w-20 h-20 object-cover cursor-pointer border ${
-                  activeImage === img.url ? "ring-2 ring-black" : ""
-                }`}
+                alt={product.name}
+                onMouseEnter={() => setActiveImage(img.url)}
+                className={`w-18 h-14 md:w-20 md:h-20 object-contain border rounded-xs cursor-pointer transition ${activeImage === img.url
+                  ? "border-green-600"
+                  : "border-gray-200"
+                  }`}
               />
             ))}
           </div>
         </div>
 
-        {/* ===== BASIC INFO ===== */}
-        <div className="space-y-4">
-          <h1 className="text-2xl font-bold">{product.name}</h1>
+        {/* ================= RIGHT SIDE ================= */}
+        <div>
 
-          <div className="flex gap-2 flex-wrap">
-            <Badge variant="secondary">{product.category}</Badge>
-            <Badge variant="outline">{product.subcategory}</Badge>
-            <Badge>{product.brand}</Badge>
-          </div>
+          {/* Breadcrumb */}
+          <p className="text-sm text-gray-400 capitalize">
+            {product.category} / {product.subcategory} / {product.brand}
+          </p>
 
-          <p className="text-gray-600">{product.shortDescription}</p>
+          {/* Title */}
+          <h1 className="md:text-3xl font-bold mt-2 leading-snug">
+            {product.name}
+          </h1>
 
-          <div className="space-y-1">
-            <div className="text-2xl font-bold">
-              ₹{product.salePrice || product.price}
+          {/* Price Section */}
+          <div className="mt-6 border-t pt-6">
+
+            <div className="flex items-center gap-4">
+              <span className="text-3xl font-bold text-green-600">
+                ₹{product.price.toLocaleString()}
+              </span>
+
+              {product.salePrice > product.price && (
+                <>
+                  <span className="line-through text-gray-400 text-lg">
+                    ₹{product.salePrice.toLocaleString()}
+                  </span>
+
+                  <Badge variant='destructive' className="text-sm px-2 py-1 rounded-xs">
+                    {Math.round(
+                      ((product.salePrice - product.price) /
+                        product.salePrice) *
+                      100
+                    )}
+                    % OFF
+                  </Badge>
+                </>
+              )}
             </div>
-            {product.salePrice && (
-              <div className="text-sm text-gray-500 line-through">
-                ₹{product.price}
-              </div>
+
+            {/* Stock */}
+            {product.stock !== undefined && (
+              <p
+                className={`mt-2 font-medium ${product.stock > 0
+                  ? "text-green-600"
+                  : "text-red-600"
+                  }`}
+              >
+                {product.stock > 0
+                  ? `(${product.stock}) Items left`
+                  : "Out of Stock"}
+              </p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div><b>SKU:</b> {product.sku}</div>
-            <div><b>Stock:</b> {product.stock}</div>
-            <div><b>Status:</b> {product.status}</div>
-            <div><b>Featured:</b> {product.isFeatured ? "Yes" : "No"}</div>
-          </div>
-        </div>
-      </div>
+          {/* Tags */}
+          {product.tags && (
+            <div className="flex gap-2 flex-col mt-5">
+              {product.tags.map((tag, i) => (
+                <span
+                  key={i}
+                  className="text-xs bg-gray-50 px-3 py-1 rounded-xs"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
-      {/* ===== DESCRIPTION ===== */}
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Description</h2>
-        <p className="text-gray-700 whitespace-pre-line">
-          {product.description}
-        </p>
-      </div>
-
-      {/* ===== VARIANTS ===== */}
-      {product.variants?.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold">Variants</h2>
-
-          <div className="overflow-auto border rounded-xs">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left">Value</th>
-                  <th className="p-2 text-left">Price</th>
-                  <th className="p-2 text-left">Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                {product.variants.map((v: any, i: number) => (
-                  <tr key={i} className="border-t">
-                    <td className="p-2">{v.name}</td>
-                    <td className="p-2">{v.value}</td>
-                    <td className="p-2">₹{v.price}</td>
-                    <td className="p-2">{v.stock}</td>
-                  </tr>
+          {/* Variants */}
+          {product.variants && (
+            <div className="mt-6">
+              <h2 className="font-semibold mb-3">Available Colors</h2>
+              <div className="flex gap-3 flex-wrap">
+                {product.variants.map((variant, i) => (
+                  <div
+                    key={i}
+                    style={{ backgroundColor: variant.value }}
+                    className="border-3 rounded-full px-3 py-3 cursor-pointer transition"
+                  >
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
+          )}
+
+          {/* Short Description */}
+          {product.shortDescription && (
+            <div className="mt-8 border-t pt-6">
+              <h2 className="font-semibold mb-2">Highlights</h2>
+              <p className="text-gray-700 leading-relaxed">
+                {product.shortDescription}
+              </p>
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="mt-8">
+            <AddtoCart product={product} className="flex md:flex-row w-full md:w-fit" />
           </div>
-        </div>
-      )}
-
-      {/* ===== SHIPPING ===== */}
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Shipping</h2>
-
-        <div className="grid md:grid-cols-4 gap-3 text-sm">
-          <div><b>Weight:</b> {product.shipping?.weight}</div>
-          <div><b>Length:</b> {product.shipping?.dimensions?.length}</div>
-          <div><b>Width:</b> {product.shipping?.dimensions?.width}</div>
-          <div><b>Height:</b> {product.shipping?.dimensions?.height}</div>
-          <div><b>Free Shipping:</b> {product.shipping?.isFreeShipping ? "Yes" : "No"}</div>
         </div>
       </div>
 
-      {/* ===== TAGS ===== */}
-      {product.tags?.length > 0 && (
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Tags</h2>
-          <div className="flex gap-2 flex-wrap">
-            {product.tags.map((tag: string, i: number) => (
-              <Badge key={i} variant="outline">
-                {tag}
-              </Badge>
-            ))}
+      {/* Full Description */}
+      {product.description && (
+        <div className="mt-16 border-t pt-8 md:flex items-center justify-between">
+          <div className="mb-5 md:mb-0">
+            <h2 className="text-2xl font-bold mb-4">
+              Product Description
+            </h2>
+            <p className="text-gray-700 md:max-w-2xl leading-relaxed whitespace-pre-line">
+              {product.description}
+            </p>
           </div>
+          {/* product ratings */}
+          <ReviewRating rating={4.5} totalReviews={reviews.length}/>
         </div>
       )}
-
-      {/* ===== SEO ===== */}
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold">SEO</h2>
-        <div className="text-sm space-y-1">
-          <div><b>Meta Title:</b> {product.metaTitle}</div>
-          <div><b>Meta Description:</b> {product.metaDescription}</div>
-        </div>
-      </div>
+      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews}/>
     </div>
-  )
+  );
 }

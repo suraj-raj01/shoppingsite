@@ -37,7 +37,7 @@ export function LoginForm({
     try {
       const response = await axios.post(`${BASE_URL}/api/admin/users/login`, payload);
       const user = response.data;
-      console.log(response.data);
+      // console.log(response.data);
       localStorage.setItem("user", JSON.stringify(user))
       localStorage.setItem("token", user.token)
       toast.success(response.data.message || "Login successful")

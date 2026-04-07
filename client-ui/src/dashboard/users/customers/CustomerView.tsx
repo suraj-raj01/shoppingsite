@@ -42,7 +42,8 @@ export default function CustomerView() {
                             {user.name}
                         </h2>
                         <p className="text-gray-500">{user.email}</p>
-                        <p className="text-gray-500">{user.contact}</p>
+                        <p className="text-gray-500">+91 {user.contact}</p>
+                        <p className="text-gray-500">ID : {user._id}</p>
                     </div>
                 </div>
 
