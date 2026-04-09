@@ -108,7 +108,7 @@ export default function CategoryProduct() {
 
       {/* ================= FILTER SIDEBAR ================= */}
 
-      <div className="md:w-1/4 w-full space-y-5 md:sticky top-15 h-screen border-r pr-5 pt-2">
+      <div className="md:w-1/5 w-full space-y-5 md:sticky top-15 h-screen border-r pr-5 pt-2">
 
         {/* Search */}
         <div className="space-y-2">
@@ -218,7 +218,7 @@ export default function CategoryProduct() {
 
               <div
                 key={product._id}
-                className="border rounded-sm py-2 px-1 hover:shadow-md transition bg-white"
+                className="border rounded-sm py-2 px-1 hover:shadow-md transition bg-background"
               >
 
                 {/* Image */}
@@ -252,7 +252,7 @@ export default function CategoryProduct() {
 
                     <div className="flex items-center gap-2">
 
-                      <span className="text-lg font-bold text-green-600">
+                      <span className="text-lg font-bold text-[#6096ff]">
                         ₹{product.price?.toLocaleString()}
                       </span>
 

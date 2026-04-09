@@ -39,7 +39,7 @@ export default function ReturnView() {
             {returns.map((item) => (
                 <div
                     key={item._id}
-                    className="border md:max-w-md rounded-xs p-4 bg-white shadow-sm space-y-2"
+                    className="border md:max-w-md rounded-xs p-4 bg-background shadow-sm space-y-2"
                 >
                     {/* HEADER */}
                     <div className="flex justify-between items-center">
@@ -49,10 +49,10 @@ export default function ReturnView() {
 
                         <Badge
                             className={`capitalize ${item.status === "pending"
-                                    ? "bg-yellow-500"
-                                    : item.status === "approved"
-                                        ? "bg-green-500"
-                                        : "bg-red-500"
+                                ? "bg-yellow-500"
+                                : item.status === "approved"
+                                    ? "bg-[#6096ff]"
+                                    : "bg-red-500"
                                 }`}
                         >
                             {item.status}

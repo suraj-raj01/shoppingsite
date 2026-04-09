@@ -120,7 +120,7 @@ export default function AllReturns() {
                     className={`capitalize ${row.original.status === "pending"
                         ? "bg-yellow-500"
                         : row.original.status === "approved"
-                            ? "bg-green-500"
+                            ? "bg-[#6096ff]"
                             : "bg-red-600"
                         }`}
                 >

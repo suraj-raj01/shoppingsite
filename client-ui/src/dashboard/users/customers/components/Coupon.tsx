@@ -65,7 +65,7 @@ export default function Coupon() {
                             onChange={(e) => setCode(e.target.value)}
                             className="w-full"
                         />
-                        <Button onClick={handleApply} disabled={loading} className="bg-green-500 cursor-pointer md:w-fit w-full hover:bg-green-600">
+                        <Button onClick={handleApply} disabled={loading} className="bg-[#6096ff] cursor-pointer md:w-fit w-full hover:bg-[#5089fa]">
                             {loading ? "Applying..." : "Apply Coupon"}
                         </Button>
                     </div>
@@ -81,7 +81,7 @@ export default function Coupon() {
                     <div className="flex items-center justify-between bg-green-50 border border-green-200 p-3 rounded-xs">
 
                         <div className="flex items-center gap-2">
-                            <Badge className="bg-green-600 text-white">
+                            <Badge className="bg-[#5089fa] text-white">
                                 {appliedCoupon.code}
                             </Badge>
                             <span className="text-sm text-green-700">

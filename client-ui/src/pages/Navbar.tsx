@@ -104,7 +104,7 @@ export default function Navbar() {
                             <img
                                 src={navbar?.logo}
                                 alt="logo"
-                                className="h-8 object-contain"
+                                className="h-8 w-auto object-contain"
                             />
                         </DialogTitle>
 
@@ -135,7 +135,7 @@ export default function Navbar() {
                 </Sheet>
 
                 {/* Logo */}
-                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-9 -ml-2 object-contain" />
+                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-10 w-auto -ml-5 object-contain" />
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
@@ -182,7 +182,7 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <div className="rounded-full text-green-600 text-md p-1">
+                                    <div className="rounded-full -mr-4 text-green-600 text-md p-1">
                                         <div className="rounded-full flex p-0 items-center justify-center border cursor-pointer text-xl h-7 w-full">
                                             {user?.user?.profile ? (
                                                 <img src={user?.user?.profile || ""} alt="Profile" className="w-full object-cover h-full rounded-full" />
@@ -228,18 +228,18 @@ export default function Navbar() {
                     <div className="relative ml-0" onClick={() => { navigate('products/likeditems') }}>
                         {
                             likeItems.length > 0 ? (
-                                <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                <Button variant="ghost" className="cursor-pointer rounded-full" size="icon" onClick={() => { navigate('products/likeditems') }}>
                                     <Heart className="h-6 w-6 text-red-500 fill-red-500" />
                                 </Button>
                             ) : (
-                                <Button variant="ghost" size="icon" onClick={() => { navigate('products/likeditems') }}>
+                                <Button variant="ghost" className="cursor-pointer rounded-full" size="icon" onClick={() => { navigate('products/likeditems') }}>
                                     <Heart className="h-6 w-6" />
                                 </Button>
                             )
                         }
                     </div>
 
-                    <Button variant="ghost" size="icon" className="relative -ml-3" onClick={() => { navigate('products/cartitems') }}>
+                    <Button variant="ghost" size="icon" className="relative cursor-pointer rounded-full -ml-3" onClick={() => { navigate('products/cartitems') }}>
                         <ShoppingCart />
                         <span className="absolute -top-1 -right-1 bg-primary text-white text-xs px-1 rounded-full">
                             {cartItems.length}
@@ -250,7 +250,7 @@ export default function Navbar() {
                         {user?.user?.contact ? (
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <div className="rounded-full flex p-0 items-center justify-center border cursor-pointer text-xl h-8 w-8">
+                                    <div className="rounded-full flex p-0 items-center justify-center -mr-5 border cursor-pointer text-xl h-8 w-8">
                                         {user?.user?.profile ? (
                                             <img src={user?.user?.profile || ""} alt="Profile" className="w-full h-full rounded-full" />
                                         ) : (

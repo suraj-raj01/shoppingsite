@@ -190,7 +190,7 @@ export default function App() {
             <Route path="profile" element={<Dashboard />} />
             <Route path="notifications" element={<Notification />} />
             <Route path="vouchers" element={<Voucher />} />
-            <Route path="billing" element={<Billings subtotal={0} discount={0} delivery={0} />} />
+            <Route path="billing/:id" element={<Billings/>} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile/:id" element={<EditProfile />} />
 

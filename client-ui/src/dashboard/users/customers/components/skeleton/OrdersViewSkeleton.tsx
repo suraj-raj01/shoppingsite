@@ -38,7 +38,7 @@ export default function OrdersViewSkeleton() {
             {Array.from({ length: 6 }).map((_, i) => (
               <div
                 key={i}
-                className="border rounded-xs p-4 bg-white space-y-3"
+                className="border rounded-xs p-4 bg-background space-y-3"
               >
                 <Skeleton className="h-4 w-24" />
                 <Skeleton className="h-3 w-full" />

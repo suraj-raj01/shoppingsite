@@ -10,6 +10,7 @@ import { Link, Outlet } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { BellDot } from "lucide-react"
+import { ModeToggle } from "@/components/toggleTheme"
 
 export default function DashboardLayout() {
 
@@ -40,9 +41,12 @@ export default function DashboardLayout() {
 
           </div>
           <div className="flex items-center gap-2">
-            <div className="p-2 cursor-pointer border text-gray-500 hover:bg-green-100 hover:text-gray-800 rounded-full transition">
-              <Link to="/dashboard/notifications"><BellDot className="text-gray-500 h-4 w-4 hover:text-gray-800" /></Link>
+            <div className="">
+              <ModeToggle />
             </div>
+            <Button variant='outline' className="rounded-full h-9 w-9 transition">
+              <Link to="/dashboard/notifications"><BellDot className="h-4 w-4" /></Link>
+            </Button>
             <Button size="icon" variant="outline" className="rounded-full overflow-hidden">
               {user?.user?.roleId ? (
                 <img

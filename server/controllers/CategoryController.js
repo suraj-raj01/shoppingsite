@@ -32,7 +32,7 @@ Get All Categories
 */
 export const getAllCategories = async (_req, res) => {
   try {
-    const data = await Category.find().sort({ createdAt: -1 });
+    const data = await Category.find().sort({ createdAt: 1 });
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });

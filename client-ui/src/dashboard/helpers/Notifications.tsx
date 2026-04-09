@@ -90,7 +90,7 @@ export default function Notification(){
             </div>
             <div className="w-full gap-2 grid grid-cols-1 md:grid-cols-3">
                 {data.map((item) => (
-                    <div key={item.id} className="flex rounded-full border-2 border-green-200 mb-1 px-5 py-2 cursor-pointer items-center justify-between">
+                    <div key={item.id} className="flex rounded-xs border hover:bg-green-100 border-green-200 mb-1 px-5 py-2 cursor-pointer items-center justify-between">
                         <div>
                             <h3 className="text-lg font-semibold">{item.title}</h3>
                             <p className="text-sm">{item.description}</p>

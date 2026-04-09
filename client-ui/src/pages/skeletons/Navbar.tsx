@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
-import { Menu, Heart, ShoppingCart } from "lucide-react"
 
 export default function NavbarSkeleton() {
   return (
@@ -10,7 +9,7 @@ export default function NavbarSkeleton() {
 
         {/* Mobile menu */}
         <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu />
+          <Skeleton className="h-9 w-12 rounded-xs" />
         </Button>
 
         {/* Logo */}
@@ -18,15 +17,14 @@ export default function NavbarSkeleton() {
 
         {/* Mobile right icons */}
         <div className="ml-auto flex md:hidden items-center gap-1">
-          <Button variant="ghost" size="icon">
-            <Heart />
-          </Button>
+          <Skeleton className="h-9 w-9 rounded-full" />
+          <Skeleton className="h-9 w-9 rounded-full" />
 
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart />
+          <Button variant="ghost" size="icon" className="relative rounded-full">
+            <Skeleton className="h-9 w-9 rounded-full" />
             <Skeleton className="absolute -top-1 -right-1 h-4 w-4 rounded-full" />
           </Button>
-            <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-9 w-9 rounded-full" />
         </div>
 
         {/* Location (desktop) */}

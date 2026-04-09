@@ -47,7 +47,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: "Profile", url: "/dashboard/profile" },
           { title: "Vouchers", url: "/dashboard/vouchers" },
-          { title: "Billing", url: "/dashboard/billing" },
           { title: "Profile Settings", url: "/dashboard/settings" },
         ],
       },

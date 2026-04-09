@@ -167,7 +167,7 @@ export default function UpdateUserForm({ editData, onSuccess }: Props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 grid md:grid-cols-2 gap-2 border p-2 md:p-5 md:max-w-3xl mx-auto rounded-xs bg-white"
+          className="space-y-4 grid md:grid-cols-2 gap-2 border p-2 md:p-5 md:max-w-3xl mx-auto rounded-xs bg-background"
         >
           {/* Name */}
           <FormField
@@ -279,8 +279,8 @@ export default function UpdateUserForm({ editData, onSuccess }: Props) {
             {submitting
               ? "Please wait..."
               : isEdit
-              ? "Update User"
-              : "Register User"}
+                ? "Update User"
+                : "Register User"}
           </Button>
         </form>
       </Form>

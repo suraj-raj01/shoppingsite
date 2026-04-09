@@ -68,7 +68,7 @@ export default function ReviewView() {
 
     return (
         <section className="w-full md:max-w-2xl p-3">
-            <div className="bg-white shadow-xs border rounded-xs p-6 space-y-4">
+            <div className="bg-background shadow-xs border rounded-xs p-6 space-y-4">
 
                 {/* 👤 USER INFO */}
                 <div className="flex items-center gap-3 border-b pb-3">
@@ -100,7 +100,7 @@ export default function ReviewView() {
                             size={20}
                             className={
                                 star <= review.ratings
-                                    ? "text-green-500 fill-green-500"
+                                    ? "fill-[#6096ff] text-[#6096ff]"
                                     : "text-gray-300"
                             }
                         />

@@ -145,10 +145,10 @@ export default function Returns() {
             cell: ({ row }) => (
                 <Badge
                     className={`capitalize ${row.original.status === "pending"
-                            ? "bg-yellow-500"
-                            : row.original.status === "approved"
-                                ? "bg-green-500"
-                                : "bg-red-600"
+                        ? "bg-yellow-500"
+                        : row.original.status === "approved"
+                            ? "bg-[#6096ff]"
+                            : "bg-red-600"
                         }`}
                 >
                     {row.original.status}

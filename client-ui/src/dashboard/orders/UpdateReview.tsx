@@ -14,7 +14,7 @@ export default function UpdateReview() {
     const [message, setMessage] = useState("");
     const [images, setImages] = useState<any[]>([]);
 
-    const {id} = useParams();
+    const { id } = useParams();
 
     // ================= IMAGE UPLOAD =================
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +96,7 @@ export default function UpdateReview() {
             {/* FORM */}
             <form
                 onSubmit={handleSubmit}
-                className="space-y-3 w-full md:max-w-2xl h-fit border bg-white p-3 rounded-xs shadow"
+                className="space-y-3 w-full md:max-w-2xl h-fit border bg-background p-3 rounded-xs shadow"
             >
                 <h2 className="text-xl font-semibold">Write a Review</h2>
 
@@ -169,7 +169,7 @@ export default function UpdateReview() {
 
                 <Button
                     type="submit"
-                    className="w-full mb-5 text-white cursor-pointer bg-green-500 hover:bg-green-600"
+                    className="w-full mb-5 text-white cursor-pointer bg-[#6096ff] hover:bg-[#5089fa]"
                 >
                     {loading ? "Updating..." : "Update Review"}
                 </Button>

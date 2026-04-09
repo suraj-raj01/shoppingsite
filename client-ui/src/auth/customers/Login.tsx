@@ -24,7 +24,7 @@ const loginSchema = z.object({
     .string()
     .min(1, "Email is required")
     .email("Enter valid email"),
-  password: z 
+  password: z
     .string()
     .min(1, "Password is required")
     .min(6, "Password must be at least 6 characters"),
@@ -138,7 +138,7 @@ export function LoginForm() {
               <Field>
                 <Button
                   type="submit"
-                  className="w-full cursor-pointer transition duration-300 hover:bg-green-600 bg-green-500"
+                  className="w-full cursor-pointer transition duration-300 hover:bg-[#5089fa] bg-[#6096ff]"
                   disabled={loading}
                 >
                   {loading ? "Logging in..." : "Login"}

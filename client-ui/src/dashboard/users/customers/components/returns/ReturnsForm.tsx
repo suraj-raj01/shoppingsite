@@ -159,7 +159,7 @@ export default function ReturnForm() {
                 <h2 className="text-xl font-bold">
                     {id ? "Update Return Request" : "Create Return Request"}
                 </h2>
-                <div className="p-5 w-full md:max-w-xl bg-white grid grid-cols-1 md:grid-cols-2 gap-3 border-0 rounded-xs shadow-0 space-y-2">
+                <div className="p-5 w-full md:max-w-xl bg-background grid grid-cols-1 md:grid-cols-2 gap-3 border-0 rounded-xs shadow-0 space-y-2">
 
 
                     {/* ORDER ID */}
@@ -253,10 +253,10 @@ export default function ReturnForm() {
                     )}
 
                     {/* IMAGE UPLOAD */}
-                   <div className="col-span-2">
-                    <label htmlFor="images">Images</label>
-                    <Input type="file" multiple onChange={handleImageUpload} className="col-span-2" />
-                   </div>
+                    <div className="col-span-2">
+                        <label htmlFor="images">Images</label>
+                        <Input type="file" multiple onChange={handleImageUpload} className="col-span-2" />
+                    </div>
 
                     {/* PREVIEW */}
                     <div className="flex gap-2 flex-wrap">

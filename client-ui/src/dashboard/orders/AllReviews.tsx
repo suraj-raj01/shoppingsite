@@ -102,7 +102,7 @@ export default function AllReviews() {
             cell: ({ row }) => (
                 <div className="flex items-center gap-1">
                     {Array.from({ length: row.original.ratings }).map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-green-500 text-green-500" />
+                        <Star key={i} className="h-4 w-4 fill-[#6096ff] text-[#6096ff]" />
                     ))}
                 </div>
             ),

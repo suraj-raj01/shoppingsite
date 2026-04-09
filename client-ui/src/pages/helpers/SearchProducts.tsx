@@ -100,7 +100,7 @@ export default function SearchProducts() {
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="absolute top-full left-center w-full mx-auto md:w-2xl bg-white border rounded-xs shadow-lg z-50 max-h-80">
+                <div className="absolute top-full left-center w-full mx-auto md:w-2xl bg-background border rounded-xs shadow-lg z-50 max-h-80">
 
                     {loading && (
                         <p className="p-3 text-sm text-muted-foreground">Searching...</p>

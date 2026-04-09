@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye, NotepadText } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, NotepadText, NotepadTextDashed } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -119,7 +119,7 @@ export default function OrdersTable() {
             cell: ({ row }) => (
                 <div>
                     <Badge
-                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
+                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-[#6096ff]"}`}
                     >
                         {row.original.paymentStatus}
                     </Badge>
@@ -150,7 +150,7 @@ export default function OrdersTable() {
             header: "Total Amount",
             cell: ({ row }) => (
                 <div>
-                    <p>₹{row.original.items.map((item) => (item.price * item.quantity)).reduce((a, b) => a + b, 0)}</p>
+                    <p>₹{row.original.items.map((item) => (item.price * item.quantity)).reduce((a, b) => a + b, 0)}.00</p>
                 </div>
             ),
         },
@@ -166,11 +166,15 @@ export default function OrdersTable() {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
+                        <DropdownMenuItem className='cursor-pointer' onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
                             View Order
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/dashboard/invoice/${row.original._id}`)}>
+                        <DropdownMenuItem className='cursor-pointer' onClick={() => navigate(`/dashboard/billing/${row.original._id}`)}>
+                            <NotepadTextDashed className="mr-2 h-4 w-4" />
+                            Biling Order
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className='cursor-pointer' onClick={() => navigate(`/dashboard/invoice/${row.original._id}`)}>
                             <NotepadText className="mr-2 h-4 w-4" />
                             Generate Invoice
                         </DropdownMenuItem>

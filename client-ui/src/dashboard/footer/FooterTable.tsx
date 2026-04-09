@@ -124,7 +124,7 @@ export default function FooterTable() {
                                         key={index}
                                         className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-1 sm:gap-3 border rounded-xs px-3 py-2"
                                     >
-                                        <Badge className="font-medium bg-green-500 text-white">
+                                        <Badge className="font-medium bg-[#6096ff] text-white">
                                             {icon.title}
                                         </Badge>
 

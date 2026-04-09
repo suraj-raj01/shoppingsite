@@ -34,13 +34,12 @@ export default function ReviewRating({
             return (
               <Star
                 key={i}
-                className={`h-5 w-5 ${
-                  isFilled
-                    ? "fill-green-500 text-green-500"
+                className={`h-5 w-5 ${isFilled
+                    ? "fill-[#6096ff] text-[#6096ff]"
                     : isHalf
-                    ? "fill-green-300 text-green-500"
-                    : "text-gray-300"
-                }`}
+                      ? "fill-[#9996ff] text-[#6096ff]"
+                      : "text-gray-300"
+                  }`}
               />
             );
           })}
@@ -59,7 +58,7 @@ export default function ReviewRating({
       <div className="space-y-2 py-5">
         {breakdown.map((item) => (
           <div key={item.star} className="flex items-center gap-2 text-sm">
-            
+
             {/* STAR LABEL */}
             <span className="w-10 text-gray-600">
               {item.star} star
@@ -68,7 +67,7 @@ export default function ReviewRating({
             {/* PROGRESS BAR */}
             <div className="flex-1 h-2 bg-gray-200 rounded">
               <div
-                className="h-2 bg-green-500 rounded"
+                className="h-2 bg-[#6096ff] rounded"
                 style={{ width: `${item.percent}%` }}
               />
             </div>

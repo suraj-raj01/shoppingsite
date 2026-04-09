@@ -98,7 +98,7 @@ export default function SearchProductsMobileView({ onClose }: { onClose: () => v
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="w-full mx-auto mt-3 md:w-2xl bg-white border rounded-xs shadow-lg z-50 max-h-80">
+                <div className="w-full mx-auto mt-3 md:w-2xl bg-background border rounded-xs shadow-lg z-50 max-h-80">
 
                     {loading && (
                         <p className="p-3 text-sm text-muted-foreground">Searching...</p>

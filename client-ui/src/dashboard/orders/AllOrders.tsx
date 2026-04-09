@@ -102,7 +102,7 @@ export default function AllOrders() {
             cell: ({ row }) => (
                 <div>
                     <Badge
-                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}
+                        className={`capitalize text-xs font-medium px-2 py-1 rounded-xs ${row.original.paymentStatus === "pending" ? "bg-red-500" : "bg-[#6096ff]"}`}
                     >
                         {row.original.paymentStatus}
                     </Badge>

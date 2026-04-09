@@ -103,7 +103,7 @@ export default function CheckOut() {
                             county?: string
                         }
                     )
-                    console.log(fullAddress,'address')
+                    console.log(fullAddress, 'address')
                     toast.success("Location detected")
                 } catch (err) {
                     console.error("Address fetch failed:", err)
@@ -155,7 +155,7 @@ export default function CheckOut() {
                     coords.latitude,
                     coords.longitude
                 )
-                setAddress(fullAddress as { suburb?: string; county?:string; postcode?: string; city?: string })
+                setAddress(fullAddress as { suburb?: string; county?: string; postcode?: string; city?: string })
             } catch (err) {
                 console.log("Address fetch failed:", err)
             }
@@ -236,7 +236,7 @@ export default function CheckOut() {
             description: "Order Payment",
             image: myProImg,
             notes: {
-                "Shipping Address": useCurrentLocation ? address?.suburb ? address.county:address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
+                "Shipping Address": useCurrentLocation ? address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
             },
             order_id: data.id,
 
@@ -312,7 +312,7 @@ export default function CheckOut() {
         }
     }
     return (
-        <div id="checkout" className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3">
+        <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3">
 
             {/* ✅ USER DETAILS */}
             <div className="w-full">
@@ -322,7 +322,7 @@ export default function CheckOut() {
                             Shipping Address
                         </CardTitle>
 
-                        <Button variant="outline" size="sm" className="gap-2 bg-green-500 text-white hover:bg-green-600 hover:text-white cursor-pointer" onClick={getUserLocation}>
+                        <Button variant="outline" size="sm" className="gap-2 bg-[#6096ff] text-white hover:bg-[#5089fa] hover:text-white cursor-pointer" onClick={getUserLocation}>
                             <MapPin size={16} />
                             {detecting ? "Detecting..." : "Current Location"}
                         </Button>
@@ -346,7 +346,7 @@ export default function CheckOut() {
 
                     <CardContent className="space-y-3">
                         {/* user row */}
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-xs bg-white">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-xs bg-background">
 
                             {/* LEFT SECTION */}
                             <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -395,17 +395,17 @@ export default function CheckOut() {
                         {/* details grid */}
                         <div className="flex flex-col gap-3 text-md">
                             <p className="flex items-center gap-2">
-                                <Phone size={16} className="text-green-500" />
+                                <Phone size={16} className="text-[#6096ff]" />
                                 Phone : {mydata.contact}
                             </p>
 
                             <p className="flex items-center gap-2">
-                                <Mail size={16} className="text-green-500" />
+                                <Mail size={16} className="text-[#6096ff]" />
                                 Email : {mydata.email}
                             </p>
 
                             <div className="flex items-center gap-2 sm:col-span-2">
-                                <HomeIcon size={16} className="text-green-500 h-6 w-6 md:h-4 md:w-4" />
+                                <HomeIcon size={16} className="text-[#6096ff] h-6 w-6 md:h-4 md:w-4" />
                                 {useCurrentLocation ? (
                                     <p>Current Location : {detecting ? "Detecting..." : address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
                                 ) : (
@@ -420,7 +420,7 @@ export default function CheckOut() {
             {/* ✅ CART TABLE */}
             {
                 Data.length > 0 && (
-                    <div id="purchase-items" className="border w-full rounded-xs p-2">
+                    <div id="purchase-items" className="border h-fit w-full rounded-xs p-2">
                         <h3 className="text-xl font-bold mb-4">Your Purchase Items</h3>
 
                         <div className="space-y-4">
@@ -496,7 +496,7 @@ export default function CheckOut() {
                         <div className="flex justify-between items-center mt-6">
                             <h3 className="text-xl font-bold">Total: ₹{totalAmount}</h3>
 
-                            <Button disabled={payLoading} onClick={handlePay} className="bg-green-500 hover:bg-green-600 text-white">
+                            <Button disabled={payLoading} onClick={handlePay} className="bg-[#6096ff] hover:bg-[#5089fa] text-white">
                                 {payLoading ? "Processing..." : "Pay Now"}
                             </Button>
                         </div>

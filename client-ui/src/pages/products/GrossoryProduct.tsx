@@ -55,11 +55,11 @@ export default function GrossoryProducts() {
     if (!products.length) return null
 
     return (
-        <section className="w-full py-6">
+        <section className="w-full md:px-5 py-6">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-bold text-xl md:text-2xl py-5">
                     Footwear Products
-                    <span className="text-sm ml-5 text-green-400 cursor-pointer">
+                    <span className="text-sm ml-5 text-[#6096ff] cursor-pointer">
                         <Link to="/products/footwear">View all</Link>
                     </span>
                 </h2>

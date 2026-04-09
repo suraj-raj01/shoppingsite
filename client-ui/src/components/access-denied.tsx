@@ -11,7 +11,7 @@ export default function AccessDenied({ user }: Props) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-gray-100 via-white to-gray-200 p-6">
-            <div className="w-full max-w-md bg-white shadow-sm rounded-xs p-8 text-center border">
+            <div className="w-full max-w-md bg-background shadow-sm rounded-xs p-8 text-center border">
 
                 {/* Icon */}
                 <div className="flex justify-center mb-4">

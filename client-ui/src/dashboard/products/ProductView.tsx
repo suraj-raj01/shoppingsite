@@ -167,7 +167,7 @@ export default function ViewProduct() {
         <div className="lg:sticky top-24 h-fit">
 
           {/* Main Image */}
-          <div className="border rounded-xs p-4 bg-white">
+          <div className="border rounded-xs p-4 bg-background">
             <img
               src={activeImage || product.defaultImage}
               alt={product.name}
@@ -328,10 +328,10 @@ export default function ViewProduct() {
             </p>
           </div>
           {/* product ratings */}
-          <ReviewRating rating={4.5} totalReviews={reviews.length}/>
+          <ReviewRating rating={4.5} totalReviews={reviews.length} />
         </div>
       )}
-      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews}/>
+      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
     </div>
   );
 }

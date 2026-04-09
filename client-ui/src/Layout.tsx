@@ -5,9 +5,9 @@ import Categories from "./pages/products/Categories";
 
 export default function Layout() {
   return (
-    <div>
+    <div className="">
       <Navbar />
-      <div className="sticky top-15 z-35 bg-white">
+      <div className="sticky top-15 z-35 bg-background">
         <Categories />
       </div>
       <Outlet />

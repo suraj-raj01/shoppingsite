@@ -99,7 +99,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
             return (
               <div key={item._id}>
                 <section className="w-full border-0 h-full p-2 md:max-w-2xl">
-                  <div className="bg-white shadow-none rounded-xs space-y-4">
+                  <div className="bg-background shadow-none rounded-xs space-y-4">
 
                     {/* 👤 USER INFO */}
                     <UserInfo userId={item?.userId} />
@@ -117,7 +117,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                           size={20}
                           className={
                             star <= item.ratings
-                              ? "text-green-500 fill-green-500"
+                              ? "text-[#6096ff] fill-[#6096ff]"
                               : "text-gray-300"
                           }
                         />
@@ -162,10 +162,10 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
         }
       </div>
       {/* FORM */}
-      <div className="space-y-3 max-w-full grid h-fit border-0 bg-white p-3 rounded-xs shadow-0">
+      <div className="space-y-3 max-w-full grid h-fit border-0 bg-background p-3 rounded-xs shadow-0">
         <form
           onSubmit={handleSubmit}
-          className="max-w-full md:pl-50 h-fit border-0 bg-white rounded-xs shadow-none"
+          className="max-w-full md:pl-50 h-fit border-0 bg-background rounded-xs shadow-none"
         >
           <h2 className="text-xl font-semibold">Write a Review</h2>
 
@@ -180,7 +180,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                   onMouseEnter={() => setHover(star)}
                   onMouseLeave={() => setHover(0)}
                   className={`h-7 w-7 cursor-pointer transition ${(hover || ratings) >= star
-                    ? "fill-green-500 text-green-500"
+                    ? "fill-[#6096ff] text-[#6096ff]"
                     : "text-gray-300"
                     }`}
                 />
@@ -195,7 +195,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Share your experience..."
-              className="focus:ring-2 focus:ring-green-500"
+              className="focus:ring-2 focus-[#6096ff]"
               rows={5}
               required
             />
@@ -239,7 +239,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
           <Button
             type="submit"
             disabled={loading}
-            className="w-full mb-5 text-white cursor-pointer bg-green-500 hover:bg-green-600"
+            className="w-full mb-5 text-white cursor-pointer bg-[#6096ff] hover:bg-[#5089fa]"
           >
             {loading ? "Uploading..." : "Submit Review"}
           </Button>

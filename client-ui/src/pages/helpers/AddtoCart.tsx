@@ -53,24 +53,24 @@ export default function AddToCart({
     return (
         <div className={`${className} space-y-4`}>
             {/* Buttons */}
-            <div  className={`${className} flex flex-col md:items-center justify-start md:justify-between gap-2 w-full`}>
+            <div className={`${className} flex flex-col md:items-center justify-start md:justify-between gap-2 w-full`}>
 
                 <Button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
                     className={`flex py-3 font-semibold w-full rounded-xs ${isOutOfStock
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-green-600 hover:bg-green-700 text-white"
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#5089fa] hover:bg-[#6096ff] text-white cursor-pointer"
                         }`}
                 >
-                  <ShoppingCart/>  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                    <ShoppingCart />  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 </Button>
 
                 <Button
                     variant="outline"
                     className="flex py-3 font-semibold rounded-xs w-full"
                 >
-                  <IndianRupee/>  Buy Now
+                    <IndianRupee />  Buy Now
                 </Button>
             </div>
         </div>

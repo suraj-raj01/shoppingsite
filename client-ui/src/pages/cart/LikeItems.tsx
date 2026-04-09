@@ -25,7 +25,7 @@ export default function LikeItems() {
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto p-4 space-y-6">
+        <div className="w-full min-h-screen max-w-7xl mx-auto p-4 space-y-6">
             <h1 className="text-3xl font-bold flex items-center gap-2 justify-start">Your Liked <Heart className="fill-red-500 border-0 text-red-500" /> Items</h1>
 
             {/* ✅ cart list */}
@@ -60,7 +60,7 @@ export default function LikeItems() {
                                 <span className="line-through text-muted-foreground text-xs mx-5">
                                     ₹{item.price.toLocaleString()}
                                 </span>
-                                <Badge variant='destructive' className="text-xs md:text-sm lg:text-sm px-2 py-1 rounded-xs">
+                                <Badge variant='default' className="text-xs md:text-sm lg:text-sm px-2 py-1 rounded-xs">
                                     {Math.round(
                                         ((item.salePrice - item.price) /
                                             item.salePrice) *

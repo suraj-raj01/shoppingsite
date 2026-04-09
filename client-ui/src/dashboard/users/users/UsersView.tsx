@@ -35,7 +35,7 @@ export default function UsersView() {
                 <div className="md:mt-8 md:absolute text-right top-13 md:left-99">
                     <Button variant='outline' className="px-5 py-2 border-0 rounded-xs transition">
                         <Link to={`/dashboard/users/${user._id}`}>
-                        <EditIcon/>
+                            <EditIcon />
                         </Link>
                     </Button>
                 </div>
@@ -70,7 +70,7 @@ export default function UsersView() {
                             {user.roleId?.map((role: any) => (
                                 <span
                                     key={role._id}
-                                    className=" text-sm font-semibold bg-green-600 text-white border px-2 py-1  rounded-xs"
+                                    className=" text-sm font-semibold bg-[#5089fa] text-white border px-2 py-1  rounded-xs"
                                 >
                                     {role.role}
                                 </span>

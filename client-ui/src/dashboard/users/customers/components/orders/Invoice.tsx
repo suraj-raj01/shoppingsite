@@ -13,6 +13,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge";
+import { Download } from "lucide-react";
 
 type Order = {
     _id: string,
@@ -112,7 +113,7 @@ export default function Invoice() {
             {loading ? (
                 <Skeleton className="w-full h-auto" />
             ) : order ? (
-                <div className="space-y-6 bg-white p-5 border rounded-xs shadow-sm">
+                <div className="space-y-6 bg-background p-5 border rounded-xs shadow-sm">
 
                     {/* HEADER */}
                     <div className="flex md:flex-row flex-col md:items-center items-start justify-between">
@@ -123,8 +124,8 @@ export default function Invoice() {
                             </p>
                         </div>
 
-                        <Button onClick={handleDownload} className="cursor-pointer w-full md:w-fit bg-green-500 hover:bg-green-600">
-                            Download Invoice
+                        <Button onClick={handleDownload} className="cursor-pointer w-full md:w-fit bg-[#6096ff] hover:bg-[#5089fa]">
+                            <Download />  Download Invoice
                         </Button>
                     </div>
 
@@ -190,7 +191,7 @@ export default function Invoice() {
                     {/* PAYMENT STATUS */}
                     <div className="text-sm">
                         Payment Status:{" "}
-                        <Badge className="font-medium text-xs bg-green-500 capitalize">
+                        <Badge className="font-medium text-xs bg-[#6096ff] capitalize">
                             {order.paymentStatus}
                         </Badge>
                     </div>
@@ -241,11 +242,11 @@ export default function Invoice() {
 
                             <div className="flex justify-between items-center">
                                 <span className="text-xl font-bold">
-                                   Total Price : ₹{selectedProduct.price}
+                                    Total Price : ₹{selectedProduct.price}
                                 </span>
 
                                 <Button
-                                className="cursor-pointer"
+                                    className="cursor-pointer"
                                     onClick={() =>
                                         navigate(`/products/view/${selectedProduct._id}`)
                                     }

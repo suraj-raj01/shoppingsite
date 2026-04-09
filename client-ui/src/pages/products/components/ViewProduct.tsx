@@ -167,7 +167,7 @@ export default function ViewProduct() {
         <div className="lg:sticky top-24 h-fit">
 
           {/* Main Image */}
-          <div className="border rounded-xs p-4 bg-white">
+          <div className="border rounded-xs p-4 bg-background">
             <img
               src={activeImage || product.defaultImage}
               alt={product.name}
@@ -231,7 +231,7 @@ export default function ViewProduct() {
           <div className="mt-6 border-t pt-6">
 
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-green-600">
+              <span className="text-3xl font-bold text-[#6096ff]">
                 ₹{product.price.toLocaleString()}
               </span>
 
@@ -241,7 +241,7 @@ export default function ViewProduct() {
                     ₹{product.salePrice.toLocaleString()}
                   </span>
 
-                  <Badge variant='destructive' className="text-sm px-2 py-1 rounded-xs">
+                  <Badge variant='default' className="text-sm px-2 py-1 rounded-xs">
                     {Math.round(
                       ((product.salePrice - product.price) /
                         product.salePrice) *
@@ -257,7 +257,7 @@ export default function ViewProduct() {
             {product.stock !== undefined && (
               <p
                 className={`mt-2 font-medium ${product.stock > 0
-                  ? "text-green-600"
+                  ? "text-[#6096ff]"
                   : "text-red-600"
                   }`}
               >
@@ -274,7 +274,7 @@ export default function ViewProduct() {
               {product.tags.map((tag, i) => (
                 <span
                   key={i}
-                  className="text-xs bg-gray-50 px-3 py-1 rounded-xs"
+                  className="text-md font-bold"
                 >
                   {tag}
                 </span>
@@ -328,10 +328,10 @@ export default function ViewProduct() {
             </p>
           </div>
           {/* product ratings */}
-          <ReviewRating rating={4.5} totalReviews={reviews.length}/>
+          <ReviewRating rating={4.5} totalReviews={reviews.length} />
         </div>
       )}
-      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews}/>
+      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
     </div>
   );
 }

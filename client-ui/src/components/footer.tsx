@@ -24,7 +24,7 @@ type Footer = {
   contactTitle: string;
   contactDesc: string;
   followus: string;
-  icons: {title:string,url:string}[];
+  icons: { title: string, url: string }[];
   copyright: string;
 }
 
@@ -38,7 +38,7 @@ export default function Footer() {
       setLoading(true)
       const res = await axios.get(`${BASE_URL}/api/admin/category`);
       const footer = await axios.get(`${BASE_URL}/api/admin/footer`);
-      setFooter(footer?.data?.data[0] || {aboutTitle:"",aboutDesc:"",contactTitle:"",contactDesc:"",socialTitle:"",socialDesc:""})
+      setFooter(footer?.data?.data[0] || { aboutTitle: "", aboutDesc: "", contactTitle: "", contactDesc: "", socialTitle: "", socialDesc: "" })
       // console.log(footer.data?.data[0],'footer');
       setCategories(res.data || []);
     } catch (err) {
@@ -57,47 +57,47 @@ export default function Footer() {
       <div className="mx-auto md:px-10 px-5 py-8">
 
         {/* TOP SECTION */}
-       {loading ? (
-        <Footer1Skeleton />
-       ) : (
-         <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
+        {loading ? (
+          <Footer1Skeleton />
+        ) : (
+          <div className="grid gap-8 grid-cols-1 md:grid-cols-3">
 
-          {/* ABOUT */}
-          <div>
-            <h3 className="text-lg font-semibold mb-2">{footer?.aboutTitle}</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              {footer?.aboutDesc}
-            </p>
-          </div>
+            {/* ABOUT */}
+            <div>
+              <h3 className="text-lg font-semibold mb-2">{footer?.aboutTitle}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                {footer?.aboutDesc}
+              </p>
+            </div>
 
-          {/* CONTACT */}
-          <div>
-            <h3 className="text-lg font-semibold mb-2">{footer?.contactTitle}</h3>
-            <p className="text-gray-400 text-sm">{footer?.contactDesc.split(",").map((line, i) => (
-              <span key={i}>{line}<br/></span>
-            ))}</p>
-          </div>
+            {/* CONTACT */}
+            <div>
+              <h3 className="text-lg font-semibold mb-2">{footer?.contactTitle}</h3>
+              <p className="text-gray-400 text-sm">{footer?.contactDesc.split(",").map((line, i) => (
+                <span key={i}>{line}<br /></span>
+              ))}</p>
+            </div>
 
-          {/* SOCIAL */}
-          <div>
-            <h3 className="text-lg font-semibold mb-2">{footer?.followus}</h3>
-            <div className="flex gap-3">
-              {footer?.icons.map((icon, i) => {
-                const IconComponent = icons[icon.title as keyof typeof icons];
-                return (
-                  <Link
-                    key={i}
-                    to={icon.url}
-                    className="border border-gray-500 p-2 h-10 w-10 flex items-center justify-center rounded-full hover:bg-white hover:text-green-500 transition"
-                  >
-                    {IconComponent ? <IconComponent size={18} className="capitalize"/> : <span className="">{icon.title}</span>}
-                  </Link>
-                );
-              })}
+            {/* SOCIAL */}
+            <div>
+              <h3 className="text-lg font-semibold mb-2">{footer?.followus}</h3>
+              <div className="flex gap-3">
+                {footer?.icons.map((icon, i) => {
+                  const IconComponent = icons[icon.title as keyof typeof icons];
+                  return (
+                    <Link
+                      key={i}
+                      to={icon.url}
+                      className="border border-gray-500 p-2 h-10 w-10 flex items-center justify-center rounded-full hover:bg-background hover:text-[#6096ff] transition"
+                    >
+                      {IconComponent ? <IconComponent size={18} className="capitalize" /> : <span className="">{icon.title}</span>}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
-       )}
+        )}
 
         {/* DIVIDER */}
         <div className="border-t border-gray-700 my-8"></div>
@@ -109,7 +109,7 @@ export default function Footer() {
           <div className="grid gap-0 grid-cols-2 md:grid-cols-5 w-full lg:grid-cols-5">
             {categories.map((category) => (
               <div key={category._id}>
-                
+
                 {/* CATEGORY TITLE */}
                 <h4 className="font-semibold text-sm pb-2 border-b border-gray-700 uppercase">
                   {category.categories}
@@ -119,7 +119,7 @@ export default function Footer() {
                 <div className="space-y-3 border-l border-gray-700 p-2 grid grid-cols-2">
                   {category.subcategories?.map((sub) => (
                     <div key={sub._id}>
-                      
+
                       {/* SUBCATEGORY */}
                       <Link
                         to={`/products/${sub._id}`}
@@ -152,7 +152,7 @@ export default function Footer() {
 
         {/* BOTTOM */}
         <div className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-500">
-         {footer?.copyright}
+          {footer?.copyright}
         </div>
 
       </div>

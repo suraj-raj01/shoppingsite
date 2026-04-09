@@ -48,7 +48,7 @@ export default function OrdersView() {
             Order Details
           </CardTitle>
 
-          <Badge className={`capitalize text-sm font-medium px-2 py-1 rounded-xs ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-green-500"}`}>
+          <Badge className={`capitalize text-sm font-medium px-2 py-1 rounded-xs ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-[#6096ff]"}`}>
             {order.paymentStatus}
           </Badge>
         </CardHeader>
@@ -129,7 +129,7 @@ export default function OrdersView() {
             {order.items?.map((item: any) => (
               <div
                 key={item._id}
-                className="border rounded-xs p-4 hover:shadow-md transition bg-white flex flex-col justify-between"
+                className="border rounded-xs p-4 hover:shadow-md transition bg-background flex flex-col justify-between"
               >
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">Product ID</p>

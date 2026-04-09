@@ -79,7 +79,7 @@ export default function Settings() {
 
     return (
         <div className="p-3">
-            <section className="max-w-xl bg-white p-5 rounded-xs shadow-sm border space-y-4">
+            <section className="max-w-xl p-5 rounded-xs shadow-sm border space-y-4">
 
                 <h2 className="text-xl font-semibold">Account Settings</h2>
 
