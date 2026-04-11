@@ -79,7 +79,7 @@ export default function ElectronicProducts() {
                 "
                             >
                                 <Card className="overflow-hidden border p-0 hover:shadow-md transition">
-                                    <div className="w-full md:aspect-4/3 aspect-4/3 p-1 overflow-hidden">
+                                    <div className="w-full md:aspect-4/3 aspect-4/3 p-2 overflow-hidden">
                                         <img
                                             src={product.defaultImage}
                                             alt={product.title}
