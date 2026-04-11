@@ -89,7 +89,7 @@ export default function Navbar() {
     // if (!navbar) return <div className="p-4">Navbar not found</div>
 
     return (
-        <nav className="sticky top-0 z-40 w-full border-b bg-background backdrop-blur-2xl">
+        <nav className="sticky top-0 z-40 w-full border-b bg-white backdrop-blur-2xl">
             <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-10 px-3 py-3 gap-3">
                 {/* Mobile Menu */}
                 <Sheet>
@@ -215,7 +215,7 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant='outline' className="ml-1 -mr-2">{navbar?.signin}</Button>
+                            <Button variant='default' className="ml-1 -mr-2">{navbar?.signin}</Button>
                         )}
                     </Link>
                 </div>
@@ -283,7 +283,7 @@ export default function Navbar() {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         ) : (
-                            <Button variant='outline'>{navbar?.signin}</Button>
+                            <Button variant='default'>{navbar?.signin}</Button>
                         )}
                     </Link>
                 </div>

@@ -94,7 +94,7 @@ export default function SearchProducts() {
                         className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
                     />
 
-                    <Button variant='outline' className="w-18 border rounded-xs px-8">
+                    <Button className="w-18 border-0 bg-white text-black border hover:bg-white rounded-xs px-8">
                         <Search className="font-bold" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
                     </Button>
                 </div>
