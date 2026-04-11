@@ -67,7 +67,7 @@ export default function Dashboard() {
                 />
 
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">
+                  <h2 className="text-2xl font-bold text-gray-400">
                     {user.name}
                   </h2>
                   <p className="text-gray-500">{user.email}</p>
@@ -129,7 +129,7 @@ export default function Dashboard() {
                 )}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">
+                <h2 className="text-2xl font-bold text-gray-400">
                   {user.name}
                 </h2>
                 <p className="text-gray-500">{user.email}</p>

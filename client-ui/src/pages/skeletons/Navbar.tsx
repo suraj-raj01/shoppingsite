@@ -35,7 +35,7 @@ export default function NavbarSkeleton() {
 
         {/* Search (desktop) */}
         <div className="flex-1 hidden md:flex">
-          <div className="flex w-full items-center gap-2">
+          <div className="flex w-full items-center gap-1">
             <Skeleton className="h-10 w-28" />
             <Skeleton className="h-10 flex-1" />
             <Skeleton className="h-10 w-16" />
@@ -52,14 +52,14 @@ export default function NavbarSkeleton() {
       </div>
 
       {/* Mobile search */}
-      <div className="md:hidden px-3 pb-3">
+      {/* <div className="md:hidden px-3 pb-3">
         <div className="flex w-full gap-2">
           <Skeleton className="h-10 w-24" />
           <Skeleton className="h-10 flex-1" />
           <Skeleton className="h-10 w-12" />
           <Skeleton className="h-10 w-12" />
         </div>
-      </div>
+      </div> */}
     </nav>
   )
 }

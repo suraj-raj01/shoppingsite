@@ -71,6 +71,7 @@ export function LoginForm({
                   placeholder="m@example.com"
                   required
                   value={email}
+                  disabled={loading}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -89,6 +90,7 @@ export function LoginForm({
                   type="password"
                   placeholder="password"
                   required
+                  disabled={loading}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />

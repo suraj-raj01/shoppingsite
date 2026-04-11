@@ -119,7 +119,7 @@ export function NavUser({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to='/' className="flex items-center gap-2">
+                <Link to="/" className="flex cursor-pointer items-center gap-2">
                   <TvMinimal />
                   Visit Site
                 </Link>

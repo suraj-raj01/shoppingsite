@@ -52,13 +52,13 @@ export default function DashboardLayout() {
                 <img
                   src={user?.user?.profile}
                   alt="Profile"
-                  className="w-full h-full bg-green-100 object-cover rounded-full"
+                  className="w-full h-full bg-[#6096ff] object-cover rounded-full"
                 />
               ) : user?.user?.profile ? (
                 <img
                   src={user?.user?.profile}
                   alt="Profile"
-                  className="w-full h-full bg-green-100 object-cover rounded-full"
+                  className="w-full h-full bg-[#6096ff] object-cover rounded-full"
                 />
               ) : (
                 <div className="font-bold text-lg flex items-center justify-center w-full h-full">

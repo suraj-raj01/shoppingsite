@@ -168,7 +168,8 @@ export const getProducts = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
+    const offset = parseInt(req.query.offset) || 0;
+    const skip = (page - 1) * limit + offset;
 
     const [products, total] = await Promise.all([
       Product.find()

@@ -178,7 +178,7 @@ export default function OrdersTable() {
                             <NotepadText className="mr-2 h-4 w-4" />
                             Generate Invoice
                         </DropdownMenuItem>
-                        <DropdownMenuItem disabled onClick={() => delteOrders(row.original._id)}>
+                        <DropdownMenuItem disabled={row.original.paymentStatus === "success"} onClick={() => delteOrders(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
                             Delete Order
                         </DropdownMenuItem>

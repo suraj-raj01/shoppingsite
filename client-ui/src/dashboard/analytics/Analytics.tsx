@@ -1,7 +1,10 @@
+import { ChartAreaDefault } from "./AreaChart";
 
 export default function Analytics() {
   return (
-    <div>Analytics</div>
+    <div>
+      <ChartAreaDefault/>
+    </div>
   )
 }
 

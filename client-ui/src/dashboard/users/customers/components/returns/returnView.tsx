@@ -60,12 +60,12 @@ export default function ReturnView() {
                     </div>
 
                     {/* DETAILS */}
-                    <div className="text-sm space-y-1">
+                    <div className="text-sm space-y-1 bg-muted p-3 rounded-xs">
                         <div className="flex items-center justify-between">
                             <p><strong>OrderId :</strong> {item.orderId}</p>
                             <Badge variant='outline' className="cursor-pointer">
                                 <Link to={`/dashboard/orders/${item.orderId}/view`}>
-                                    View Details
+                                    View Order
                                 </Link>
                             </Badge>
                         </div>
@@ -73,7 +73,7 @@ export default function ReturnView() {
                             <p><strong>ProductId :</strong> {item.productId}</p>
                             <Badge variant='outline' className="cursor-pointer">
                                 <Link to={`/dashboard/products/${item.productId}/view`}>
-                                    View Details
+                                    View Product
                                 </Link>
                             </Badge>
                         </div>

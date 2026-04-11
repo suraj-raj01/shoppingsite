@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { ThemeProvider } from "@/components/theme-provider";
 
+const ShopNow = lazy(() => import("./pages/checkouts/ShopNow"));
 const Notification = lazy(() => import("./dashboard/helpers/Notifications"));
 const ReturnView = lazy(() => import("./dashboard/users/customers/components/returns/returnView"));
 const ReturnForm = lazy(() => import("./dashboard/users/customers/components/returns/ReturnsForm"));
@@ -145,7 +147,7 @@ export default function App() {
           {/* =================================================
               🌐 PUBLIC ROUTES
           ================================================= */}
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={<ThemeProvider defaultTheme='light' storageKey='light'><Layout /></ThemeProvider>}>
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="*" element={<PageNotFound url="/" />} />
@@ -185,7 +187,7 @@ export default function App() {
           {/* =================================================
               📊 DASHBOARD
           ================================================= */}
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<ThemeProvider defaultTheme='light' storageKey='theme'><DashboardLayout /></ThemeProvider>}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
             <Route path="notifications" element={<Notification />} />
@@ -245,6 +247,7 @@ export default function App() {
             <Route path="orders" element={<Orders />} />  {/* for users */}
             <Route path="allorders" element={<Allorders />} />  {/* for admins */}
             <Route path="payments" element={<PaymentsTable />} />
+            <Route path="shopnow/:id" element={<ShopNow />} />
             <Route path="orders/:id/view" element={<OrdersView />} />
             <Route path="reviews" element={<Reviews />} />     {/* for users */}
             <Route path="reviews/:id/view" element={<ReviewView />} />

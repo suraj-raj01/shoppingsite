@@ -93,6 +93,8 @@ export function LoginForm() {
                 <Input
                   id="email"
                   type="email"
+                  required
+                  disabled={loading}
                   placeholder="m@example.com"
                   {...form.register("email")}
                 />
@@ -118,6 +120,8 @@ export function LoginForm() {
                 <Input
                   id="password"
                   type="password"
+                  required
+                  disabled={loading}
                   placeholder="password"
                   {...form.register("password")}
                 />

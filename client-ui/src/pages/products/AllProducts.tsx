@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { limitWords } from "../helpers/WordLimiter"
 import ProductsGridSkeleton from "../skeletons/products/AllProductSkeleton"
+import { Button } from "@/components/ui/button"
 
 type Product = {
     _id: string
@@ -22,7 +23,7 @@ export default function AllProducts() {
 
     const loadProducts = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/admin/products?limit=100`)
+            const res = await axios.get(`${BASE_URL}/api/admin/products?limit=12`)
             setProducts(res.data.data || [])
         } catch (error) {
             console.log(error)
@@ -34,6 +35,17 @@ export default function AllProducts() {
     useEffect(() => {
         loadProducts()
     }, [])
+
+    const loadMore = async () => {
+        try {
+            const res = await axios.get(`${BASE_URL}/api/admin/products?limit=12&offset=${products.length}`)
+            setProducts([...products, ...res.data.data])
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     if (loading) return <ProductsGridSkeleton />
     if (!products.length) return null
@@ -52,14 +64,7 @@ export default function AllProducts() {
                     <h2 className="font-bold text-xl py-5">Best Deals On Electronics </h2>
                 </div>
                 {/* 🔥 Outer Grid (Boxes) */}
-                <div className="
-          grid 
-          grid-cols-1 
-          sm:grid-cols-2 
-          md:grid-cols-3 
-          lg:grid-cols-3
-          gap-4
-        ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
                     {chunkedProducts.map((group, index) => (
                         <Card key={index} className="p-1 bg-background border-0 rounded-md shadow-none">
@@ -72,7 +77,7 @@ export default function AllProducts() {
                                         className="cursor-pointer border"
                                         onClick={() => navigate(`/products/view/${product._id}`)}
                                     >
-                                        <div className="aspect-4/3 overflow-hidden rounded-md">
+                                        <div className="aspect-4/3 overflow-hidden p-3 rounded-md">
                                             <img
                                                 src={product.defaultImage}
                                                 alt={product.title}
@@ -89,7 +94,11 @@ export default function AllProducts() {
 
                         </Card>
                     ))}
-
+                </div>
+                <div className="flex mt-5 items-center w-full justify-center">
+                    <Button onClick={loadMore} disabled={loading || products.length<12} variant="outline" className="text-white hover:text-white cursor-pointer transition duration-300 hover:bg-[#5089fa] bg-[#6096ff]">
+                        View More
+                    </Button>
                 </div>
             </div>
         </section>

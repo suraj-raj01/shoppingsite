@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { addCartData } from "@/redux-toolkit/CartSlice";
 import { IndianRupee, ShoppingCart } from "lucide-react";
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 type Product = {
     _id: string;
@@ -50,6 +51,8 @@ export default function AddToCart({
         );
     };
 
+    const navigate = useNavigate();
+
     return (
         <div className={`${className} space-y-4`}>
             {/* Buttons */}
@@ -68,7 +71,9 @@ export default function AddToCart({
 
                 <Button
                     variant="outline"
-                    className="flex py-3 font-semibold rounded-xs w-full"
+                    onClick={() => navigate(`/dashboard/shopnow/${product._id}`)}
+                    disabled={isOutOfStock}
+                    className="flex cursor-pointer py-3 font-semibold rounded-xs w-full"
                 >
                     <IndianRupee />  Buy Now
                 </Button>

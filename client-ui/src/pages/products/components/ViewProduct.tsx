@@ -223,7 +223,7 @@ export default function ViewProduct() {
           </p>
 
           {/* Title */}
-          <h1 className="md:text-3xl font-bold mt-2 leading-snug">
+          <h1 className="md:text-2xl font-semibold mt-2 leading-snug">
             {product.name}
           </h1>
 

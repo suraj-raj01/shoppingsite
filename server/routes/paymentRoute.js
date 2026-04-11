@@ -9,10 +9,11 @@ import Orders from "../models/orderModel.js"
 router.post("/orders", async (req, res) => {
   try {
     const data = req.body;
+    console.log(data);
 
     const items = data.product.map((item) => ({
       productId: item._id,
-      quantity: item.qnty,
+      quantity: item.qnty || 1,
       price: item.price,
     }));
 

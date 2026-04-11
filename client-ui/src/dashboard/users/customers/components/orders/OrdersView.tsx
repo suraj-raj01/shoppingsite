@@ -41,7 +41,7 @@ export default function OrdersView() {
   return (
     <div className="p-3 max-w-full mx-auto space-y-3">
       {/* 🔷 ORDER SUMMARY */}
-      <Card className="rounded-xs shadow-sm">
+      <Card className="rounded-xs shadow-xs">
         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-xl">
             <Package size={20} />

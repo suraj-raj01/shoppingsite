@@ -268,7 +268,7 @@ export default function CheckOut() {
                 contact: mydata.contact,
             },
 
-            theme: { color: "#0d7d03ff" },
+            theme: { color: "#3674f0" },
         }
 
         const razorpay = new window.Razorpay(options)
@@ -312,7 +312,7 @@ export default function CheckOut() {
         }
     }
     return (
-        <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3">
+        <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-5">
 
             {/* ✅ USER DETAILS */}
             <div className="w-full">
