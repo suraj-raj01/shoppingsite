@@ -9,10 +9,10 @@ export default function AuthNavbar() {
   }
 
   return (
-    <div className="h-15 flex items-center justify-between p-3 md:px-12 bg-gray-100">
+    <div className="h-15 flex items-center shadow-sm justify-between p-3 md:px-12 bg-white">
         <img 
-        src="https://res.cloudinary.com/ddddb62xl/image/upload/v1771530926/uploadimage/bn8cqhqrpjr11cs07lse.png" alt="" 
-        className="h-full"
+        src="https://res.cloudinary.com/ddddb62xl/image/upload/v1775941345/uploadimage/run26qggkvu1bthkzq0v.png" alt="" 
+        className="h-full cursor-pointer"
         onClick={home}
         />
         <Button variant='outline' className="border-none shadow-none hover:bg-background">

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 // ✅ validation schema
 const userSchema = z.object({
@@ -86,8 +86,15 @@ export default function UserForm({ editData, onSuccess }: Props) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 border p-2 md:p-5 md:max-w-2xl">
+            <div className="flex flex-col items-center mb-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-center">
+                    {isEdit ? "Update User" : "Register User"}
+                </h2>
+            </div>
 
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 border rounded-xs p-4 sm:p-6 shadow-sm bg-white">
                 {/* Name */}
                 <FormField
                     control={form.control}
@@ -111,7 +118,7 @@ export default function UserForm({ editData, onSuccess }: Props) {
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input placeholder="Enter email" {...field} />
+                                <Input type="email" placeholder="Enter email" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -134,46 +141,53 @@ export default function UserForm({ editData, onSuccess }: Props) {
                 />
 
                 {/* Password */}
-                {
-                    !isEdit && (
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>
-                                        Password {isEdit && "(leave blank to keep old)"}
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input type="password" placeholder="Enter password" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    )
-                }
+                {!isEdit && (
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input type="password" placeholder="Enter password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
 
                 {/* Address */}
                 <FormField
                     control={form.control}
                     name="address"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="sm:col-span-2">
                             <FormLabel>Address</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Enter address" {...field} />
+                                <Textarea placeholder="Enter address (House no, Street, Village / City, State, Pincode)" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
-                <Button type="submit" className="w-full" disabled={loading}>
-                    {loading?"Submitting form":""}
-                    {isEdit ? "Update User" : "Register User"}
+                {/* Button */}
+                <Button
+                    type="submit"
+                    className="w-full sm:col-span-2"
+                    disabled={loading}
+                >
+                    {loading
+                        ? "Submitting..."
+                        : isEdit
+                            ? "Update User"
+                            : "Register User"}
                 </Button>
 
+                <div className="flex w-full sm:col-span-2 justify-center mx-auto w-full items-center">
+                    <p className="text-sm text-gray-500">Already have an account? <Link to="/auth/login" className="text-sm font-bold text-blue-600">Login</Link></p>
+                </div>
             </form>
         </Form>
     )

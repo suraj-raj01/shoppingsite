@@ -10,6 +10,7 @@ import { Bot } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
+import { Input } from "@/components/ui/input";
 
 type Message = {
   role: "user" | "assistant";
@@ -77,7 +78,7 @@ export default function ChatBot() {
   };
 
   return (
-    <Dialog defaultOpen={true}>
+    <Dialog defaultOpen={false}>
       {/* Floating Button */}
       <DialogTrigger asChild>
         <div className="fixed bottom-5 right-5 z-50 cursor-pointer group">
@@ -140,8 +141,8 @@ export default function ChatBot() {
           </div>
 
           {/* Input */}
-          <div className="p-3 border-t flex gap-2">
-            <input
+          <div className="p-3 border-t flex gap-0">
+            <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
@@ -151,12 +152,12 @@ export default function ChatBot() {
             <Button
               onClick={handleSend}
               disabled={loading}
-              className="rounded-xs"
+              className="rounded-xs w-20"
             >
               Send
             </Button>
           </div>
-         <div className="flex items-center justify-center pb-5">
+         <div className="flex items-center justify-center pb-4">
           <p className="text-xs text-gray-400">Made with ❤️ by Suraj Kumar</p>
          </div>
         </div>

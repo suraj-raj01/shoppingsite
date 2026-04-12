@@ -1,3 +1,4 @@
+import BASE_URL from '@/Config'
 import { useUser } from '@/contexts/userContext'
 import axios from 'axios'
 import { useEffect } from 'react'
@@ -17,7 +18,7 @@ const AuthSuccess = () => {
             if (accessToken) {
                 localStorage.setItem("accessToken", accessToken)
                 try {
-                    const res = await axios.get("http://localhost:8000/api/auth/me", {
+                    const res = await axios.get(`${BASE_URL}/api/auth/me`, {
                         headers: {
                             Authorization: `Bearer ${accessToken}`
                         }
