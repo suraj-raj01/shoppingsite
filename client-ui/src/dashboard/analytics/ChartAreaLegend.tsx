@@ -44,7 +44,7 @@ export function ChartAreaLegend() {
   return (
     <Card className="rounded-sm">
       <CardHeader>
-        <CardTitle>Area Chart - Legend</CardTitle>
+        <CardTitle>Total Visitors</CardTitle>
         <CardDescription>
           Showing total visitors for the last 6 months
         </CardDescription>
@@ -95,10 +95,10 @@ export function ChartAreaLegend() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+              Visitors in last 6 months <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - June 2024
+              January - June 2026
             </div>
           </div>
         </div>

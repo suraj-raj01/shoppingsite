@@ -32,7 +32,7 @@ import { ChevronDown } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 
 // ✅ Table skeleton rows component
-const TableSkeleton = ({ columns, rows = 5 }: { columns: number; rows?: number }) => (
+const TableSkeleton = ({ columns, rows = 7 }: { columns: number; rows?: number }) => (
   <>
     {Array.from({ length: rows }).map((_, rowIndex) => (
       <TableRow key={`skeleton-${rowIndex}`}>
@@ -164,7 +164,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableSkeleton columns={columns.length} rows={5} />
+              <TableSkeleton columns={columns.length} rows={7} />
             ) : table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
@@ -188,7 +188,7 @@ export function DataTable<TData, TValue>({
                               alt="Image"
                               width={50}
                               height={50}
-                              className="object-cover h-auto rounded-xs border"
+                              className="object-cover h-auto rounded-full border"
                             />
                           );
                         }

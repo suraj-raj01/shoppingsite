@@ -8,7 +8,7 @@ export default function ProductDetailsSkeleton() {
 
           {/* Main Image Skeleton */}
           <div className="border rounded-xs p-4 bg-background">
-            <div className="w-full md:h-112.5 bg-gray-200 rounded-xs" />
+            <div className="w-full md:h-112.5  h-70 bg-gray-200 rounded-xs" />
           </div>
 
           {/* Thumbnail Skeletons */}

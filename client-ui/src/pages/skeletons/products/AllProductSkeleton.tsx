@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 
-export default function ProductsGridSkeleton({ count = 6 }) {
+export default function ProductsGridSkeleton({ count = 3 }) {
   return (
     <section className="w-full py-6">
       <div className="max-w-full mx-auto px-2">

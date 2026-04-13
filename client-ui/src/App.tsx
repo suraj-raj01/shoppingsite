@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 
+const EnquiryView = lazy(() => import("./dashboard/users/enquiries/EnquiryView"));
+const EnquiryTable = lazy(() => import("./dashboard/users/enquiries/EnquiryTable"));
 const ShopNow = lazy(() => import("./pages/checkouts/ShopNow"));
 const Notification = lazy(() => import("./dashboard/helpers/Notifications"));
 const ReturnView = lazy(() => import("./dashboard/users/customers/components/returns/returnView"));
@@ -187,7 +189,7 @@ export default function App() {
           {/* =================================================
               📊 DASHBOARD
           ================================================= */}
-          <Route path="/dashboard" element={<ThemeProvider defaultTheme='light' storageKey='theme'><DashboardLayout /></ThemeProvider>}>
+          <Route path="/dashboard"  element={<ThemeProvider defaultTheme='light' storageKey='theme'><DashboardLayout /></ThemeProvider>}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
             <Route path="notifications" element={<Notification />} />
@@ -241,6 +243,9 @@ export default function App() {
             <Route path="userstable" element={<UserTable />} />
             <Route path="customerstable" element={<CustomerTable />} />
             <Route path="customers/:id/view" element={<CustomerView />} />
+            {/* enquiries */}
+            <Route path="enquiriestable" element={<EnquiryTable />} />
+            <Route path="enquiries/:id/view" element={<EnquiryView />} />
 
             <Route path="likeitems" element={<UserLikeItems />} />
             <Route path="cartitems" element={<UserCartItems />} />

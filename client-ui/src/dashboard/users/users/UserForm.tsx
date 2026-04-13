@@ -151,7 +151,7 @@ export default function UserForm() {
                 email: formData.email,
                 password: formData.password,
                 roleId: formData.roleId,
-                profile:imageUrl?(imageUrl): formData.profile,
+                profile: imageUrl ? (imageUrl) : formData.profile,
             }
 
             if (id) {
@@ -186,7 +186,7 @@ export default function UserForm() {
         <section className="p-3">
             <div className="flex justify-between items-center mb-4">
                 <div>
-                    {loading ? (
+                    {loading ? (    
                         <>
                             <Skeleton className="h-9 w-32 mb-2" />
                             <Skeleton className="h-5 w-48" />
@@ -213,7 +213,14 @@ export default function UserForm() {
             </div>
 
             <div className="flex items-center justify-center w-full gap-0">
-                <form className="grid gap-4 md:w-2xl border p-5 mt-3 rounded-xs" onSubmit={handleSubmit}>
+                {
+                    loading?(
+                        <div>
+                            <Skeleton className="h-100 w-full md:w-150 mb-2" />
+                            <Skeleton className="h-5 w-full md:w-150" />
+                        </div>
+                    ):(
+                        <form className="grid gap-4 md:w-2xl border p-5 mt-3 rounded-xs" onSubmit={handleSubmit}>
                     <div className="grid gap-0">
                         <Label htmlFor="name">Name</Label>
                         <Input
@@ -239,22 +246,24 @@ export default function UserForm() {
                         />
                     </div>
 
-                    {id ? (
-                        ""
-                    ) : (
-                        <div className="grid gap-0">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="Enter password"
-                                value={formData.password}
-                                onChange={handleInput}
-                                required
-                            />
-                        </div>
-                    )}
+                    {
+        id ? (
+            ""
+        ) : (
+            <div className="grid gap-0">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="Enter password"
+                    value={formData.password}
+                    onChange={handleInput}
+                    required
+                />
+            </div>
+        )
+    }
 
                     <div className="grid gap-0">
                         <Label htmlFor="profile">Profile Image</Label>
@@ -297,9 +306,11 @@ export default function UserForm() {
                     >
                         {loading ? "loading..." : id ? "Update" : "Create"}
                     </Button>
-                </form>
-            </div>
-        </section>
+                </form >
+                    )
+}
+            </div >
+        </section >
     );
 };
 

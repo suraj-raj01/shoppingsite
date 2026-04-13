@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
 import { Input } from "@/components/ui/input";
+import EnquiryForm from "./EnquiryForm";
 
 type Message = {
   role: "user" | "assistant";
@@ -21,10 +22,11 @@ export default function ChatBot() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [enquiry, setEnquiry] = useState<any>(null);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // ✅ session id (important)
+  // ✅ Get/Create Session ID
   const getSessionId = () => {
     let id = localStorage.getItem("chat_session");
     if (!id) {
@@ -34,14 +36,57 @@ export default function ChatBot() {
     return id;
   };
 
-  // ✅ auto scroll
+  // ✅ Load enquiry
+  useEffect(() => {
+    const enquiryData = localStorage.getItem("enquiry");
+    if (enquiryData) {
+      setEnquiry(JSON.parse(enquiryData));
+    }
+  }, []);
+
+  // ✅ Fetch chat from DB
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/api/chat/${getSessionId()}`
+        );
+
+        if (res.data?.messages?.length) {
+          setMessages(res.data.messages);
+        } else {
+          // ✅ fallback welcome message
+          setMessages([
+            {
+              role: "assistant",
+              content: `Hi ${enquiry.name}, how can I help you today? 😊`,
+            },
+          ]);
+        }
+      } catch (err) {
+        console.error("Failed to load chat");
+
+        // fallback message
+        setMessages([
+          {
+            role: "assistant",
+            content: `Hi ${enquiry.name}, how can I help you today? 😊`,
+          },
+        ]);
+      }
+    };
+
+    if (enquiry) fetchMessages();
+  }, [enquiry]);
+
+  // ✅ Auto scroll
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // ✅ send message
+  // ✅ Send message
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
     const userMessage: Message = {
       role: "user",
@@ -54,6 +99,7 @@ export default function ChatBot() {
 
     try {
       const res = await axios.post(`${BASE_URL}/api/chat`, {
+        userId: enquiry._id,
         sessionId: getSessionId(),
         message: input,
       });
@@ -62,14 +108,14 @@ export default function ChatBot() {
         role: "assistant",
         content: res.data.response,
       };
-
       setMessages((prev) => [...prev, botMessage]);
+
     } catch (err) {
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "❌ Something went wrong",
+          content: "⚠️ Server busy, please try again",
         },
       ]);
     } finally {
@@ -77,8 +123,20 @@ export default function ChatBot() {
     }
   };
 
+  // ✅ Reset chat
+  const handleReset = () => {
+    if (!confirm("Are you sure you want to reset chat?")) return;
+
+    localStorage.removeItem("enquiry");
+    localStorage.removeItem("chat_session");
+
+    setEnquiry(null);
+    setMessages([]);
+    setInput("");
+  };
+
   return (
-    <Dialog defaultOpen={false}>
+    <Dialog>
       {/* Floating Button */}
       <DialogTrigger asChild>
         <div className="fixed bottom-5 right-5 z-50 cursor-pointer group">
@@ -89,7 +147,7 @@ export default function ChatBot() {
             <Bot className="text-white" />
           </Button>
 
-          {/* Notification Dot */}
+          {/* Notification dot */}
           <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500 animate-ping"></span>
           <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-red-500"></span>
         </div>
@@ -98,68 +156,124 @@ export default function ChatBot() {
       {/* Dialog */}
       <DialogContent className="sm:max-w-md rounded-md p-0 overflow-hidden">
         <DialogHeader className="p-4 border-b">
-          <DialogTitle>🤖 Chat Assistant</DialogTitle>
+          <div className="flex justify-between items-center">
+            <p className="text-lg font-semibold">
+              {enquiry ? "Chat Assistant" : "Welcome to our Store 🛍️"}
+            </p>
+          </div>
+
+          <DialogTitle className="text-xs text-gray-500 mt-1">
+            {enquiry ? (
+              <div className="flex justify-between items-center">
+                <p>
+                  🤖 Hi{" "}
+                  <span className="font-semibold">{enquiry.name}</span>!
+                </p>
+
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleReset}
+                  className="text-xs"
+                >
+                  Reset
+                </Button>
+              </div>
+            ) : (
+              <p>Please fill the enquiry form to start chatting.</p>
+            )}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col h-[450px]">
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50">
-            {messages.length === 0 && (
-              <p className="text-gray-500 text-center">
-                👋 Hi! How can I help you today?
-              </p>
-            )}
+        <div className="flex flex-col h-125">
+          {/* 🔥 Conditional UI */}
+          {!enquiry ? (
+           <div className="h-125">
+              <EnquiryForm setEnquiry={setEnquiry} />
+           </div>
+          ) : (
+            <>
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50">
+                {messages.map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`flex ${msg.role === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                      }`}
+                  >
+                    <div
+                      className={`px-3 py-2 rounded-md max-w-[75%] ${msg.role === "user"
+                          ? "bg-[#6096ff] text-white"
+                          : "bg-white border"
+                        }`}
+                    >
+                      {msg.content}
+                    </div>
+                  </div>
+                ))}
 
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`
-                    px-3 py-2 rounded-md max-w-[75%]
-                    ${
-                      msg.role === "user"
-                        ? "bg-[#6096ff] text-white"
-                        : "bg-white border"
-                    }
-                  `}
-                >
-                  {msg.content}
-                </div>
+                {loading && (
+                  <p className="text-xs text-gray-400 animate-pulse">
+                    Thinking...
+                  </p>
+                )}
+
+                <div ref={bottomRef} />
               </div>
-            ))}
 
-            {/* Loading */}
-            {loading && (
-              <p className="text-xs text-gray-400">Thinking...</p>
-            )}
+              {/* Input */}
+              <div className="p-3 flex">
 
-            <div ref={bottomRef} />
+
+                {/* suggested messages */}
+                {/* <div className="grid grid-cols-4 absolute w-full bottom-23 py-2 gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setInput("Hi")}
+                    className="rounded-none px-2"
+                  >
+                    Hi
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setInput("How are you?")}
+                    className="rounded-none w-full px-2"
+                  >
+                    How are you?
+                  </Button>
+                </div> */}
+
+                <Input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !loading) {
+                      e.preventDefault();
+                      handleSend();
+                    }
+                  }}
+                  placeholder="Type your message..."
+                  className="flex-1 rounded-none focus:ring-0 h-12 focus-visible:ring-0 focus-visible:border-1 "
+                />
+
+                <Button
+                  onClick={handleSend}
+                  disabled={loading}
+                  className="rounded-none w-20 h-12 bg-[#6096ff]"
+                >
+                  Send
+                </Button>
+              </div>
+            </>
+          )}
+
+          <div className="text-center pb-3 text-xs text-gray-400">
+            Made with ❤️ by Suraj Kumar
           </div>
-
-          {/* Input */}
-          <div className="p-3 border-t flex gap-0">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Type your message..."
-              className="flex-1 border rounded-xs px-3 py-2 text-sm outline-none"
-            />
-            <Button
-              onClick={handleSend}
-              disabled={loading}
-              className="rounded-xs w-20"
-            >
-              Send
-            </Button>
-          </div>
-         <div className="flex items-center justify-center pb-4">
-          <p className="text-xs text-gray-400">Made with ❤️ by Suraj Kumar</p>
-         </div>
         </div>
       </DialogContent>
     </Dialog>

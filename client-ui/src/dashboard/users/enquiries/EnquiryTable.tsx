@@ -16,17 +16,16 @@ import api from "@/Config"
 import { toast } from 'sonner'
 
 
-type Customers = {
+type Enquiry = {
     _id: string,
     name: string,
     email: string,
     contact: string,
-    address: string,
 }
 
 
-export default function CustomerTable() {
-    const [navbar, setNavbar] = useState<Customers[]>([])
+export default function EnquiryTable() {
+    const [enquiry, setEnquiry] = useState<Enquiry[]>([])
     const [page, setPage] = useState(1)
     const [pageCount, setPageCount] = useState(1)
     const [loading, setLoading] = useState(true)
@@ -37,18 +36,18 @@ export default function CustomerTable() {
             setLoading(true)
             let response
             if (searchQuery) {
-                response = await axios.post(`${api}/api/customers/searchuser/${searchQuery}`)
-                setNavbar(response?.data?.data || [])
+                response = await axios.post(`${api}/api/admin/users/searchuser/${searchQuery}`)
+                setEnquiry(response?.data?.data || [])
                 // console.log(response.data, "search data");
             } else {
-                response = await axios.get(`${api}/api/customers?page=${page}&limit=10`)
-                setNavbar(response?.data?.data || [])
-                setPage(response.data.currentPage)
-                setPageCount(response.data.totalPages)
-                // console.log("userdata data", response.data)
+                response = await axios.get(`${api}/api/enquiry?page=${page}&limit=7`)
+                setEnquiry(response?.data?.data || [])
+                setPage(response.data.pagination.page)
+                setPageCount(response.data.pagination.totalPages)
+                console.log("userdata data", response.data)
             }
             const { data } = response
-            setPageCount(data.totalPages || 1)
+            setPageCount(data.pagination.totalPages || 1)
         } catch (error) {
             console.error('Error fetching users:', error)
         } finally {
@@ -63,43 +62,36 @@ export default function CustomerTable() {
 
     const deleteUser = async (id: any) => {
         try {
-            await axios.delete(`${api}/api/customers/${id}`)
-            toast.success('User deleted successfully')
+            await axios.delete(`${api}/api/enquiry/${id}`)
+            toast.success( 'Enquiry deleted successfully')
             fetchCategories();
         } catch (error) {
-            console.error('Error deleting permission:', error)
-            alert('Failed to delete Role. Please try again.')
+            console.error('Error deleting enquiry:', error)
+            toast.error('Failed to delete Enquiry. Please try again.')
         }
     }
 
     const navigate = useNavigate();
     const viewpage = (id: any) => {
-        navigate(`/dashboard/customers/${id}/view`)
+        navigate(`/dashboard/enquiries/${id}/view`)
     }
 
 
-    const columns: ColumnDef<Customers>[] = [
+    const columns: ColumnDef<Enquiry>[] = [
         {
             accessorKey: 'name',
             header: "Name",
-            cell: ({ row }) => (
-                <div className="font-medium">{row.getValue("name")}</div>
-            ),
-        },
-        {
-            accessorKey: 'contact',
-            header: "Contact",
-            cell: ({ row }) => (
-                <div className="font-medium">{"+91 "}{row.getValue("contact")}</div>
-            ),
         },
         {
             accessorKey: 'email',
             header: "Email",
         },
         {
-            accessorKey: 'address',
-            header: "Address",
+            accessorKey: 'contact',
+            header: "Contact",
+            cell: ({ row }) => (
+                <span>{"+91 "}{row.original?.contact || "N/A"}</span>
+            )
         },
         {
             header: "Action",
@@ -115,15 +107,15 @@ export default function CustomerTable() {
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
                             <Eye className="mr-2 h-4 w-4" />
-                            View Customer
+                            View Enquiry
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/enquiries/${row.original._id}`)}>
                             <Edit className="mr-2 h-4 w-4" />
-                            Edit Customer
+                            Edit Enquiry
                         </DropdownMenuItem>
-                        <DropdownMenuItem disabled onClick={() => deleteUser(row.original._id)}>
+                        <DropdownMenuItem onClick={() => deleteUser(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Disable Customer
+                            Delete
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -148,9 +140,9 @@ export default function CustomerTable() {
                     ) : (
                         <>
                             <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+                                <h1 className="text-3xl font-bold tracking-tight">Users</h1>
                                 <p className="text-muted-foreground">
-                                    Manage and track all the customers
+                                    Manage and track all the users
                                 </p>
                             </div>
                         </>
@@ -159,8 +151,8 @@ export default function CustomerTable() {
                 {loading ? (
                     <Skeleton className="h-10 w-32" />
                 ) : (
-                    <Button onClick={() => { navigate("/auth/signup") }}>
-                        Create Customer
+                    <Button disabled onClick={() => { navigate("/dashboard/enquiries") }}>
+                        Create Enquiry
                     </Button>
                 )}
             </div>
@@ -168,7 +160,7 @@ export default function CustomerTable() {
             <div className="w-full overflow-x-auto">
                 <DataTable
                     columns={columns}
-                    data={navbar}
+                    data={enquiry}
                     pageCount={pageCount}
                     currentPage={page}
                     onPageChange={setPage}

@@ -85,9 +85,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: UserCheck,
         isActive: true,
         items: [
-          { title: "Profile", url: "/dashboard" },
+          { title: "Profile", url: "/dashboard/profile" },
+          { title: "Profile Settings", url: "/dashboard/settings" },
           { title: "Roles", url: "/dashboard/roles" },
-          { title: "Permissions", url: "/dashboard/permissions" },
+          { title: "Permissions", url: "/dashboard/permissions" }
         ],
       },
       {
@@ -127,6 +128,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: "Customers", url: "/dashboard/customerstable" },
           { title: "Users", url: "/dashboard/userstable" },
+          { title: "Enquiries", url: "/dashboard/enquiriestable" },
         ],
       },
       {
@@ -155,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, [])
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="border-b-1">
+      <SidebarHeader className="border-b">
         <TeamSwitcher teams={
           user?.user.contact ? data1.teams : data2.teams
         } />

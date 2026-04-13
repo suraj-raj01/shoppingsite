@@ -7,36 +7,46 @@ import { toast } from "sonner"
 import axios from "axios"
 import BASE_URL from "@/Config"
 import { useNavigate } from "react-router-dom"
+import { useTheme } from "@/components/theme-provider"
 
 export default function Settings() {
-
+    const { setTheme } = useTheme();
     const [user, setUser] = useState<any>(null)
 
     const [form, setForm] = useState({
         notification: false,
-        theme: false
+        theme: "light" // or "dark"
     })
 
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
     // ✅ LOAD USER
-    useEffect(() => {
+
+    const loadUser = async () => {
         try {
             const userData = localStorage.getItem("user")
             if (userData) {
                 const parsed = JSON.parse(userData)
                 setUser(parsed.user)
 
-                // initialize form here
+                const isDark = parsed.user.theme
+
                 setForm({
                     notification: parsed.user.notification,
-                    theme: parsed.user.theme
+                    theme: isDark
                 })
+
+                // ✅ apply theme from saved data
+                setTheme(isDark ? "dark" : "light")
             }
         } catch (err) {
             console.error("Invalid user in localStorage")
         }
+    }
+
+    useEffect(() => {
+        loadUser()
     }, [])
 
     // ✅ TOGGLE
@@ -66,6 +76,12 @@ export default function Settings() {
             localStorage.setItem("user", JSON.stringify({ user: updatedUser }))
             setUser(updatedUser)
 
+            // ✅ apply theme instantly
+            if (form.theme === "dark") {
+                setTheme("dark")
+            } else {
+                setTheme("light")
+            }
             toast.success("Settings saved successfully ✅")
             navigate("/dashboard")
 
@@ -100,8 +116,12 @@ export default function Settings() {
                     <div className="flex items-center justify-between">
                         <Label>Dark Mode</Label>
                         <Switch
-                            checked={form.theme}
-                            onCheckedChange={(val) => handleToggle("theme", val)}
+                            checked={form.theme === "dark"}
+                            onCheckedChange={(val) => {
+                                const newTheme = val ? "dark" : "light"
+                                setForm(prev => ({ ...prev, theme: newTheme }))
+                                setTheme(newTheme)
+                            }}
                         />
                     </div>
                 </div>

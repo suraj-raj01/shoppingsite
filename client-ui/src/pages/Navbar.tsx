@@ -132,7 +132,7 @@ export default function Navbar() {
                 <Sheet open={openSheet} onOpenChange={setOpenSheet}>
                     <SheetTrigger asChild>
                         <Button variant="ghost" size="icon" className="md:hidden -ml-3">
-                            <LucideMenu className="text-[#6096ff]" />
+                            <LucideMenu className="text-[#06286b]" />
                         </Button>
                     </SheetTrigger>
 
@@ -160,7 +160,7 @@ export default function Navbar() {
                                     <AccordionItem key={category._id} value={category._id}>
 
                                         {/* Category (Trigger) */}
-                                        <AccordionTrigger className="text-sm font-bold hover:no-underline px-3">
+                                        <AccordionTrigger className="text-sm font-bold mb-1 hover:no-underline px-3">
                                             <p onClick={() => navigate(`/products/${category.categories}`)}>{category.categories}</p>
                                         </AccordionTrigger>
 
@@ -170,7 +170,7 @@ export default function Navbar() {
                                                 {category.subcategories.map((sub) => (
                                                     <p
                                                         key={sub._id}
-                                                        className="text-left font-semibold text-sm hover:text-green-600"
+                                                        className="text-left text-sm hover:text-green-600"
                                                         onClick={() => navigate(`/products/${sub.name}`)}
                                                     >
                                                         {sub.name}

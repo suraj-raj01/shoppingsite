@@ -38,7 +38,7 @@ const chartConfig = {
 
 export function ChartLineStep() {
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardHeader>
         <CardTitle>Line Chart - Step</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

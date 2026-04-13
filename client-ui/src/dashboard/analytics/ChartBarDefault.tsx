@@ -21,27 +21,27 @@ import {
 export const description = "A bar chart"
 
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  { month: "January", "Returns Item": 186 },
+  { month: "February", "Returns Item": 305 },
+  { month: "March", "Returns Item": 237 },
+  { month: "April", "Returns Item": 73 },
+  { month: "May", "Returns Item": 209 },
+  { month: "June", "Returns Item": 214 },
 ]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  "Returns Item": {
+    label: "Returns Item",
     color: "#6096ff",
   },
 } satisfies ChartConfig
 
 export function ChartBarDefault() {
   return (
-    <Card>
+    <Card className="rounded-sm">
       <CardHeader>
-        <CardTitle>Bar Chart</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Total Return Itmes</CardTitle>
+        <CardDescription>January - June 2026</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -58,16 +58,16 @@ export function ChartBarDefault() {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="#6096ff" radius={2} />
+            <Bar dataKey="Returns Item" fill="#6096ff" radius={2} />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Products return in last 6 month <TrendingUp className="h-4 w-4 text-green-500" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total returns item for the last 6 months
         </div>
       </CardFooter>
     </Card>

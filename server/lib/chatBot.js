@@ -6,18 +6,27 @@ const ai = new GoogleGenAI({
 
 export async function chatBot(messages) {
   try {
-    // ✅ convert messages to Gemini format
+    // ✅ ensure array
+    if (!Array.isArray(messages)) {
+      messages = [
+        {
+          role: "user",
+          content: String(messages),
+        },
+      ];
+    }
+
     const formattedMessages = messages.map((msg) => ({
       role: msg.role === "assistant" ? "model" : "user",
       parts: [{ text: msg.content }],
     }));
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash", // ✅ better + stable
+      model: "gemini-2.5-flash",
       contents: formattedMessages,
     });
 
-    return response.text;
+    return response.text || "No response from AI";
   } catch (error) {
     console.error("Gemini Error:", error);
     return "Something went wrong. Please try again.";

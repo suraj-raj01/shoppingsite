@@ -93,28 +93,28 @@ export default function KPI() {
 
         </div>
         <div className="p-3 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 animate-pulse">
-          <div className="h-65 p-8 flex flex-col gap-5 w-100 bg-card rounded-sm shadow-sm border-2">
+          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
             <div className="h-4 w-full bg-gray-200 rounded"></div>
             {/* Value Skeleton */}
             <div className="h-25 w-full bg-gray-300 rounded"></div>
             <div className="h-7 w-full bg-gray-300 rounded"></div>
             <div className="h-4 w-full bg-gray-300 rounded"></div>
           </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-100 bg-card rounded-sm shadow-sm border-2">
+          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
             <div className="h-4 w-full bg-gray-200 rounded"></div>
             {/* Value Skeleton */}
             <div className="h-25 w-full bg-gray-300 rounded"></div>
             <div className="h-7 w-full bg-gray-300 rounded"></div>
             <div className="h-4 w-full bg-gray-300 rounded"></div>
           </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-100 bg-card rounded-sm shadow-sm border-2">
+          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
             <div className="h-4 w-full bg-gray-200 rounded"></div>
             {/* Value Skeleton */}
             <div className="h-25 w-full bg-gray-300 rounded"></div>
             <div className="h-7 w-full bg-gray-300 rounded"></div>
             <div className="h-4 w-full bg-gray-300 rounded"></div>
           </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-100 bg-card rounded-sm shadow-sm border-2">
+          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
             <div className="h-4 w-full bg-gray-200 rounded"></div>
             {/* Value Skeleton */}
             <div className="h-25 w-full bg-gray-300 rounded"></div>

@@ -7,12 +7,12 @@ type PageNotFoundProps = {
 
 export default function PageNotFound({ url = "/" }: PageNotFoundProps) {
   return (
-    <div className="px-4">
-      <h1 className="text-4xl font-bold text-center mt-20">
+    <div className="px-4 min-h-screen md:min-h-160 flex flex-col items-center justify-center">
+      <h1 className="md:text-4xl text-2xl font-bold text-center">
         😵 404 - Page Not Found
       </h1>
 
-      <p className="text-center mt-4 text-gray-600">
+      <p className="text-center mt-1 text-gray-600">
         The page you are looking for does not exist.
       </p>
 

@@ -15,6 +15,7 @@ import footerRoutes from '../routes/footerRoutes.js'
 import returnRoutes from '../routes/returns/returnRoutes.js'
 import { loginLimiter } from '../lib/rateLimiter.js'
 import chatRoutes from '../routes/chatbot/chatRoutes.js'
+import enquiryRoutes from '../routes/chatbot/enquiryRoutes.js'
 
 export function routeImporters(app){
     // category route
@@ -49,4 +50,5 @@ export function routeImporters(app){
     app.use('/api/returns', returnRoutes)
     // chat route
     app.use('/api/chat', chatRoutes)
+    app.use('/api/enquiry', enquiryRoutes)
 }

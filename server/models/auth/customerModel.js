@@ -44,8 +44,8 @@ const userSchema = new mongoose.Schema({
     default: true
   },
   theme:{
-    type:Boolean,
-    default: false
+    type:String,
+    default: "light"
   }
 });
 

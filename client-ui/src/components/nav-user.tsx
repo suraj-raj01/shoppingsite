@@ -101,7 +101,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link to='/dashboard' className="flex items-center justify-center gap-2">
+                <Link to='/dashboard/profile' className="flex items-center justify-center gap-2">
                   <LayoutDashboardIcon />
                   Profile
                 </Link>
