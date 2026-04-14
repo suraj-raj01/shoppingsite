@@ -71,7 +71,7 @@ export default function AddToCart({
 
                 <Button
                     variant="outline"
-                    onClick={() => navigate(`/dashboard/shopnow/${product._id}`)}
+                    onClick={() => navigate(`/shopnow/${product._id}`)}
                     disabled={isOutOfStock}
                     className="flex cursor-pointer py-3 font-semibold rounded-xs w-full"
                 >

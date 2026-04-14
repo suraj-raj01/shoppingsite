@@ -3,6 +3,7 @@ import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import TrendingProductsSkeleton from "../skeletons/products/TrendingProductsSkeleton"
 
 type Product = {
     _id: string
@@ -35,7 +36,7 @@ export default function TrandingProducts() {
 
     const navigate = useNavigate()
 
-    if (loading) return null
+    if (loading) return <TrendingProductsSkeleton/>
 
     return (
         <section className="w-full relative -mt-55 md:-mt-65 md:px-5 py-5">

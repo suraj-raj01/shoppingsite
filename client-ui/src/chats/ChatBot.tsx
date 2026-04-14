@@ -6,12 +6,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Bot } from "lucide-react";
+import { Bot, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
 import { Input } from "@/components/ui/input";
 import EnquiryForm from "./EnquiryForm";
+import { toast } from "sonner";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   role: "user" | "assistant";
@@ -23,6 +26,7 @@ export default function ChatBot() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [enquiry, setEnquiry] = useState<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -49,11 +53,11 @@ export default function ChatBot() {
     const fetchMessages = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/api/chat/${getSessionId()}`
+          `${BASE_URL}/api/chat/${enquiry._id || getSessionId()}`
         );
-
-        if (res.data?.messages?.length) {
-          setMessages(res.data.messages);
+        // console.log(res.data,'dataa')
+        if (res.data?.data?.messages?.length) {
+          setMessages(res.data?.data.messages);
         } else {
           // ✅ fallback welcome message
           setMessages([
@@ -65,7 +69,6 @@ export default function ChatBot() {
         }
       } catch (err) {
         console.error("Failed to load chat");
-
         // fallback message
         setMessages([
           {
@@ -124,19 +127,41 @@ export default function ChatBot() {
   };
 
   // ✅ Reset chat
-  const handleReset = () => {
-    if (!confirm("Are you sure you want to reset chat?")) return;
+  const handleReset = async () => {
+    setIsOpen(false);
+    toast("Reset chat?", {
+      description: "This will clear all your messages permanently.",
+      action: {
+        label: "Confirm",
+        onClick: async () => {
+          try {
+            setLoading(true);
 
-    localStorage.removeItem("enquiry");
-    localStorage.removeItem("chat_session");
+            // ✅ API call
+            await axios.delete(`${BASE_URL}/api/chat/${enquiry?._id}`);
 
-    setEnquiry(null);
-    setMessages([]);
-    setInput("");
+            // ✅ Clear storage
+            localStorage.removeItem("enquiry");
+            localStorage.removeItem("chat_session");
+
+            // ✅ Reset state
+            setEnquiry(null);
+            setMessages([]);
+            setInput("");
+            toast.success("Chat reset successfully ✅");
+          } catch (error) {
+            console.error(error);
+            toast.error("Failed to reset chat ❌");
+          } finally {
+            setLoading(false);
+          }
+        },
+      },
+    });
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {/* Floating Button */}
       <DialogTrigger asChild>
         <div className="fixed bottom-5 right-5 z-50 cursor-pointer group">
@@ -158,14 +183,14 @@ export default function ChatBot() {
         <DialogHeader className="p-4 border-b">
           <div className="flex justify-between items-center">
             <p className="text-lg font-semibold">
-              {enquiry ? "Chat Assistant" : "Welcome to our Store 🛍️"}
+              {enquiry ? "CHAT ASSISTANT" : `WELCOME TO OUR STORE 🛒`}
             </p>
           </div>
 
-          <DialogTitle className="text-xs text-gray-500 mt-1">
+          <DialogTitle className="text-xs text-gray-500 -mt-3">
             {enquiry ? (
               <div className="flex justify-between items-center">
-                <p>
+                <p className="">
                   🤖 Hi{" "}
                   <span className="font-semibold">{enquiry.name}</span>!
                 </p>
@@ -174,13 +199,13 @@ export default function ChatBot() {
                   variant="destructive"
                   size="sm"
                   onClick={handleReset}
-                  className="text-xs"
+                  disabled={loading}
                 >
                   Reset
                 </Button>
               </div>
             ) : (
-              <p>Please fill the enquiry form to start chatting.</p>
+              <p className="text-gray-600">Please fill the enquiry form to start chatting.</p>
             )}
           </DialogTitle>
         </DialogHeader>
@@ -188,9 +213,9 @@ export default function ChatBot() {
         <div className="flex flex-col h-125">
           {/* 🔥 Conditional UI */}
           {!enquiry ? (
-           <div className="h-125">
+            <div className="h-125">
               <EnquiryForm setEnquiry={setEnquiry} />
-           </div>
+            </div>
           ) : (
             <>
               {/* Messages */}
@@ -199,24 +224,26 @@ export default function ChatBot() {
                   <div
                     key={i}
                     className={`flex ${msg.role === "user"
-                        ? "justify-end"
-                        : "justify-start"
+                      ? "justify-end"
+                      : "justify-start"
                       }`}
                   >
                     <div
-                      className={`px-3 py-2 rounded-md max-w-[75%] ${msg.role === "user"
-                          ? "bg-[#6096ff] text-white"
-                          : "bg-white border"
+                      className={`px-3 py-2 rounded-md max-w-[90%] ${msg.role === "user"
+                        ? "bg-[#6096ff] text-white"
+                        : "bg-white border"
                         }`}
                     >
-                      {msg.content}
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 ))}
 
                 {loading && (
                   <p className="text-xs text-gray-400 animate-pulse">
-                    Thinking...
+                    Writing...
                   </p>
                 )}
 
@@ -257,22 +284,22 @@ export default function ChatBot() {
                     }
                   }}
                   placeholder="Type your message..."
-                  className="flex-1 rounded-none focus:ring-0 h-12 focus-visible:ring-0 focus-visible:border-1 "
+                  className="flex-1 rounded-none focus:ring-0 h-10 focus-visible:ring-0 focus-visible:border-1 "
                 />
 
                 <Button
                   onClick={handleSend}
                   disabled={loading}
-                  className="rounded-none w-20 h-12 bg-[#6096ff]"
+                  className="rounded-none w-20 h-10 bg-[#6096ff]"
                 >
-                  Send
+                  <Send />
                 </Button>
               </div>
             </>
           )}
 
           <div className="text-center pb-3 text-xs text-gray-400">
-            Made with ❤️ by Suraj Kumar
+            MADE WITH ❤️ BY SURAJ RAJAK
           </div>
         </div>
       </DialogContent>

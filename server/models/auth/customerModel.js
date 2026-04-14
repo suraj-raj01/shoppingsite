@@ -47,6 +47,6 @@ const userSchema = new mongoose.Schema({
     type:String,
     default: "light"
   }
-});
+},{timestamps: true});
 
 export default mongoose.models.customers || mongoose.model("customers", userSchema);

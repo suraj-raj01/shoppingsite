@@ -269,9 +269,9 @@ export default function ShopNow() {
 
     // ================= UI =================
     return (
-        <div className="grid md:grid-cols-2 gap-6 p-5">
+        <div className="grid md:grid-cols-2 min-h-screen gap-6 p-5">
             {/* LEFT - ADDRESS */}
-            <Card className="bg-background shadow-xs rounded-sm">
+            <Card className="bg-background shadow-xs h-fit rounded-sm">
                 <CardHeader className="flex justify-between items-center">
                     <CardTitle>Shipping Address</CardTitle>
 
@@ -343,7 +343,7 @@ export default function ShopNow() {
             </Card>
 
             {/* RIGHT - PRODUCT */}
-            <div className="border p-4 rounded">
+            <div className="border p-4 h-fit rounded">
                 <h3 className="text-xl font-bold mb-4">
                     Your Item
                 </h3>

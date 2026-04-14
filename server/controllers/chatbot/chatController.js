@@ -97,17 +97,21 @@ export const updateChat = async (req, res) => {
 // ================= GET ALL =================
 // GET /api/chat/:sessionId
 export const getChats = async (req, res) => {
-  const chat = await Chat.findOne({
-    sessionId: req.params.sessionId,
-  });
+  const chat = await Chat.find();
 
-  res.json(chat || { messages: [] });
+  res.status(200).json({
+    success: true,
+    data:chat || { messages: [] }
+  });
 };
 
 // ================= GET ONE =================
 export const getChatById = async (req, res) => {
+  const {id} = req.params;
   try {
-    const data = await Chat.findById(req.params.id);
+    const data = await Chat.findOne({
+      userId:id,
+    });
 
     if (!data) {
       return res.status(404).json({ message: "Chat not found" });
@@ -125,7 +129,10 @@ export const getChatById = async (req, res) => {
 // ================= DELETE =================
 export const deleteChat = async (req, res) => {
   try {
-    await Chat.findByIdAndDelete(req.params.id);
+    const {id} = req.params;
+    await Chat.findOneAndDelete({
+      userId:id
+    })
     res.status(200).json({
       success: true,
       message: "Chat deleted 🗑️",

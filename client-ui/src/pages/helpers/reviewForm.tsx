@@ -162,7 +162,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
         }
       </div>
       {/* FORM */}
-      <div className="space-y-3 max-w-full grid h-fit border-0 bg-background p-3 rounded-xs shadow-0">
+      <div className="space-y-3 max-w-full grid h-fit border-0 bg-background p-0 md:p-3 rounded-xs shadow-0">
         <form
           onSubmit={handleSubmit}
           className="max-w-full md:pl-50 h-fit border-0 bg-background rounded-xs shadow-none"

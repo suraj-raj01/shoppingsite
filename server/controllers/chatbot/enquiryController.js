@@ -8,10 +8,12 @@ export const createEnquiry = async (req, res) => {
         const existing = await Enquiry.find({
             email: data.email
         });
+        console.log(existing,'existing')
 
         if (existing.length > 0) {
             return res.status(200).json({
                 success: true,
+                data: existing,
                 message: "Thank you for reaching out again! We've already received your enquiry. Our team will get back to you shortly. 😊",
             });
         }

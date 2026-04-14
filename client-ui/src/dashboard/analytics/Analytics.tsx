@@ -1,9 +1,8 @@
-import { ChartAreaDefault } from "./AreaChart";
 
 export default function Analytics() {
   return (
-    <div>
-      <ChartAreaDefault/>
+    <div className="flex items-center p-3">
+      Analytics
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
-import Analytics from "./Analytics";
-import { ChartAreaLegend } from "./ChartAreaLegend";
-import { ChartBarDefault } from "./ChartBarDefault";
 import { ChartLineStep } from "./ChartLineStep";
+import OrdersAreaChart from "./AreaChart";
+import ReturnsChart from "./ChartBarDefault";
+import CustomersVisitorsChart from "./ChartAreaLegend";
 type Orders = {
   _id: string;
   items: {
@@ -163,13 +163,13 @@ export default function KPI() {
       </div>
       <div className="p-3 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4">
         <div className="">
-          <Analytics />
+          <OrdersAreaChart />
         </div>
         <div className="">
-          <ChartAreaLegend />
+          <CustomersVisitorsChart />
         </div>
         <div className="">
-          <ChartBarDefault />
+          <ReturnsChart />
         </div>
         <div className="">
           <ChartLineStep />

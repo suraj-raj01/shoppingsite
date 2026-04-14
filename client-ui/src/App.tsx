@@ -159,6 +159,7 @@ export default function App() {
             <Route path="products/cartitems" element={<CartItems />} />
             <Route path="products/likeditems" element={<LikeItems />} />
             <Route path="products/checkouts" element={<CheckOut />} />
+            <Route path="shopnow/:id" element={<ShopNow />} />
             <Route path="success" element={<PaymentSuccess />} />
             <Route path="failed" element={<PaymentFailed />} />
             <Route path="*" element={<PageNotFound url="/products" />} />
@@ -189,12 +190,12 @@ export default function App() {
           {/* =================================================
               📊 DASHBOARD
           ================================================= */}
-          <Route path="/dashboard"  element={<ThemeProvider defaultTheme='light' storageKey='theme'><DashboardLayout /></ThemeProvider>}>
+          <Route path="/dashboard" element={<ThemeProvider defaultTheme='light' storageKey='theme'><DashboardLayout /></ThemeProvider>}>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
             <Route path="notifications" element={<Notification />} />
             <Route path="vouchers" element={<Voucher />} />
-            <Route path="billing/:id" element={<Billings/>} />
+            <Route path="billing/:id" element={<Billings />} />
             <Route path="settings" element={<Settings />} />
             <Route path="profile/:id" element={<EditProfile />} />
 
@@ -252,7 +253,6 @@ export default function App() {
             <Route path="orders" element={<Orders />} />  {/* for users */}
             <Route path="allorders" element={<Allorders />} />  {/* for admins */}
             <Route path="payments" element={<PaymentsTable />} />
-            <Route path="shopnow/:id" element={<ShopNow />} />
             <Route path="orders/:id/view" element={<OrdersView />} />
             <Route path="reviews" element={<Reviews />} />     {/* for users */}
             <Route path="reviews/:id/view" element={<ReviewView />} />
