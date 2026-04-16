@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
-import { ChartLineStep } from "./ChartLineStep";
-import OrdersAreaChart from "./AreaChart";
-import ReturnsChart from "./ChartBarDefault";
-import CustomersVisitorsChart from "./ChartAreaLegend";
+import { useNavigate } from "react-router-dom";
 type Orders = {
   _id: string;
   items: {
@@ -19,6 +16,8 @@ type Orders = {
 export default function KPI() {
   const [orders, setOrders] = useState<Orders[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const fetchOrders = async () => {
     try {
@@ -92,36 +91,6 @@ export default function KPI() {
           ))}
 
         </div>
-        <div className="p-3 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4 animate-pulse">
-          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
-            <div className="h-4 w-full bg-gray-200 rounded"></div>
-            {/* Value Skeleton */}
-            <div className="h-25 w-full bg-gray-300 rounded"></div>
-            <div className="h-7 w-full bg-gray-300 rounded"></div>
-            <div className="h-4 w-full bg-gray-300 rounded"></div>
-          </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
-            <div className="h-4 w-full bg-gray-200 rounded"></div>
-            {/* Value Skeleton */}
-            <div className="h-25 w-full bg-gray-300 rounded"></div>
-            <div className="h-7 w-full bg-gray-300 rounded"></div>
-            <div className="h-4 w-full bg-gray-300 rounded"></div>
-          </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
-            <div className="h-4 w-full bg-gray-200 rounded"></div>
-            {/* Value Skeleton */}
-            <div className="h-25 w-full bg-gray-300 rounded"></div>
-            <div className="h-7 w-full bg-gray-300 rounded"></div>
-            <div className="h-4 w-full bg-gray-300 rounded"></div>
-          </div>
-          <div className="h-65 p-8 flex flex-col gap-5 w-full md:w-100 bg-card rounded-sm shadow-sm border-2">
-            <div className="h-4 w-full bg-gray-200 rounded"></div>
-            {/* Value Skeleton */}
-            <div className="h-25 w-full bg-gray-300 rounded"></div>
-            <div className="h-7 w-full bg-gray-300 rounded"></div>
-            <div className="h-4 w-full bg-gray-300 rounded"></div>
-          </div>
-        </div>
       </section>
     )
   }
@@ -138,7 +107,7 @@ export default function KPI() {
         </div>
 
         {/* 📦 Orders */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-2">
+        <div className="bg-card rounded-sm shadow-xs p-4 border-2" onClick={() => navigate("/dashboard/allorders")}>
           <h3 className="text-md font-semibold text-gray-500">Total Orders</h3>
           <p className="text-2xl font-bold">
             {totalOrders}
@@ -159,20 +128,6 @@ export default function KPI() {
           <p className="text-2xl font-bold text-blue-600">
             {totalItemsSold}
           </p>
-        </div>
-      </div>
-      <div className="p-3 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4">
-        <div className="">
-          <OrdersAreaChart />
-        </div>
-        <div className="">
-          <CustomersVisitorsChart />
-        </div>
-        <div className="">
-          <ReturnsChart />
-        </div>
-        <div className="">
-          <ChartLineStep />
         </div>
       </div>
     </section>

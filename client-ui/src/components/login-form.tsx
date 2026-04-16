@@ -41,7 +41,7 @@ export function LoginForm({
       localStorage.setItem("user", JSON.stringify(user))
       localStorage.setItem("token", user.token)
       toast.success(response.data.message || "Login successful")
-      navigate("/dashboard")
+      navigate("/dashboard/analytics")
     } catch (err: any) {
       console.log(err)
       // setError(err.response.data.message)

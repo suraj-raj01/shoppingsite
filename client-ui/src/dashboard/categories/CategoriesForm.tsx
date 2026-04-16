@@ -166,13 +166,6 @@ const CategoryForm: React.FC = () => {
 
             {/* Subcategories */}
             <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <Label>Subcategories</Label>
-                <Button type="button" onClick={addSubcategory}>
-                  Add Subcategory
-                </Button>
-              </div>
-
               {form.subcategories.map((sub, subIndex) => (
                 <Card key={subIndex} className="p-4 space-y-3">
                   <Input
@@ -184,7 +177,7 @@ const CategoryForm: React.FC = () => {
                   />
 
                   {/* Brands */}
-                  <div className="space-y-2">
+                  <div className="space-y-2 -mt-6">
                     <Label>Brands</Label>
 
                     {sub.brands.map((brand, brandIndex) => (
@@ -230,6 +223,12 @@ const CategoryForm: React.FC = () => {
                   </Button>
                 </Card>
               ))}
+              <div className="flex justify-between items-center">
+                <Label>Subcategories</Label>
+                <Button type="button" onClick={addSubcategory}>
+                  Add Subcategory
+                </Button>
+              </div>
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>

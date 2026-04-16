@@ -2,11 +2,9 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Bot, Send } from "lucide-react";
+import { Bot, Code2, Copy, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
@@ -17,6 +15,7 @@ import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 
 type Message = {
+  [x: string]: string | number | Date;
   role: "user" | "assistant";
   content: string;
 };
@@ -163,7 +162,7 @@ export default function ChatBot() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {/* Floating Button */}
-      <DialogTrigger asChild>
+      <DialogTrigger asChild >
         <div className="fixed bottom-5 right-5 z-50 cursor-pointer group">
           <Button
             size="icon"
@@ -179,22 +178,25 @@ export default function ChatBot() {
       </DialogTrigger>
 
       {/* Dialog */}
-      <DialogContent className="sm:max-w-md rounded-md p-0 overflow-hidden">
-        <DialogHeader className="p-4 border-b">
-          <div className="flex justify-between items-center">
-            <p className="text-lg font-semibold">
-              {enquiry ? "CHAT ASSISTANT" : `WELCOME TO OUR STORE 🛒`}
-            </p>
-          </div>
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-xl">
+        <div className="flex flex-col h-[600px]">
 
-          <DialogTitle className="text-xs text-gray-500 -mt-3">
-            {enquiry ? (
-              <div className="flex justify-between items-center">
-                <p className="">
-                  🤖 Hi{" "}
-                  <span className="font-semibold">{enquiry.name}</span>!
-                </p>
+          {/* 🔹 Header */}
+          <div className="p-4 border-b bg-white flex justify-between items-center">
+            <div>
+              <p className="font-semibold text-base">
+                {enquiry ? "Chat Assistant" : "Welcome 👋"}
+              </p>
 
+              <p className="text-xs text-gray-500">
+                {enquiry
+                  ? `Hi ${enquiry.name}`
+                  : "Fill form to start chatting"}
+              </p>
+            </div>
+
+            <div className="mr-5">
+              {enquiry && (
                 <Button
                   variant="destructive"
                   size="sm"
@@ -203,77 +205,122 @@ export default function ChatBot() {
                 >
                   Reset
                 </Button>
-              </div>
-            ) : (
-              <p className="text-gray-600">Please fill the enquiry form to start chatting.</p>
-            )}
-          </DialogTitle>
-        </DialogHeader>
+              )}
+            </div>
+          </div>
 
-        <div className="flex flex-col h-125">
-          {/* 🔥 Conditional UI */}
+          {/* 🔹 Body */}
           {!enquiry ? (
-            <div className="h-125">
+            <div className="flex-1 overflow-y-auto p-4">
               <EnquiryForm setEnquiry={setEnquiry} />
             </div>
           ) : (
             <>
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm bg-gray-50">
-                {messages.map((msg, i) => (
-                  <div
-                    key={i}
-                    className={`flex ${msg.role === "user"
-                      ? "justify-end"
-                      : "justify-start"
-                      }`}
-                  >
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+
+                {messages.map((msg, i) => {
+                  const isUser = msg.role === "user";
+
+                  return (
                     <div
-                      className={`px-3 py-2 rounded-md max-w-[90%] ${msg.role === "user"
-                        ? "bg-[#6096ff] text-white"
-                        : "bg-white border"
+                      key={i}
+                      className={`flex ${isUser ? "justify-end" : "justify-start"
                         }`}
                     >
-                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {msg.content}
-                      </ReactMarkdown>
+                      <div
+                        className={`px-4 py-2 rounded-lg text-sm max-w-[90%] shadow-sm ${isUser
+                          ? "bg-[#6096ff] text-white rounded-br-none"
+                          : "bg-white border rounded-bl-none"
+                          }`}
+                      >
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            p: (props) => (
+                              <p className="mb-2 leading-relaxed text-[14px]" {...props} />
+                            ),
+
+                            ul: (props) => (
+                              <ul className="list-disc pl-5 mb-2 space-y-1" {...props} />
+                            ),
+
+                            code({ className, children }) {
+                              const match = /language-(\w+)/.exec(className || "");
+                              const codeText = String(children).trim();
+
+                              const isBlock = match || codeText.includes("\n");
+
+                              // ✅ BLOCK CODE
+                              if (isBlock) {
+                                return (
+                                  <div className="my-3 max-w-80 rounded-md overflow-hidden border bg-[#0d1117] text-white text-xs">
+
+                                    {/* Header */}
+                                    <div className="flex items-center justify-between px-3 py-1 bg-[#161b22] text-gray-400 text-[11px]">
+
+                                      {/* LEFT: Icon + Language */}
+                                      <div className="flex items-center gap-2">
+                                        <Code2 size={14} />
+                                        <span>{match?.[1] || "code"}</span>
+                                      </div>
+
+                                      {/* RIGHT: Copy */}
+                                      <button
+                                        onClick={() => {
+                                          navigator.clipboard.writeText(codeText);
+                                          toast.success("Copied!");
+                                        }}
+                                        className="flex items-center gap-1 hover:text-white"
+                                      >
+                                        <Copy size={12} />
+                                        Copy
+                                      </button>
+                                    </div>
+
+                                    {/* Code */}
+                                    <pre className="p-3 overflow-x-auto">
+                                      <code>{codeText}</code>
+                                    </pre>
+                                  </div>
+                                );
+                              }
+
+                              // ✅ INLINE CODE
+                              return (
+                                <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-[2px] rounded text-sm">
+                                  {children}
+                                </code>
+                              );
+                            },
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+
+                        {/* Time */}
+                        <p
+                          className={`text-[10px] -mt-1 ${isUser ? "text-blue-100" : "text-gray-400"
+                            }`}
+                        >
+                          {new Date(enquiry ? (enquiry.createdAt) : (new Date())).toLocaleTimeString()}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 {loading && (
                   <p className="text-xs text-gray-400 animate-pulse">
-                    Writing...
+                    Typing...
                   </p>
                 )}
 
                 <div ref={bottomRef} />
               </div>
 
-              {/* Input */}
-              <div className="p-3 flex">
-
-
-                {/* suggested messages */}
-                {/* <div className="grid grid-cols-4 absolute w-full bottom-23 py-2 gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setInput("Hi")}
-                    className="rounded-none px-2"
-                  >
-                    Hi
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setInput("How are you?")}
-                    className="rounded-none w-full px-2"
-                  >
-                    How are you?
-                  </Button>
-                </div> */}
-
+              {/* 🔹 Input */}
+              <div className="border-t p-3 bg-white flex items-center gap-2">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -283,23 +330,24 @@ export default function ChatBot() {
                       handleSend();
                     }
                   }}
-                  placeholder="Type your message..."
-                  className="flex-1 rounded-none focus:ring-0 h-10 focus-visible:ring-0 focus-visible:border-1 "
+                  placeholder="Type a message..."
+                  className="flex-1 h-10"
                 />
 
                 <Button
                   onClick={handleSend}
                   disabled={loading}
-                  className="rounded-none w-20 h-10 bg-[#6096ff]"
+                  className="h-10 bg-[#6096ff]"
                 >
-                  <Send />
+                  <Send size={18} />
                 </Button>
               </div>
             </>
           )}
 
-          <div className="text-center pb-3 text-xs text-gray-400">
-            MADE WITH ❤️ BY SURAJ RAJAK
+          {/* Footer */}
+          <div className="text-center text-xs text-gray-400 py-2">
+            Made with ❤️ By SURAJ KUMAR
           </div>
         </div>
       </DialogContent>

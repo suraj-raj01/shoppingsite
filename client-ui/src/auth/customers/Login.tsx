@@ -15,8 +15,9 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Separator } from "@/components/ui/separator"
+import { useTheme } from "@/components/theme-provider"
 
 // ✅ Zod schema
 const loginSchema = z.object({
@@ -36,6 +37,11 @@ export function LoginForm() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState("")
+
+  const { setTheme } = useTheme();
+  useEffect(() => {
+    setTheme("light")
+  }, []);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

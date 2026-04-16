@@ -1,11 +1,12 @@
 import {
   LayoutDashboardIcon,
-  UserCheck,
   BarChart3,
   Users,
   ShoppingBasket,
   ShieldUser,
   Settings,
+  UserLockIcon,
+  Package,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -80,55 +81,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ],
     navMain: [
       {
-        title: "Authentication",
-        url: "#",
-        icon: UserCheck,
-        isActive: true,
-        items: [
-          { title: "Profile", url: "/dashboard/profile" },
-          { title: "Profile Settings", url: "/dashboard/settings" },
-          { title: "Roles", url: "/dashboard/roles" },
-          { title: "Permissions", url: "/dashboard/permissions" }
-        ],
-      },
-      {
         title: "Analytics",
         url: "#",
+        isActive: true,
         icon: BarChart3, // ✅ better
         items: [
-          { title: "KPI", url: "/dashboard/kpis" },
+          { title: "Enquiries", url: "/dashboard/enquiriestable" },
           { title: "Analytics", url: "/dashboard/analytics" },
         ],
       },
       {
-        title: "Site Settings",
+        title: "Authentication",
         url: "#",
-        icon: Settings, // ✅ better
+        icon: UserLockIcon,
         items: [
-          { title: "Categories", url: "/dashboard/categoriestable" },
-          { title: "Footer", url: "/dashboard/footertable" },
-          { title: "Hero", url: "/dashboard/herotable" },
-          { title: "Navbar", url: "/dashboard/navbartable" },
-          { title: "Products", url: "/dashboard/productstable" },
-        ],
-      },
-      // {
-      //   title: "Products",
-      //   url: "#",
-      //   icon: Package, // ✅ better
-      //   items: [
-      //     { title: "Products", url: "/dashboard/productstable" },
-      //     { title: "Categories", url: "/dashboard/categoriestable" },
-      //   ],
-      // },
-      {
-        title: "Users",
-        url: "#",
-        icon: Users, // ✅ better
-        items: [
-          { title: "Customers", url: "/dashboard/customerstable" },
-          { title: "Users", url: "/dashboard/userstable" },
-          { title: "Enquiries", url: "/dashboard/enquiriestable" },
+          { title: "Profile", url: "/dashboard/profile" },
+          { title: "Profile Settings", url: "/dashboard/settings" },
+          { title: "Roles", url: "/dashboard/roles" },
+          { title: "Permissions", url: "/dashboard/permissions" },
+          { title: "Manage Permissions", url: "/dashboard/managepermission" }
         ],
       },
       {
@@ -140,6 +111,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           { title: "All Review", url: "/dashboard/allreviews" },
           { title: "All Returns", url: "/dashboard/allreturns" },
           { title: "All Payments", url: "/dashboard/allpayments" },
+        ],
+      },
+      {
+        title: "Products",
+        url: "#",
+        icon: Package, // ✅ better
+        items: [
+          { title: "Products", url: "/dashboard/productstable" },
+          { title: "Categories", url: "/dashboard/categoriestable" },
+        ],
+      },
+      {
+        title: "Site Settings",
+        url: "#",
+        icon: Settings, // ✅ better
+        items: [
+          { title: "Footer", url: "/dashboard/footertable" },
+          { title: "Hero", url: "/dashboard/herotable" },
+          { title: "Navbar", url: "/dashboard/navbartable" },
+        ],
+      },
+      {
+        title: "Users & Enquiries",
+        url: "#",
+        icon: Users, // ✅ better
+        items: [
+          { title: "Customers", url: "/dashboard/customerstable" },
+          { title: "Users", url: "/dashboard/userstable" },
+          { title: "Enquiries", url: "/dashboard/enquiriestable" },
         ],
       },
     ]
@@ -168,7 +168,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         } />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser userinfo={ user?.user || data1.user } />
+        <NavUser userinfo={user?.user || data1.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

@@ -274,7 +274,7 @@ export default function ViewProduct() {
               {product.tags.map((tag, i) => (
                 <span
                   key={i}
-                  className="text-xs bg-gray-50 px-3 py-1 rounded-xs"
+                  className="text-xs bg-muted px-3 py-1 rounded-xs"
                 >
                   {tag}
                 </span>
@@ -303,7 +303,7 @@ export default function ViewProduct() {
           {product.shortDescription && (
             <div className="mt-8 border-t pt-6">
               <h2 className="font-semibold mb-2">Highlights</h2>
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-500 leading-relaxed">
                 {product.shortDescription}
               </p>
             </div>
@@ -323,7 +323,7 @@ export default function ViewProduct() {
             <h2 className="text-2xl font-bold mb-4">
               Product Description
             </h2>
-            <p className="text-gray-700 md:max-w-2xl leading-relaxed whitespace-pre-line">
+            <p className="text-gray-500 md:max-w-2xl leading-relaxed whitespace-pre-line">
               {product.description}
             </p>
           </div>

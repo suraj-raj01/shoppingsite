@@ -1,8 +1,8 @@
 import ChatBot from "@/chats/ChatBot"
 import Hero from "./Hero"
 import AllProducts from "./products/AllProducts"
-import ElectronicProducts from "./products/ElectronicProducts"
-import GrossoryProducts from "./products/GrossoryProduct"
+import CategoriesProducts from "./products/CategoriesProducts"
+// import GrossoryProducts from "./products/GrossoryProduct"
 import RecentlyViewedProduct from "./products/RecentlyViewedProducts"
 
 const Home = () => {
@@ -11,8 +11,10 @@ const Home = () => {
       <Hero />
       <AllProducts />
       <RecentlyViewedProduct/>
-      <ElectronicProducts />
-      <GrossoryProducts />
+      <CategoriesProducts title="Electronics" />
+      <CategoriesProducts title="Footwear" />
+      <CategoriesProducts title="Hardware" />
+      {/* <GrossoryProducts /> */}
       <ChatBot />
     </div>
   )

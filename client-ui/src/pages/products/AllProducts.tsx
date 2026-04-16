@@ -40,6 +40,7 @@ export default function AllProducts() {
         try {
             const res = await axios.get(`${BASE_URL}/api/admin/products?limit=12&offset=${products.length}`)
             setProducts([...products, ...res.data.data])
+            console.log(res.data.data)
         } catch (error) {
             console.log(error)
         } finally {
@@ -52,29 +53,29 @@ export default function AllProducts() {
 
     // 🔥 Group products into chunks of 4
     const chunkedProducts = []
-    for (let i = 0; i < products.length; i += 4) {
-        chunkedProducts.push(products.slice(i, i + 4))
+    for (let i = 0; i < products.length; i += 2) {
+        chunkedProducts.push(products.slice(i, i + 2))
     }
 
     return (
         <section className="w-full py-6 md:px-5">
             <div className="max-w-full mx-auto px-2">
                 <div className="flex md:flex-row flex-cols items-center justify-between">
-                    <h2 className="font-bold text-xl py-5">Upto 30% off | Shop Now </h2>
-                    <h2 className="font-bold text-xl py-5">Best Deals On Electronics </h2>
+                    <h2 className="font-bold text-xl py-5">Recently Added Items </h2>
+                    <h2 className="font-bold text-xl py-5">Best Deals On New Products </h2>
                 </div>
                 {/* 🔥 Outer Grid (Boxes) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
 
                     {chunkedProducts.map((group, index) => (
                         <Card key={index} className="p-1 bg-background border-0 rounded-md shadow-none">
 
                             {/* 🔥 Inner Grid (4 items inside box) */}
-                            <div className="grid grid-cols-2 gap-5 md:gap-2">
+                            <div className="grid grid-cols-2 gap-4 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="cursor-pointer border"
+                                        className="cursor-pointer rounded-sm border"
                                         onClick={() => navigate(`/products/view/${product._id}`)}
                                     >
                                         <div className="aspect-4/3 overflow-hidden p-3 rounded-md">

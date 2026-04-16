@@ -101,15 +101,15 @@ export default function ReturnsChart() {
         {loading ? (
           <div className="p-4 space-y-2 animate-pulse">
             {/* Header Skeleton */}
-            <div className="h-5 w-40 bg-gray-200 rounded"></div>
+            {/* <div className="h-5 w-40 bg-gray-200 rounded"></div> */}
 
             {/* Chart Skeleton */}
-            <div className="h-54 w-full bg-gray-200 rounded-md"></div>
+            <div className="h-35 w-full bg-gray-200 rounded-md"></div>
 
             {/* Footer Skeleton */}
             <div className="space-y-2">
-              <div className="h-4 w-60 bg-gray-200 rounded"></div>
-              <div className="h-4 w-40 bg-gray-200 rounded"></div>
+              <div className="h-4 w-full bg-gray-200 rounded"></div>
+              {/* <div className="h-4 w-40 bg-gray-200 rounded"></div> */}
             </div>
           </div>
         ) : (

@@ -123,6 +123,7 @@ const NavbarView = lazy(() => import("./dashboard/navbar/NavbarView"));
 
 const RoleTable = lazy(() => import("./dashboard/authentication/roles/RoleTable"));
 const PermissionTable = lazy(() => import("./dashboard/authentication/permissions/PermissionTable"));
+const ManagePermissions = lazy(() => import("./dashboard/authentication/permissions/ManagePermissions"));  
 
 /* =========================================================
    📊 ANALYTICS
@@ -202,6 +203,7 @@ export default function App() {
             {/* 🔑 Roles & Permissions */}
             <Route path="roles" element={<RoleTable />} />
             <Route path="permissions" element={<PermissionTable />} />
+            <Route path="managepermission" element={<ManagePermissions />} />
 
             {/* 📈 Analytics */}
             <Route path="analytics" element={<Analytics />} />

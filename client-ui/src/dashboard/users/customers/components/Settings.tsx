@@ -15,7 +15,7 @@ export default function Settings() {
 
     const [form, setForm] = useState({
         notification: false,
-        theme: "light" // or "dark"
+        theme: false // ✅ boolean (false = light, true = dark)
     })
 
     const [loading, setLoading] = useState(false)
@@ -25,25 +25,26 @@ export default function Settings() {
 
     const loadUser = async () => {
         try {
-            const userData = localStorage.getItem("user")
-            if (userData) {
-                const parsed = JSON.parse(userData)
-                setUser(parsed.user)
+            const userData = localStorage.getItem("user");
 
-                const isDark = parsed.user.theme
+            if (userData) {
+                const parsed = JSON.parse(userData);
+                const user = parsed.user;
+
+                setUser(user);
 
                 setForm({
-                    notification: parsed.user.notification,
-                    theme: isDark
-                })
+                    notification: user.notification ?? false,
+                    theme: user.theme ?? false,
+                });
 
-                // ✅ apply theme from saved data
-                setTheme(isDark ? "dark" : "light")
+                // ✅ apply theme
+                setTheme(user.theme ? "dark" : "light");
             }
         } catch (err) {
-            console.error("Invalid user in localStorage")
+            console.error("Invalid user in localStorage");
         }
-    }
+    };
 
     useEffect(() => {
         loadUser()
@@ -70,18 +71,14 @@ export default function Settings() {
             const updatedUser = {
                 ...user,
                 notification: form.notification,
-                theme: form.theme
-            }
+                theme: form.theme,
+            };
 
-            localStorage.setItem("user", JSON.stringify({ user: updatedUser }))
-            setUser(updatedUser)
+            localStorage.setItem("user", JSON.stringify({ user: updatedUser }));
+            setUser(updatedUser);
 
-            // ✅ apply theme instantly
-            if (form.theme === "dark") {
-                setTheme("dark")
-            } else {
-                setTheme("light")
-            }
+            // ✅ apply theme
+            setTheme(form.theme ? "dark" : "light");
             toast.success("Settings saved successfully ✅")
             navigate("/dashboard")
 
@@ -116,11 +113,10 @@ export default function Settings() {
                     <div className="flex items-center justify-between">
                         <Label>Dark Mode</Label>
                         <Switch
-                            checked={form.theme === "dark"}
+                            checked={form.theme}
                             onCheckedChange={(val) => {
-                                const newTheme = val ? "dark" : "light"
-                                setForm(prev => ({ ...prev, theme: newTheme }))
-                                setTheme(newTheme)
+                                setForm(prev => ({ ...prev, theme: val }));
+                                setTheme(val ? "dark" : "light"); // instant apply
                             }}
                         />
                     </div>

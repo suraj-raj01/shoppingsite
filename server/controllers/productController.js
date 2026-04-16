@@ -271,23 +271,45 @@ export const getProductById = async (req, res) => {
 export const searchProducts = async (req, res) => {
   try {
     const { query } = req.params;
-    const products = await Product.find({
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+
+    const skip = (page - 1) * limit + offset;
+
+    // ✅ Single reusable filter
+    const filter = {
       $or: [
         { name: { $regex: query, $options: "i" } },
         { category: { $regex: query, $options: "i" } },
         { brand: { $regex: query, $options: "i" } },
       ],
-    });
+    };
+
+    // ✅ Apply pagination + lean (faster)
+    const products = await Product.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    const total = await Product.countDocuments(filter);
+
+    const totalPages = Math.ceil(total / limit);
+
     return res.status(200).json({
       success: true,
       data: products,
+      currentPage: page,
+      totalPages,
+      totalItems: total,
       message: "Products fetched ✅",
     });
   } catch (error) {
     console.error("SEARCH PRODUCTS ERROR:", error);
     return res.status(500).json({ message: error.message });
   }
-}
+};
 
 // ================= DELETE =================
 export const deleteProduct = async (req, res) => {
