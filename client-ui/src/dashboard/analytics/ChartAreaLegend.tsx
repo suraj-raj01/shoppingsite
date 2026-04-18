@@ -67,8 +67,8 @@ export default function CustomersVisitorsChart() {
 
         // ✅ last 6 months
         const currentMonthIndex = new Date().getMonth();
-        const last6MonthsIndexes = Array.from({ length: 6 }, (_, i) =>
-          (currentMonthIndex - 5 + i + 12) % 12
+        const last6MonthsIndexes = Array.from({ length: 5 }, (_, i) =>
+          (currentMonthIndex - 4 + i + 12) % 12
         );
 
         const formattedData = last6MonthsIndexes.map((index) => {
@@ -116,7 +116,7 @@ export default function CustomersVisitorsChart() {
           </div>
         ) : (
           <ChartContainer config={chartConfig}>
-            <AreaChart data={chartData} margin={{ left: 5, right: 5 }}>
+            <AreaChart data={chartData} margin={{ left: 5, right: 5, top:5 }}>
               <CartesianGrid vertical={false} />
 
               <XAxis

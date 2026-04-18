@@ -26,7 +26,7 @@ export const getRole = async (req, res) => {
             RoleModel.find()
                 .populate("permissionId")
                 .skip(skip)
-                .limit(limit).sort({ updatedAt: -1 }),
+                .limit(limit).sort({ role: 1 }),
             RoleModel.countDocuments()
         ]);
 

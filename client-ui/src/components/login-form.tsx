@@ -53,7 +53,7 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0 rounded-xs">
+      <Card className="overflow-hidden p-0 rounded-sm">
         <CardContent className="grid p-0 md:grid-cols-1">
           <form onSubmit={handleSubmit} className="p-3 md:p-5">
             <FieldGroup>

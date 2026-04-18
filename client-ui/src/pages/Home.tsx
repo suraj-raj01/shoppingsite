@@ -1,22 +1,22 @@
-import ChatBot from "@/chats/ChatBot"
-import Hero from "./Hero"
-import AllProducts from "./products/AllProducts"
-import CategoriesProducts from "./products/CategoriesProducts"
-// import GrossoryProducts from "./products/GrossoryProduct"
+import { Suspense, lazy } from "react"
+
+const ChatBot = lazy(() => import("@/chats/ChatBot"))
+const Hero = lazy(() => import("./Hero"))
+const AllProducts = lazy(() => import("./products/AllProducts"))
+const CategoriesProducts = lazy(() => import("./products/CategoriesProducts"))
 import RecentlyViewedProduct from "./products/RecentlyViewedProducts"
 
 const Home = () => {
   return (
-    <div>
+    <Suspense fallback={<div></div>}>
       <Hero />
       <AllProducts />
       <RecentlyViewedProduct/>
       <CategoriesProducts title="Electronics" />
       <CategoriesProducts title="Footwear" />
       <CategoriesProducts title="Hardware" />
-      {/* <GrossoryProducts /> */}
       <ChatBot />
-    </div>
+    </Suspense>
   )
 }
 

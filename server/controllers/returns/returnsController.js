@@ -79,6 +79,7 @@ export const getReturns = async (_req, res) => {
 export const getReturnById = async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id,'id')
     const data = await Returns.find({
       $or: [
         { _id: id },
@@ -105,10 +106,11 @@ export const getReturnById = async (req, res) => {
 export const deleteReturn = async (req, res) => {
   try {
     const { id } = req.params;
-    const Returns = await Returns.findByIdAndDelete(id);
+    // console.log(id,'id')
+    const returns = await Returns.findByIdAndDelete(id);
     return res.status(200).json({
       success: true,
-      data: Returns,
+      data: returns,
       message: "Returns deleted ✅",
     });
   } catch (error) {

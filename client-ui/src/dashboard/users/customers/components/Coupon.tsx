@@ -53,7 +53,7 @@ export default function Coupon() {
 
     return (
         <div className="p-3">
-            <section className="border md:max-w-xl shadow-sm border-gray-200 py-10 w-full rounded-xs p-6">
+            <section className="md:max-w-xl shadow-sm border py-10 w-full rounded-sm p-6">
 
                 <h2 className="text-lg font-bold mb-3">Apply Coupon</h2>
 

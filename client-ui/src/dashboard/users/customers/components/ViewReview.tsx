@@ -113,7 +113,7 @@ export default function ReviewView() {
                 {/* 📝 Message */}
                 <div>
                     <h2 className="text-lg font-semibold">Review</h2>
-                    <p className="text-gray-700 mt-1">
+                    <p className="text-gray-500">
                         {review.message}
                     </p>
                 </div>

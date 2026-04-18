@@ -100,7 +100,7 @@ export default function OrdersView() {
             <CreditCard className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Payment ID</p>
-              <p className="font-medium break-all">{order.razorpay_payment_id}</p>
+              <p className="font-medium break-all">{order.razorpay_payment_id?(order.razorpay_payment_id):("NULL")}</p>
             </div>
           </div>
 
@@ -110,7 +110,7 @@ export default function OrdersView() {
             <div>
               <p className="text-muted-foreground">Payment Signature</p>
               <p className="font-medium break-all text-xs sm:text-sm">
-                {order.razorpay_signature}
+                {order.razorpay_signature?(order.razorpay_signature):("NULL")}
               </p>
             </div>
           </div>

@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import BASE_URL from "@/Config";
 import axios from "axios";
+import { Edit } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
@@ -29,21 +31,25 @@ export default function CustomerView() {
 
     return (
         <div className="p-3 w-full">
-            <div className="max-w-md border shadow-md rounded-xs p-5">
+            <div className="max-w-md border shadow-sm rounded-sm px-4 py-4">
                 {/* Header */}
-                <div className="md:mt-8 md:absolute text-right top-13 md:left-88">
-                    <Button variant='outline' className="px-5 py-2 rounded-xs transition">
-                        <Link to={`/dashboard/profile/${user._id}`}>Edit User</Link>
+                <div className="flex items-center justify-between">
+                    <h2 className="font-bold uppercase">User Details</h2>
+                    <Button size='sm' variant='outline' className="rounded-xs shadow-none border-0 transition">
+                        <Link to={`/dashboard/profile/${user._id}`}><Edit /></Link>
                     </Button>
                 </div>
+                <Separator className="mb-2"/>
                 <div className="flex items-center gap-6">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-800">
+                    <div className="w-full">
+                        <h2 className="text-2xl font-bold">
                             {user.name}
                         </h2>
-                        <p className="text-gray-500">{user.email}</p>
-                        <p className="text-gray-500">+91 {user.contact}</p>
-                        <p className="text-gray-500">ID : {user._id}</p>
+                        <div className="py-3 px-2 rounded-sm grid grid-cols-1 gap-1 font-semibold bg-secondary w-full">
+                            <p className="text-sm">Email : {user.email}</p>
+                            <p className="text-sm">Phone : +91 {user.contact}</p>
+                            <p className="text-sm">ID : {user._id}</p>
+                        </div>
                     </div>
                 </div>
 
@@ -53,8 +59,8 @@ export default function CustomerView() {
                 {/* Details */}
                 <div className="flex flex-col items-start justify-center gap-2">
                     <div>
-                        <p className="text-sm text-gray-500">Address</p>
-                        <p className="font-medium">{user.address}</p>
+                        <p className="text-md font-semibold uppercase">Address</p>
+                        <p className="font-sm">{user.address}</p>
                     </div>
                 </div>
             </div>

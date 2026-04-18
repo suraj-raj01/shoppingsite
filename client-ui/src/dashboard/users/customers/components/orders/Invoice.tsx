@@ -146,11 +146,11 @@ export default function Invoice() {
                     <div>
                         <h3 className="font-bold text-xl mb-2">Order Items</h3>
 
-                        <div className="border rounded-xs divide-y">
+                        <div className="rounded-xs grid grid-cols-1 md:grid-cols-2 gap-3">
                             {order.items.map((item) => (
                                 <div
                                     key={item.productId}
-                                    className="flex flex-col md:flex-row md:justify-between justify-start items-start p-3 text-sm"
+                                    className="flex flex-col bg-secondary border md:flex-row md:justify-between justify-start items-start p-3 text-sm"
                                 >
                                     <div>
                                         <p className="font-medium">

@@ -8,6 +8,14 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+
 import { Button } from '@/components/ui/button'
 import { Trash, MoreHorizontal, Eye, NotepadText, NotepadTextDashed } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -15,6 +23,7 @@ import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
+import BASE_URL from '@/Config'
 
 
 type Orders = {
@@ -41,6 +50,24 @@ export default function OrdersTable() {
     const [searchQuery, setSearchQuery] = useState<string>('')
     // console.log(user, "user data");
     // console.log(isAuthenticated, "isAuthenticated data");
+
+    const [open, setOpen] = useState(false)
+    const [selectedProduct, setSelectedProduct] = useState<any>(null)
+    const [productLoading, setProductLoading] = useState(false)
+
+    const handleViewProduct = async (productId: string) => {
+        try {
+            setProductLoading(true)
+            setOpen(true)
+
+            const res = await axios.get(`${BASE_URL}/api/admin/products/${productId}`)
+            setSelectedProduct(res.data?.data[0] || {})
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setProductLoading(false)
+        }
+    }
 
     const [userId, setUserId] = useState<string | null>(null)
 
@@ -114,6 +141,10 @@ export default function OrdersTable() {
     const columns: ColumnDef<Orders>[] = [
 
         {
+            accessorKey: 'shippingAddress',
+            header: "Shipping Address",
+        },
+        {
             accessorKey: 'paymentStatus',
             header: "Payment Status",
             cell: ({ row }) => (
@@ -127,19 +158,18 @@ export default function OrdersTable() {
             ),
         },
         {
-            accessorKey: 'shippingAddress',
-            header: "Shipping Address",
+            accessorKey: 'razorpay_payment_id',
+            header: "Payment Id",
         },
 
         {
             accessorKey: 'items',
-            header: "Items",
+            header: "Products",
             cell: ({ row }) => (
                 <div>
                     {row.original.items.map((item) => (
                         <div key={item.productId} className='flex gap-2 mb-1'>
-                            <Badge variant="outline">Quantity: {item.quantity}</Badge>
-                            <Badge variant="outline">Price: ₹{item.price}</Badge>
+                            <Badge variant="outline" className='cursor-pointer bg-secondary' onClick={() => handleViewProduct(item.productId)}>View Product</Badge>
                         </div>
                     ))}
                 </div>
@@ -233,6 +263,67 @@ export default function OrdersTable() {
                     isLoading={loading}
                 />
             </div>
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent className="max-w-lg">
+
+                    <DialogHeader>
+                        <DialogTitle>Product Details</DialogTitle>
+                    </DialogHeader>
+
+                    {productLoading ? (
+                        <p className="text-sm text-muted-foreground">Loading...</p>
+                    ) : selectedProduct ? (
+                        <div className="space-y-4">
+
+                            {/* IMAGE */}
+                            <img
+                                src={selectedProduct.defaultImage}
+                                alt=""
+                                className="w-full h-52 object-contain border rounded-md"
+                            />
+
+                            {/* DETAILS */}
+                            <div>
+                                <h2 className="text-lg font-semibold">
+                                    {selectedProduct.name}
+                                </h2>
+
+                                <p className="text-sm text-muted-foreground">
+                                    {selectedProduct.description}
+                                </p>
+                            </div>
+
+                            <div className="flex justify-start gap-3 text-sm">
+                                <span className="border px-1 py-1 rounded-xs">
+                                    {selectedProduct.category}
+                                </span>
+                                <span className="border px-1 py-1 rounded-xs">
+                                    {selectedProduct.brand}
+                                </span>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                                <span className="text-xl font-bold">
+                                    Total Price : ₹{selectedProduct.price}
+                                </span>
+
+                                <Button
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                        navigate(`/products/view/${selectedProduct._id}`)
+                                    }
+                                >
+                                    Go to Product
+                                </Button>
+                            </div>
+
+                        </div>
+                    ) : (
+                        <p>No product found</p>
+                    )}
+
+                </DialogContent>
+            </Dialog>
         </section>
     )
 }

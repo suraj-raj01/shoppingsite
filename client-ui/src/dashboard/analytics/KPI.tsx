@@ -15,6 +15,7 @@ type Orders = {
 
 export default function KPI() {
   const [orders, setOrders] = useState<Orders[]>([]);
+  const [returns, setReturns] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -30,9 +31,21 @@ export default function KPI() {
       setLoading(false);
     }
   };
+  const fetchReturns = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${BASE_URL}/api/returns`);
+      setReturns(res?.data?.data || []);
+    } catch (err) {
+      console.error("Error fetching orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchOrders();
+    fetchReturns();
   }, []);
 
   // ✅ KPI CALCULATIONS
@@ -75,7 +88,7 @@ export default function KPI() {
   if (loading) {
     return (
       <section>
-        <div className="p-3 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
 
           {[1, 2, 3, 4].map((_, i) => (
             <div
@@ -97,9 +110,9 @@ export default function KPI() {
 
   return (
     <section>
-      <div className="p-3 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* 💰 Revenue */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-2">
+        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
           <h3 className="text-md font-semibold text-gray-500">Total Revenue</h3>
           <p className="text-2xl font-bold text-green-600">
             ₹{totalRevenue.toLocaleString()}
@@ -107,7 +120,7 @@ export default function KPI() {
         </div>
 
         {/* 📦 Orders */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-2" onClick={() => navigate("/dashboard/allorders")}>
+        <div className="bg-card rounded-sm shadow-xs p-4 border-1" onClick={() => navigate("/dashboard/allorders")}>
           <h3 className="text-md font-semibold text-gray-500">Total Orders</h3>
           <p className="text-2xl font-bold">
             {totalOrders}
@@ -115,7 +128,7 @@ export default function KPI() {
         </div>
 
         {/* 🕒 Pending */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-2">
+        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
           <h3 className="text-md font-semibold text-gray-500">Pending Orders</h3>
           <p className="text-2xl font-bold text-yellow-600">
             {pendingOrders}
@@ -123,10 +136,16 @@ export default function KPI() {
         </div>
 
         {/* 🛒 Items Sold */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-2">
+        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
           <h3 className="text-md font-semibold text-gray-500">Items Sold</h3>
           <p className="text-2xl font-bold text-blue-600">
-            {totalItemsSold}
+            {totalItemsSold-returns.length}
+          </p>
+        </div>
+        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
+          <h3 className="text-md font-semibold text-gray-500">Items Returns</h3>
+          <p className="text-2xl font-bold text-red-600">
+            {returns.length}
           </p>
         </div>
       </div>

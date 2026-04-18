@@ -73,8 +73,8 @@ export default function OrdersAreaChart() {
 
         // ✅ Last 6 months
         const currentMonthIndex = new Date().getMonth();
-        const last6MonthsIndexes = Array.from({ length: 6 }, (_, i) =>
-          (currentMonthIndex - 5 + i + 12) % 12
+        const last6MonthsIndexes = Array.from({ length: 4 }, (_, i) =>
+          (currentMonthIndex - 3 + i + 12) % 12
         );
 
         const formattedData = last6MonthsIndexes.map((index) => {

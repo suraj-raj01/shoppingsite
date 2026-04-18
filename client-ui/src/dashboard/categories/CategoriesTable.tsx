@@ -47,10 +47,10 @@ export default function CategoryTable() {
                 setCategories(response?.data || [])
                 console.log(response.data,"search data");
             } else {
-                response = await axios.get(`${api}/api/admin/category`)
-                setCategories(response?.data || [])
+                response = await axios.get(`${api}/api/admin/category?page=${page}&limit=7`)
+                setCategories(response?.data?.data || [])
                 setPage(response.data.currentPage)
-                setPageCount(response.data.pageCount)
+                setPageCount(response.data.totalItems)
                 // console.log("categories data", response.data)
             }
             const { data } = response

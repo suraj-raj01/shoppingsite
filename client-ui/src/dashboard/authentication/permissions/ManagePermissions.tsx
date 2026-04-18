@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 
 // ✅ Skeleton Component
@@ -12,7 +11,7 @@ const SkeletonTable = () => {
     return (
         <div className="overflow-x-auto border rounded-xs animate-pulse">
             <table className="w-full text-sm border-collapse">
-                <thead className="bg-gray-200">
+                <thead className="bg-muted">
                     <tr>
                         <th className="border px-3 py-7 w-1/3"></th>
                         {[...Array(4)].map((_, i) => (
@@ -25,7 +24,7 @@ const SkeletonTable = () => {
                         <tr key={i}>
                             <td className="border px-3 py-3">
                                 <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
-                                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                                <div className="h-3 bg-muted rounded w-1/2"></div>
                             </td>
 
                             {[...Array(4)].map((_, j) => (
@@ -108,7 +107,7 @@ export default function ManagePermissions() {
                 )
             );
 
-            toast.success("All roles updated ✅");
+            toast.success("All Permission Granted ✅");
             fetchData();
         } catch (err) {
             console.error(err);
@@ -122,9 +121,9 @@ export default function ManagePermissions() {
         <section className="p-4 space-y-4">
             {
                 loadingTable ? (
-                    <div>
-                        <Skeleton className="h-5 w-full md:w-80" />
-                        <Skeleton className="h-3 mt-1 w-full md:w-80" />
+                    <div className="animate-pulse">
+                        <div className="h-7 bg-muted w-full md:w-80" />
+                        <div className="h-4 bg-muted mt-1 w-full md:w-80" />
                     </div>
                 ) : (
                     <div className="flex md:flex-row flex-col md:items-center justify-between">
@@ -199,7 +198,7 @@ export default function ManagePermissions() {
                                                         onCheckedChange={() =>
                                                             handleToggle(role._id, perm._id)
                                                         }
-                                                        disabled={role.role === "Superadmin"} // optional
+                                                        disabled={role.role === "Admin"} // optional
                                                     />
                                                 </td>
                                             );
@@ -217,8 +216,8 @@ export default function ManagePermissions() {
 
                 {
                     loadingTable ? (
-                        <div>
-                            <Skeleton className="h-10 w-full md:w-40" />
+                        <div className="animate-pulse">
+                            <div className="h-10 bg-muted w-full md:w-40" />
                         </div>
                     ) : (
                         <Button onClick={handleSave} disabled={saving}>

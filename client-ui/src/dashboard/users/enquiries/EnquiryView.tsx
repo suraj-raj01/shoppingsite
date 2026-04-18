@@ -15,23 +15,18 @@ export default function EnquiryView() {
 
     const { id } = useParams();
 
-    const fetchEnquiry = async () => {
+    const fetchData = async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${BASE_URL}/api/enquiry/${id}`);
-            setEnquiry(res.data.data);
-        } catch (err) {
-            console.log(err);
-        } finally {
-            setLoading(false);
-        }
-    }
 
-    const fetchChats = async () => {
-        try {
-            setLoading(true);
-            const res = await axios.get(`${BASE_URL}/api/chat/${id}`);
-            setChat(res.data.data);
+            const [enquiryRes, chatRes] = await Promise.all([
+                axios.get(`${BASE_URL}/api/enquiry/${id}`),
+                axios.get(`${BASE_URL}/api/chat/${id}`)
+            ]);
+
+            setEnquiry(enquiryRes.data.data);
+            setChat(chatRes.data.data);
+
         } catch (err) {
             console.log(err);
         } finally {
@@ -40,8 +35,7 @@ export default function EnquiryView() {
     };
 
     useEffect(() => {
-        fetchChats();
-        fetchEnquiry();
+        fetchData();
     }, []);
 
 
@@ -130,7 +124,7 @@ export default function EnquiryView() {
 
                                             hr: () => <hr className="my-4 border-gray-300" />,
 
-                                            code({inlist, className, children }) {
+                                            code({ inlist, className, children }) {
                                                 const match = /language-(\w+)/.exec(className || "");
                                                 const codeText = String(children).trim();
 

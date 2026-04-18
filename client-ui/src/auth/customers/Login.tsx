@@ -79,7 +79,7 @@ export function LoginForm() {
 
   return (
     <div className="max-w-md p-2 md:p-0 mx-auto mt-10">
-      <Card className="overflow-hidden p-0 rounded-xs">
+      <Card className="overflow-hidden p-0 rounded-sm">
         <CardContent className="grid p-0 md:grid-cols-1">
           <form
             onSubmit={form.handleSubmit(onSubmit)}

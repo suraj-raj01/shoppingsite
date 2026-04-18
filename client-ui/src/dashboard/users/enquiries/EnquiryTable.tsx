@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, Edit, MoreHorizontal, Eye } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -106,16 +106,16 @@ export default function EnquiryTable() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
-                            <Eye className="mr-2 h-4 w-4" />
+                            <Eye className="mr-1 h-4 w-4" />
                             View Enquiry
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/dashboard/enquiries/${row.original._id}`)}>
+                        {/* <DropdownMenuItem onClick={() => navigate(`/dashboard/enquiries/${row.original._id}`)}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Enquiry
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem onClick={() => deleteUser(row.original._id)}>
-                            <Trash className="mr-2 h-4 w-4" />
-                            Delete
+                            <Trash className="mr-1 h-4 w-4" />
+                            Delete Enquiry
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

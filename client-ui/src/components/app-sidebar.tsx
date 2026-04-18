@@ -48,7 +48,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         items: [
           { title: "Profile", url: "/dashboard/profile" },
           { title: "Vouchers", url: "/dashboard/vouchers" },
-          { title: "Profile Settings", url: "/dashboard/settings" },
+          // { title: "Profile Settings", url: "/dashboard/settings" },
         ],
       },
       {
@@ -86,8 +86,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         isActive: true,
         icon: BarChart3, // ✅ better
         items: [
-          { title: "Enquiries", url: "/dashboard/enquiriestable" },
           { title: "Analytics", url: "/dashboard/analytics" },
+          { title: "Enquiries", url: "/dashboard/enquiriestable" },
         ],
       },
       {
@@ -96,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: UserLockIcon,
         items: [
           { title: "Profile", url: "/dashboard/profile" },
-          { title: "Profile Settings", url: "/dashboard/settings" },
+          // { title: "Profile Settings", url: "/dashboard/settings" },
           { title: "Roles", url: "/dashboard/roles" },
           { title: "Permissions", url: "/dashboard/permissions" },
           { title: "Manage Permissions", url: "/dashboard/managepermission" }

@@ -31,8 +31,12 @@ type User = {
 
 export default function ReturnForm() {
     const { id } = useParams() // returnId (for update)
-
+    const [orders, setOrders] = useState<any[]>([])
+    const [products, setProducts] = useState<any[]>([])
     const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [orderloading, setOrderLoading] = useState(false)
+    const [images, setImages] = useState<{ url: string }[]>([])
 
     useEffect(() => {
         try {
@@ -46,6 +50,24 @@ export default function ReturnForm() {
         }
     }, [])
 
+    useEffect(() => {
+        if (!user?._id) return;
+
+        const fetchOrders = async () => {
+            try {
+                setOrderLoading(true);
+                const res = await axios.get(`${BASE_URL}/api/payment/orders/${user._id}`);
+                setOrders(res.data.data || []);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setOrderLoading(false)
+            }
+        };
+
+        fetchOrders();
+    }, [user]);
+
     const [form, setForm] = useState({
         orderId: "",
         productId: "",
@@ -55,10 +77,6 @@ export default function ReturnForm() {
         images: [] as File[],
         status: "pending",
     })
-
-    const [loading, setLoading] = useState(false)
-
-    const [images, setImages] = useState<{ url: string }[]>([])
 
     // ✅ FETCH FOR UPDATE
     useEffect(() => {
@@ -125,6 +143,26 @@ export default function ReturnForm() {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
+    // handle product change
+    const handleProductChange = (productId: string) => {
+        setForm({
+            ...form,
+            productId
+        });
+    };
+
+    // handle order change
+    const handleOrderChange = (orderId: string) => {
+        const selectedOrder = orders.find(o => o._id === orderId);
+        setForm({
+            ...form,
+            orderId,
+            productId: "" // reset product
+        });
+        // assuming order has products array
+        setProducts(selectedOrder?.items || []);
+    };
+
     const naviage = useNavigate();
     // SUBMIT
     const handleSubmit = async () => {
@@ -133,6 +171,7 @@ export default function ReturnForm() {
 
             const payload = {
                 ...form,
+                userId: user?._id,
                 images: images.map((img) => img.url),
             }
 
@@ -143,7 +182,7 @@ export default function ReturnForm() {
             } else {
                 await axios.post(`${BASE_URL}/api/returns`, payload)
                 toast.success("Return created ✅")
-                naviage("/dashboard/allreturns")
+                naviage("/dashboard/returns")
             }
         } catch (err: any) {
             console.error(err)
@@ -164,35 +203,42 @@ export default function ReturnForm() {
 
                     {/* ORDER ID */}
                     <div>
-                        <label htmlFor="orderId">Order ID</label>
-                        <Input
-                            name="orderId"
-                            placeholder="Order ID"
-                            value={form.orderId}
-                            onChange={handleChange}
-                        />
+                        <label>Order</label>
+                        <Select onValueChange={handleOrderChange} disabled={orderloading} value={form.orderId}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select Order" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {orders.map((order) => (
+                                    <SelectItem key={order._id} value={order._id}>
+                                        {order._id}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     {/* PRODUCT ID */}
                     <div>
-                        <label htmlFor="productId">Product ID</label>
-                        <Input
-                            name="productId"
-                            placeholder="Product ID"
-                            value={form.productId}
-                            onChange={handleChange}
-                        />
+                        <label>Product</label>
+                        <Select onValueChange={handleProductChange} disabled={orderloading} value={form.productId}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select Product" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {products.map((p: any) => (
+                                    <SelectItem key={p.productId} value={p.productId}>
+                                        {p.name || p.productId}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     {/* USER ID */}
                     <div>
-                        <label htmlFor="userId">User ID</label>
-                        <Input
-                            name="userId"
-                            placeholder="User ID"
-                            value={form.userId}
-                            onChange={handleChange}
-                        />
+                        <label>UserId</label>
+                        <Input value={user?._id || ""} disabled />
                     </div>
 
                     {/* REASON */}

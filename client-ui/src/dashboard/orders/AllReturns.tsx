@@ -8,13 +8,20 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
+
 import { Button } from '@/components/ui/button'
 import { Trash, MoreHorizontal, CheckCircle2Icon, LucideEye } from 'lucide-react'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import BASE_URL from '@/Config'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Returns = {
     _id: string,
@@ -31,178 +38,220 @@ type Returns = {
 
 export default function AllReturns() {
     const [returns, setReturns] = useState<Returns[]>([])
-    const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [loading, setLoading] = useState(false)
+    const [updating, setUpdating] = useState(false)
+
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
     const [currentPage, setCurrentPage] = useState(1)
 
-    // ✅ Fetch returns
+    const [open, setOpen] = useState(false)
+    const [selectedReturn, setSelectedReturn] = useState<Returns | null>(null)
+
+    const navigate = useNavigate()
+
+    // ✅ Fetch
     const fetchReturns = async () => {
         try {
             setLoading(true)
-            let response;
+            let res
             if (searchQuery) {
-                response = await axios.get(
-                    `${BASE_URL}/api/returns/${searchQuery}`
-                )
+                res = await axios.get(`${BASE_URL}/api/returns/${searchQuery}`)
             } else {
-                response = await axios.get(
-                    `${BASE_URL}/api/returns?page=${page}&limit=8`
-                )
+                res = await axios.get(`${BASE_URL}/api/returns?page=${page}&limit=8`)
             }
-            setReturns(response?.data?.data || [])
-            setPage(response?.data?.currentPage || 1)
-            setTotalPages(response?.data?.totalPages || 1)
-            setCurrentPage(response?.data?.currentPage || 1)
-            // console.log(response.data,'data')
+            setReturns(res?.data?.data || [])
+            setTotalPages(res?.data?.totalPages || 1)
+            setCurrentPage(res?.data?.currentPage || 1)
 
-        } catch (error) {
-            console.error("Error fetching returns:", error)
+        } catch (err) {
+            console.error(err)
         } finally {
             setLoading(false)
         }
     }
 
-    // ✅ Add user dependency
     useEffect(() => {
         fetchReturns()
-    }, [searchQuery])
+    }, [searchQuery, page])
 
+    // ✅ Update Status
+    const handleUpdateStatus = async () => {
+        if (!selectedReturn) return
 
-    const deleteReturns = async (id: any) => {
         try {
-            await axios.delete(`${BASE_URL}/api/returns/${id}`)
-            toast.success('Returns deleted successfully')
-            fetchReturns();
-        } catch (error) {
-            console.error('Error deleting returns:', error)
-            toast.error('Failed to delete Returns. Please try again.')
+            setUpdating(true);
+            await axios.patch(
+                `${BASE_URL}/api/returns/${selectedReturn._id}`,
+                { status: selectedReturn.status }
+            )
+
+            toast.success("Status updated ✅")
+            setOpen(false)
+            fetchReturns()
+
+        } catch (err) {
+            console.error(err)
+            toast.error("Failed ❌")
+        } finally{
+            setUpdating(false)
         }
     }
 
-    const navigate = useNavigate();
-    const viewpage = (id: any) => {
-        navigate(`/dashboard/returns/${id}/view`)
+    // ✅ Delete
+    const deleteReturns = async (id: string) => {
+        try {
+            await axios.delete(`${BASE_URL}/api/returns/${id}`)
+            toast.success("Deleted ✅")
+            fetchReturns()
+        } catch (err) {
+            toast.error("Delete failed ❌")
+        }
     }
 
-
     const columns: ColumnDef<Returns>[] = [
-        {
-            accessorKey: 'userId',
-            header: "User ID",
+        { 
+            accessorKey: 'userId', 
+            header: "User ID" ,
+            cell:({row})=>(
+                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/customers/${row.original.userId}/view`}>{row.original.userId}</Link>
+            )
         },
-        {
-            accessorKey: 'productId',
-            header: "Product ID",
+
+        { 
+            accessorKey: 'productId', 
+            header: "Product ID" ,
+            cell:({row})=>(
+                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/products/${row.original.productId}/view`}>{row.original.productId}</Link>
+            )
         },
-        {
-            accessorKey: 'orderId',
-            header: "Order ID",
+        { 
+            accessorKey: 'orderId', 
+            header: "Order ID" ,
+            cell:({row})=>(
+                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/orders/${row.original.orderId}/view`}>{row.original.orderId}</Link>
+            )
         },
-        {
-            accessorKey: 'reason',
-            header: "Reason",
+        { 
+            accessorKey: 'reason', 
+            header: "Reason" ,
+            cell:({row})=>(
+                <p>{row.original.reason}</p>
+            )
         },
-        {
-            accessorKey: 'message',
-            header: "Message",
-        },
-        {
-            accessorKey: 'updatedAt',
-            header: "Updated At",
-        },
+        { accessorKey: 'message', header: "Message" },
+
         {
             accessorKey: 'status',
             header: "Status",
             cell: ({ row }) => (
                 <Badge
-                    className={`capitalize ${row.original.status === "pending"
-                        ? "bg-yellow-500"
-                        : row.original.status === "approved"
-                            ? "bg-[#6096ff]"
-                            : "bg-red-600"
-                        }`}
+                    className={`capitalize ${
+                        row.original.status === "pending"
+                            ? "bg-yellow-500"
+                            : row.original.status === "approved"
+                                ? "bg-blue-500"
+                                : "bg-red-500"
+                    }`}
                 >
                     {row.original.status}
                 </Badge>
-            ),
+            )
         },
+
         {
-            header: "Action",
             id: "actions",
+            header: "Actions",
             cell: ({ row }) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:px-2">
+                        <Button variant="ghost" size="icon">
                             <MoreHorizontal className="h-4 w-4" />
-                            {/* <span className="hidden sm:inline">Actions</span> */}
                         </Button>
                     </DropdownMenuTrigger>
+
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => viewpage(row.original._id)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/returns/${row.original._id}/view`)}>
                             <LucideEye className="mr-2 h-4 w-4" />
-                            View Returns
+                            View
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => navigate(`/dashboard/returns/${row.original._id}`)}>
+
+                        <DropdownMenuItem
+                            onClick={() => {
+                                setSelectedReturn(row.original)
+                                setOpen(true)
+                            }}
+                        >
                             <CheckCircle2Icon className="mr-2 h-4 w-4" />
                             Update Status
                         </DropdownMenuItem>
-                        <DropdownMenuItem disabled onClick={() => deleteReturns(row.original._id)}>
+
+                        <DropdownMenuItem onClick={() => deleteReturns(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
-                            Delete Returns
+                            Delete
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            ),
-        },
+            )
+        }
     ]
-
-
-    const handleSearch = (query: string) => {
-        setSearchQuery(query)
-    }
 
     return (
         <section className="p-3">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-2">
+
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-4">
                 <div>
-                    {loading ? (
-                        <>
-                            <Skeleton className="h-9 w-32 mb-2" />
-                            <Skeleton className="h-5 w-48" />
-                        </>
-                    ) : (
-                        <>
-                            <div>
-                                <h1 className="text-3xl font-bold tracking-tight">Your All Returns</h1>
-                                <p className="text-muted-foreground">
-                                    Manage and track your return items
-                                </p>
-                            </div>
-                        </>
-                    )}
+                    <h1 className="text-2xl font-bold">All Returns</h1>
+                    <p className="text-muted-foreground">Manage return requests</p>
                 </div>
-                {loading ? (
-                    <Skeleton className="h-10 w-32" />
-                ) : (
-                    <Button disabled>
-                        <Link to="/dashboard/returns">Update return status</Link>
-                    </Button>
-                )}
             </div>
 
-            <div className="w-full overflow-x-auto">
-                <DataTable
-                    columns={columns}
-                    data={returns}
-                    pageCount={totalPages}
-                    currentPage={currentPage}
-                    onPageChange={(page) => setPage(page)}
-                    onSearch={handleSearch}
-                    isLoading={loading}
-                />
-            </div>
+            {/* TABLE */}
+            <DataTable
+                columns={columns}
+                data={returns}
+                pageCount={totalPages}
+                currentPage={currentPage}
+                onPageChange={setPage}
+                onSearch={setSearchQuery}
+                isLoading={loading}
+            />
+
+            {/* ✅ SINGLE GLOBAL MODAL */}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Update Return Status</DialogTitle>
+                    </DialogHeader>
+
+                    <div className="space-y-4">
+                        <Select
+                            value={selectedReturn?.status}
+                            onValueChange={(val) =>
+                                setSelectedReturn((prev) =>
+                                    prev ? { ...prev, status: val } : prev
+                                )
+                            }
+                        >
+                            <SelectTrigger className='w-full'>
+                                <SelectValue placeholder="Select Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="pending">Pending</SelectItem>
+                                <SelectItem value="approved">Approved</SelectItem>
+                                <SelectItem value="rejected">Rejected</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        <Button disabled={updating} onClick={handleUpdateStatus} className="w-full">
+                            {updating?("Updating..."):("Update Status")}
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
         </section>
     )
 }

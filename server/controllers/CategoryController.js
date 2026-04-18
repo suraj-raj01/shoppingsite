@@ -30,10 +30,33 @@ export const createCategory = async (req, res) => {
 /*
 Get All Categories
 */
-export const getAllCategories = async (_req, res) => {
+export const getAllCategories = async (req, res) => {
   try {
-    const data = await Category.find().sort({ createdAt: 1 });
-    res.status(200).json(data);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    const skip = (page - 1) * limit + offset;
+
+    const [products, total] = await Promise.all([
+      Category.find()
+        .skip(skip)
+        .limit(limit)
+        .sort({ updatedAt: -1 }),
+      Category.countDocuments(),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+    if (!products) {
+      return res.status(404).json({ message: "Products not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      data: products,
+      currentPage: page,
+      totalPages,
+      totalItems: total,
+      message: "Products fetched ✅"
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -49,8 +72,7 @@ export const getCategoryById = async (req, res) => {
     if (!data) {
       return res.status(404).json({ message: "Category not found" });
     }
-
-    res.json(data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
