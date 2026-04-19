@@ -1,24 +1,20 @@
+import { Button } from "@/components/ui/button"
 import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-type Subcategory = {
+type Hero = {
   _id: string
-  name: string
-  brands: string[]
-}
-
-type Category = {
-  _id: string
-  categories: string
-  subcategories: Subcategory[]
-  createdAt: string
+  image: string
+  title: string
+  description: string
+  link: string
 }
 
 export default function HeroView() {
 
-  const [hero, setHero] = useState<Category | null>(null)
+  const [hero, setHero] = useState<Hero | null>(null)
   const [loading, setLoading] = useState(true)
 
   const { id } = useParams()
@@ -26,7 +22,7 @@ export default function HeroView() {
   const fetchCategory = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/admin/heroes/${id}`)
-      setHero(res.data)
+      setHero(res.data?.data)
     } catch (err) {
       console.error(err)
     } finally {
@@ -43,10 +39,13 @@ export default function HeroView() {
   if (!hero) return <div className="p-4">Category not found</div>
 
   return (
-    <div>
-        <pre>
-            {JSON.stringify(hero, null, 2)}
-        </pre>
+    <div className="p-3">
+      <img src={hero.image} alt="hero" />
+      <div className="flex items-start mt-2 flex-col justify-center">
+        <p className="text-2xl font-bold">{hero.title}</p>
+        <p className="text-sm mb-2">{hero.description}</p>
+        <Button><Link to={hero.link}>Shop Now</Link></Button>
+      </div>
     </div>
   )
 }

@@ -16,7 +16,7 @@ export default function Layout() {
   return (
     <Suspense fallback={<div></div>}>
       <Navbar />
-      <div className="sticky top-15 z-35 bg-background">
+      <div className="sticky top-16 border-b z-35 bg-background">
         <Categories />
       </div>
       <Outlet />

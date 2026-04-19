@@ -173,7 +173,7 @@ export default function Navbar() {
                                                         className="text-left text-sm hover:text-green-600"
                                                         onClick={() => navigate(`/products/${sub.name}`)}
                                                     >
-                                                        {sub.name}
+                                                        ➡️ {sub.name}
                                                     </p>
                                                 ))}
                                             </div>

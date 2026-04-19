@@ -71,11 +71,11 @@ export default function SearchProducts() {
                         value={selectedCategory}
                         onValueChange={setSelectedCategory}
                     >
-                        <SelectTrigger className="w-fit shadow-none border-r-0">
+                        <SelectTrigger className="w-fit shadow-none font-bold border-r-0">
                             <SelectValue placeholder="All" />
                         </SelectTrigger>
 
-                        <SelectContent>
+                        <SelectContent className="font-semibold">
                             <SelectItem value="all">All</SelectItem>
                             {category?.map((item) => (
                                 <SelectItem key={item._id} value={item.categories}>
@@ -94,7 +94,7 @@ export default function SearchProducts() {
                         className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
                     />
 
-                    <Button className="w-18 border-0 bg-white text-black border hover:bg-white rounded-xs px-8">
+                    <Button className="w-18 bg-primary text-secondary hover:text-secondary hover:bg-primary px-8">
                         <Search className="font-bold" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
                     </Button>
                 </div>

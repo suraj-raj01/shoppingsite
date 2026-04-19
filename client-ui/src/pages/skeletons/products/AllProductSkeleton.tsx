@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 export default function ProductsGridSkeleton({ count = 3 }) {
   return (
     <section className="w-full mt-20 md:px-6 py-6">
-      <div className="max-w-full mx-auto px-2">
+      <div className="max-w-full mx-auto md:px-2 px-1">
 
         {/* Outer Grid */}
         <div className="

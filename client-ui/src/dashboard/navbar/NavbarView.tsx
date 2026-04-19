@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 type Navbar = {
   _id: string
@@ -20,7 +22,7 @@ export default function NavbarView() {
   const fetchCategory = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/admin/navbar/${id}`)
-      setNavbar(res.data)
+      setNavbar(res.data?.data)
     } catch (err) {
       console.error(err)
     } finally {
@@ -32,16 +34,19 @@ export default function NavbarView() {
     if (id) fetchCategory()
   }, [id])
 
-  if (loading) return <div className="p-4">Loading navbar...</div>
+  if (loading) return <div className="p-3"><Skeleton className="h-15 w-full border"></Skeleton></div>
 
   if (!navbar) return <div className="p-4">Navbar not found</div>
 
   return (
-    <div>
-        <pre>
-            {JSON.stringify(navbar, null, 2)}
-        </pre>
+    <section className="p-3">
+      <div className="flex bg-card items-center justify-between px-3 shadow-sm">
+        <img src={navbar.logo} alt="navbar" className="h-14 p-1"/>
+        <Button>
+          <Link to='/auth/adminlogin'>{navbar?.signin}</Link>
+        </Button>
     </div>
+    </section>
   )
 }
 

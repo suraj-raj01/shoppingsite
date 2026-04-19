@@ -56,8 +56,8 @@ export default function Categories() {
                 {category.categories}
               </NavigationMenuTrigger>
 
-              <NavigationMenuContent className='w-300'>
-                <div className="grid w-85 md:w-125 grid-cols-3 md:grid-cols-3 p-3">
+              <NavigationMenuContent className='w-93 md:w-130'>
+                <div className="grid w-93 md:w-130 grid-cols-3 md:grid-cols-3 p-3">
                   {category.subcategories?.map((sub) => (
                     <div key={sub._id} className="space-y-1">
 

@@ -1,7 +1,8 @@
 import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
+import { icons } from "lucide-react";
 
 type Icon = {
   _id: string
@@ -64,16 +65,18 @@ export default function FooterView() {
       <div>
         <h2 className="font-semibold">{footer.followus}</h2>
         <div className="flex flex-wrap gap-3 mt-2">
-          {footer.icons.map((icon) => (
-            <a
-              key={icon._id}
-              href={icon.url}
-              target="_blank"
-              className="px-3 py-1 border rounded-xs hover:bg-green-100"
-            >
-              {icon.title}
-            </a>
-          ))}
+          {footer?.icons.map((icon, i) => {
+            const IconComponent = icons[icon.title as keyof typeof icons];
+            return (
+              <Link
+                key={i}
+                to={icon.url}
+                className="border border-gray-500 p-2 h-10 w-10 flex items-center justify-center rounded-full hover:bg-background hover:text-[#6096ff] transition"
+              >
+                {IconComponent ? <IconComponent size={18} className="capitalize" /> : <span className="">{icon.title}</span>}
+              </Link>
+            );
+          })}
         </div>
       </div>
 

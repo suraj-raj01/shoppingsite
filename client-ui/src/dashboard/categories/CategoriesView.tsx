@@ -51,10 +51,10 @@ export default function CategoriesView() {
       </h2>
 
       {/* Subcategories */}
-      <div className="flex flex-wrap gap-3 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
 
         {category.subcategories?.map(sub => (
-          <div key={sub._id} className="border p-3 w-fit">
+          <div key={sub._id} className="border rounded-sm bg-card p-3 w-full">
 
             <h3 className="font-medium text-sm mb-2">
               {sub.name}
@@ -65,7 +65,7 @@ export default function CategoriesView() {
               {sub.brands?.map((brand, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 text-xs bg-[#5089fa] text-white font-semibold border"
+                  className="px-2 py-1 rounded-sm text-xs bg-[#5089fa] text-white font-semibold border"
                 >
                   {brand}
                 </span>

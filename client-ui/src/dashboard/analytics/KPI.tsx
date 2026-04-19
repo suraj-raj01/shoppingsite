@@ -88,9 +88,9 @@ export default function KPI() {
   if (loading) {
     return (
       <section>
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 animate-pulse">
 
-          {[1, 2, 3, 4].map((_, i) => (
+          {[1, 2, 3, 4, 5].map((_, i) => (
             <div
               key={i}
               className="bg-card rounded-sm shadow-sm p-4 border space-y-3"
@@ -139,7 +139,7 @@ export default function KPI() {
         <div className="bg-card rounded-sm shadow-xs p-4 border-1">
           <h3 className="text-md font-semibold text-gray-500">Items Sold</h3>
           <p className="text-2xl font-bold text-blue-600">
-            {totalItemsSold-returns.length}
+            {totalItemsSold-returns.length-pendingOrders}
           </p>
         </div>
         <div className="bg-card rounded-sm shadow-xs p-4 border-1">

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import BASE_URL from "@/Config"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
@@ -15,7 +14,6 @@ import Autoplay from "embla-carousel-autoplay"
 
 import TrandingProducts from "./products/TrandingProducts"
 import HeroSkeleton from "./skeletons/HeroSkeleton"
-import { Link } from "react-router-dom"
 
 type HeroType = {
   _id: string
@@ -75,7 +73,7 @@ export default function Hero() {
                   className="w-full h-full object-cover"
                 />
 
-                <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                {/* <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
                   <div className="max-w-full -mt-20 flex flex-col items-center justify-center mx-auto px-6 space-y-4">
                     <Button
                       className="mt-2 bg-transparent text-gray-100 hover:bg-black/10 hover:text-gray-50 backdrop-blur-2xl"
@@ -84,7 +82,7 @@ export default function Hero() {
                       <Link to={item.link}>{item.button}</Link>
                     </Button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </CarouselItem>
           ))}

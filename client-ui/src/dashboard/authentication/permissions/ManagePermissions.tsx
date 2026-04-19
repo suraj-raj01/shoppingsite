@@ -23,13 +23,13 @@ const SkeletonTable = () => {
                     {[...Array(6)].map((_, i) => (
                         <tr key={i}>
                             <td className="border px-3 py-3">
-                                <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
                                 <div className="h-3 bg-muted rounded w-1/2"></div>
                             </td>
 
                             {[...Array(4)].map((_, j) => (
                                 <td key={j} className="border text-center">
-                                    <div className="h-5 w-10 bg-gray-300 rounded mx-auto"></div>
+                                    <div className="h-5 w-10 bg-muted rounded mx-auto"></div>
                                 </td>
                             ))}
                         </tr>

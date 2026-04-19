@@ -7,6 +7,7 @@ import {
   Settings,
   UserLockIcon,
   Package,
+  ShoppingCart,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -52,6 +53,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ],
       },
       {
+        title: "Cart Items",
+        url: "#",
+        icon: ShoppingCart,
+        items: [
+          { title: "Added Items", url: "/dashboard/cartitems" },
+          { title: "Liked Items", url: "/dashboard/likeitems" },
+        ],
+      },
+      {
         title: "Orders",
         url: "#",
         icon: ShoppingBasket,
@@ -60,8 +70,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           { title: "Returns", url: "/dashboard/returns" },
           { title: "Reviews", url: "/dashboard/reviews" },
           { title: "Payments", url: "/dashboard/payments" },
-          { title: "Added Items", url: "/dashboard/cartitems" },
-          { title: "Liked Items", url: "/dashboard/likeitems" },
         ],
       },
     ]
