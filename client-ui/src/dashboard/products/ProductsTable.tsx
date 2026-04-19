@@ -117,7 +117,7 @@ export default function ProductsTable() {
             cell: ({ row }) => {
                 const variants = row.original.variants || []
 
-                const visibleVariants = variants.slice(0, 2)
+                const visibleVariants = variants.slice(0, 1)
                 const remainingCount = variants.length - visibleVariants.length
 
                 return (
@@ -125,16 +125,20 @@ export default function ProductsTable() {
                         {visibleVariants.map((variant: any, i: number) => (
                             <div key={i} className="rounded-xs flex gap-2 text-xs">
                                 <Badge variant="outline" className="rounded-xs">
+                                    {"Name: "}
                                     {variant.name}
                                 </Badge>
                                 <Badge variant="outline" className="rounded-xs">
+                                    {"Price: "}
                                     ₹{variant.price}
                                 </Badge>
                                 <Badge variant="outline" className="rounded-xs">
+                                    {"Stock: "}
                                     {variant.stock}
                                 </Badge>
-                                <Badge variant="outline" className="rounded-xs">
-                                    {variant.value}
+                                <Badge variant="outline" className={`rounded-xs`} style={{ backgroundColor: variant?.value }}>
+                                    {"Color: "}
+                                    {variant?.value}
                                 </Badge>
                             </div>
                         ))}

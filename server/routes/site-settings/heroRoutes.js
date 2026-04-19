@@ -5,7 +5,7 @@ import {
   getHeroes,
   getHeroById,
   deleteHero,
-} from "../controllers/heroController.js";
+} from "../../controllers/site-settings/heroController.js";
 
 const router = express.Router();
 

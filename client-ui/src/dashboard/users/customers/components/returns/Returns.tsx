@@ -82,7 +82,7 @@ export default function Returns() {
             }
 
             setReturns(response?.data?.data || [])
-            console.log(response.data,'data')
+            // console.log(response.data,'data')
 
         } catch (error) {
             console.error("Error fetching returns:", error)
@@ -104,7 +104,7 @@ export default function Returns() {
             fetchReviews();
         } catch (error) {
             console.error('Error deleting order:', error)
-            alert('Failed to delete Order. Please try again.')
+            toast.error('Failed to delete Order. Please try again.')
         }
     }
 
@@ -175,7 +175,7 @@ export default function Returns() {
                             <Edit className="mr-2 h-4 w-4" />
                             Edit Order
                         </DropdownMenuItem> */}
-                        <DropdownMenuItem onClick={() => deleteReturns(row.original._id)}>
+                        <DropdownMenuItem disabled onClick={() => deleteReturns(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
                             Delete Returns
                         </DropdownMenuItem>

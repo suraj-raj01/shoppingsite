@@ -44,7 +44,7 @@ export default function Settings() {
         } catch (err) {
             console.error("Invalid user in localStorage");
         }
-    };
+    }; 
 
     useEffect(() => {
         loadUser()
@@ -64,7 +64,13 @@ export default function Settings() {
         try {
             await axios.patch(
                 `${BASE_URL}/api/customers/profile-setting/${user._id}`,
-                form
+                form, 
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    }
+                }
             )
 
             // ✅ update localStorage AFTER success

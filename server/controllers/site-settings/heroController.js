@@ -1,17 +1,18 @@
-import Footer from "../models/FooterModel.js";
+import { deleteFromCloudinary } from "../../config/delete-from-cloudinary.js";
+import Hero from "../../models/site-settings/Hero.js";
 
-// ================= CREATE Footer =================
-export const createFooter = async (req, res) => {
+// ================= CREATE HERO =================
+export const createHero = async (req, res) => {
   try {
     const data = req.body;
-    const hero = await Footer.create(data);
+    const hero = await Hero.create(data);
     return res.status(201).json({
       success: true,
       data: hero,
-      message: "Footer created ✅",
+      message: "Hero created ✅",
     });
   } catch (error) {
-    console.error("CREATE NAVBAR ERROR:", error);
+    console.error("CREATE HERO ERROR:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -19,11 +20,11 @@ export const createFooter = async (req, res) => {
   }
 };
 
-// ================= UPDATE Footer =================
-export const updateFooter = async (req, res) => {
+// ================= UPDATE HERO =================
+export const updateHero = async (req, res) => {
   try {
     const { id } = req.params;
-    const updated = await Footer.findByIdAndUpdate(
+    const updated = await Hero.findByIdAndUpdate(
       id,
       {
         ...req.body,
@@ -34,10 +35,10 @@ export const updateFooter = async (req, res) => {
     return res.status(200).json({
       success: true,
       data: updated,
-      message: "Footer updated ✅",
+      message: "Hero updated ✅",
     });
   } catch (error) {
-    console.error("UPDATE NAVBAR ERROR:", error);
+    console.error("UPDATE HERO ERROR:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -46,9 +47,9 @@ export const updateFooter = async (req, res) => {
 };
 
 // ================= GET ALL =================
-export const getFooter = async (req, res) => {
+export const getHeroes = async (req, res) => {
   try {
-    const data = await Footer.find().sort({ createdAt: -1 });
+    const data = await Hero.find().sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -60,12 +61,12 @@ export const getFooter = async (req, res) => {
 };
 
 // ================= GET ONE =================
-export const getFooterById = async (req, res) => {
+export const getHeroById = async (req, res) => {
   try {
-    const data = await Footer.findById(req.params.id);
+    const data = await Hero.findById(req.params.id);
 
     if (!data) {
-      return res.status(404).json({ message: "Footer not found" });
+      return res.status(404).json({ message: "Hero not found" });
     }
 
     res.status(200).json({
@@ -78,16 +79,17 @@ export const getFooterById = async (req, res) => {
 };
 
 // ================= DELETE =================
-export const deleteFooter = async (req, res) => {
+export const deleteHero = async (req, res) => {
   try {
-    await Footer.findByIdAndDelete(req.params.id);
-
+    const data = await Hero.findById(req.params.id);
+    deleteFromCloudinary(data.image);
+    await Hero.findByIdAndDelete(req.params.id);
     res.status(200).json({
       success: true,
-      message: "Footer deleted 🗑️",
+      message: "Hero deleted 🗑️",
     });
   } catch (error) {
-    console.error("DELETE NAVBAR ERROR:", error);
+    console.error("DELETE HERO ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };

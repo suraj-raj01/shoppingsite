@@ -110,7 +110,10 @@ export default function ProductForm() {
 
   // ================= LOAD CATEGORY =================
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/admin/category`).then(res => setCategories(res.data))
+    axios.get(`${BASE_URL}/api/admin/category`).then(res => {
+      // console.log(res.data?.data)
+      setCategories(res.data?.data)
+    })
   }, [])
 
   // ================= COMMON CHANGE =================
@@ -340,7 +343,7 @@ export default function ProductForm() {
             <div
               key={s}
               onClick={() => setStep(s)}
-              className={`px-4 py-2 cursor-pointer rounded-xs text-sm font-medium ${step === s ? "bg-black text-white" : "bg-gray-200"
+              className={`px-4 py-2 cursor-pointer rounded-xs text-sm font-medium ${step === s ? "bg-primary" : "bg-secondary"
                 }`}
             >
               {s}. {title}
@@ -577,7 +580,7 @@ export default function ProductForm() {
         <div className="space-y-4 border p-1 md:p-5">
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Upload Images</label>
+            <label className="text-sm font-medium">Upload Images (Multiple Images Allowed, Max : 10)</label>
             <Input
               type="file"
               multiple

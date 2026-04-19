@@ -1,5 +1,6 @@
 import express from 'express'
 import { createUser, deleteUser, forgotPassword, getUserById, getUsers, searchUser, updatePassword, updateUser, userLogin, verifyEmail,profileSetting } from '../../controllers/auth/customerController.js';
+import { isAuthenticated } from '../../middleware/isAuthenticated.js';
 const route = express.Router();
 
 route.post("/",createUser)

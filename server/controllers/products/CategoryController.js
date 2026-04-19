@@ -1,4 +1,4 @@
-import Category from "../models/Categories.js";
+import Category from "../../models/products/Categories.js";
 
 /* 
 Create Category

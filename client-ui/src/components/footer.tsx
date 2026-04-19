@@ -40,7 +40,7 @@ export default function Footer() {
       const footer = await axios.get(`${BASE_URL}/api/admin/footer`);
       setFooter(footer?.data?.data[0] || { aboutTitle: "", aboutDesc: "", contactTitle: "", contactDesc: "", socialTitle: "", socialDesc: "" })
       // console.log(footer.data?.data[0],'footer');
-      setCategories(res.data || []);
+      setCategories(res.data?.data || []);
     } catch (err) {
       console.error(err);
     } finally {

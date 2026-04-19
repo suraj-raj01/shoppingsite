@@ -5,7 +5,7 @@ import {
   getNavbar,
   getNavbarById,
   deleteNavbar,
-} from "../controllers/navbarController.js";
+} from "../../controllers/site-settings/navbarController.js";
 
 const router = express.Router();
 

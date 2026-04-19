@@ -209,7 +209,7 @@ async function sendPasswordResetEmail(email, token) {
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully:', info.messageId);
+        // console.log('Email sent successfully:', info.messageId);
         return info;
     } catch (error) {
         console.error('Error sending email:', error);
@@ -219,7 +219,7 @@ async function sendPasswordResetEmail(email, token) {
 
 export const verifyEmail = async (req, res) => {
     const { email } = req.body;
-    console.log(email, "email")
+    // console.log(email, "email")
     try {
         // Input validation
         if (!email) {

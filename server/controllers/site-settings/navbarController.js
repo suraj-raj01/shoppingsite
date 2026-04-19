@@ -1,18 +1,17 @@
-import { deleteFromCloudinary } from "../config/delete-from-cloudinary.js";
-import Hero from "../models/Hero.js";
+import Navbar from "../../models/site-settings/Navbar.js";
 
-// ================= CREATE HERO =================
-export const createHero = async (req, res) => {
+// ================= CREATE NAVBAR =================
+export const createNavbar = async (req, res) => {
   try {
     const data = req.body;
-    const hero = await Hero.create(data);
+    const hero = await Navbar.create(data);
     return res.status(201).json({
       success: true,
       data: hero,
-      message: "Hero created ✅",
+      message: "Navbar created ✅",
     });
   } catch (error) {
-    console.error("CREATE HERO ERROR:", error);
+    console.error("CREATE NAVBAR ERROR:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -20,11 +19,11 @@ export const createHero = async (req, res) => {
   }
 };
 
-// ================= UPDATE HERO =================
-export const updateHero = async (req, res) => {
+// ================= UPDATE Navbar =================
+export const updateNavbar = async (req, res) => {
   try {
     const { id } = req.params;
-    const updated = await Hero.findByIdAndUpdate(
+    const updated = await Navbar.findByIdAndUpdate(
       id,
       {
         ...req.body,
@@ -35,10 +34,10 @@ export const updateHero = async (req, res) => {
     return res.status(200).json({
       success: true,
       data: updated,
-      message: "Hero updated ✅",
+      message: "Navbar updated ✅",
     });
   } catch (error) {
-    console.error("UPDATE HERO ERROR:", error);
+    console.error("UPDATE NAVBAR ERROR:", error);
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -47,9 +46,9 @@ export const updateHero = async (req, res) => {
 };
 
 // ================= GET ALL =================
-export const getHeroes = async (req, res) => {
+export const getNavbar = async (req, res) => {
   try {
-    const data = await Hero.find().sort({ createdAt: -1 });
+    const data = await Navbar.find().sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -61,12 +60,12 @@ export const getHeroes = async (req, res) => {
 };
 
 // ================= GET ONE =================
-export const getHeroById = async (req, res) => {
+export const getNavbarById = async (req, res) => {
   try {
-    const data = await Hero.findById(req.params.id);
+    const data = await Navbar.findById(req.params.id);
 
     if (!data) {
-      return res.status(404).json({ message: "Hero not found" });
+      return res.status(404).json({ message: "Navbar not found" });
     }
 
     res.status(200).json({
@@ -79,17 +78,16 @@ export const getHeroById = async (req, res) => {
 };
 
 // ================= DELETE =================
-export const deleteHero = async (req, res) => {
+export const deleteNavbar = async (req, res) => {
   try {
-    const data = await Hero.findById(req.params.id);
-    deleteFromCloudinary(data.image);
-    await Hero.findByIdAndDelete(req.params.id);
+    await Navbar.findByIdAndDelete(req.params.id);
+
     res.status(200).json({
       success: true,
-      message: "Hero deleted 🗑️",
+      message: "Navbar deleted 🗑️",
     });
   } catch (error) {
-    console.error("DELETE HERO ERROR:", error);
+    console.error("DELETE NAVBAR ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };

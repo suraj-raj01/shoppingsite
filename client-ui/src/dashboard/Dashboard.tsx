@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Edit2Icon, Settings } from "lucide-react"
 import AccessDenied from "@/components/access-denied"
+import { useTheme } from "@/components/theme-provider"
 
 type Role = {
   _id: string
@@ -21,13 +22,19 @@ type User = {
 
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null)
+  const { setTheme } = useTheme();
 
   useEffect(() => {
     try {
       const userData = localStorage.getItem("user")
       if (userData) {
-        const parsedData = JSON.parse(userData)
-        setUser(parsedData.user)
+        const parsed = JSON.parse(userData);
+        const user = parsed.user;
+
+        setUser(user);
+
+        // ✅ apply theme
+        setTheme(user.theme ? "dark" : "light");
       }
     } catch (err) {
       console.error("Invalid user in localStorage")

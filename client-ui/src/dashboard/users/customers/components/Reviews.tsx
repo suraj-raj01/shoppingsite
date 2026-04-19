@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
-import { Trash, MoreHorizontal, Eye, Star } from 'lucide-react'
+import { Trash, MoreHorizontal, Eye, Star, Edit } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useNavigate } from 'react-router-dom'
 import api from "@/Config"
@@ -154,10 +154,10 @@ export default function Reviews() {
                             <Eye className="mr-2 h-4 w-4" />
                             View Review
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem onClick={() => navigate(`/auth/signup/${row.original._id}`)}>
+                        <DropdownMenuItem onClick={() => navigate(`/dashboard/reviews/${row.original._id}/edit`)}>
                             <Edit className="mr-2 h-4 w-4" />
-                            Edit Order
-                        </DropdownMenuItem> */}
+                            Edit Review
+                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => deleteReviews(row.original._id)}>
                             <Trash className="mr-2 h-4 w-4" />
                             Delete Review

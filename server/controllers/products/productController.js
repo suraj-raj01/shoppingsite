@@ -1,4 +1,4 @@
-import Product from "../models/productModel.js";
+import Product from "../../models/products/productModel.js";
 
 // ================= SAFE JSON PARSER =================
 const safeJSON = (value, fallback) => {

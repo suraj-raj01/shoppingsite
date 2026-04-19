@@ -9,7 +9,7 @@ import {
   addBrand,
   removeBrand,
   removeSubcategory,
-} from "../controllers/CategoryController.js";
+} from "../../controllers/products/CategoryController.js";
 
 const router = express.Router();
 

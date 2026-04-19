@@ -109,7 +109,7 @@ export default function Navbar() {
     const fetchCategories = async () => {
         try {
             const res = await axios.get(`${BASE_URL}/api/admin/category`)
-            setCategories(res.data || [])
+            setCategories(res.data?.data || [])
         } catch (err) {
             console.error(err)
         } finally {

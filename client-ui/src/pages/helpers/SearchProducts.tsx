@@ -52,7 +52,7 @@ export default function SearchProducts() {
         const fetchCategory = async () => {
             try {
                 const res = await axios.get(`${BASE_URL}/api/admin/category`)
-                setCategory(res.data)
+                setCategory(res.data?.data)
                 // console.log(res.data)
             } catch (error) {
                 console.log(error)

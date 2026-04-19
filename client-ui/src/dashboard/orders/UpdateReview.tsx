@@ -70,7 +70,7 @@ export default function UpdateReview() {
             setRating(0);
             setMessage("");
             setImages([]);
-            navigate("/dashboard/allreviews");
+            navigate(-1)
         } catch (err) {
             console.error(err);
         }
@@ -82,7 +82,7 @@ export default function UpdateReview() {
             setRating(response.data[0].ratings);
             setMessage(response.data[0].message);
             setImages(response.data[0].images);
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             console.error("Error fetching review:", error);
         }

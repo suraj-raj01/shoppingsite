@@ -57,7 +57,13 @@ export function LoginForm() {
     try {
       const response = await axios.post(
         `${BASE_URL}/api/customers/login`,
-        values
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+          }
+        }
       )
 
       const user = response.data

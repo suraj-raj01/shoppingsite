@@ -1,14 +1,14 @@
-import Navbar from "../models/Navbar.js";
+import Footer from "../../models/site-settings/FooterModel.js";
 
-// ================= CREATE Navbar =================
-export const createNavbar = async (req, res) => {
+// ================= CREATE Footer =================
+export const createFooter = async (req, res) => {
   try {
     const data = req.body;
-    const hero = await Navbar.create(data);
+    const hero = await Footer.create(data);
     return res.status(201).json({
       success: true,
       data: hero,
-      message: "Navbar created ✅",
+      message: "Footer created ✅",
     });
   } catch (error) {
     console.error("CREATE NAVBAR ERROR:", error);
@@ -19,11 +19,11 @@ export const createNavbar = async (req, res) => {
   }
 };
 
-// ================= UPDATE Navbar =================
-export const updateNavbar = async (req, res) => {
+// ================= UPDATE Footer =================
+export const updateFooter = async (req, res) => {
   try {
     const { id } = req.params;
-    const updated = await Navbar.findByIdAndUpdate(
+    const updated = await Footer.findByIdAndUpdate(
       id,
       {
         ...req.body,
@@ -34,7 +34,7 @@ export const updateNavbar = async (req, res) => {
     return res.status(200).json({
       success: true,
       data: updated,
-      message: "Navbar updated ✅",
+      message: "Footer updated ✅",
     });
   } catch (error) {
     console.error("UPDATE NAVBAR ERROR:", error);
@@ -46,9 +46,9 @@ export const updateNavbar = async (req, res) => {
 };
 
 // ================= GET ALL =================
-export const getNavbar = async (req, res) => {
+export const getFooter = async (req, res) => {
   try {
-    const data = await Navbar.find().sort({ createdAt: -1 });
+    const data = await Footer.find().sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -60,12 +60,12 @@ export const getNavbar = async (req, res) => {
 };
 
 // ================= GET ONE =================
-export const getNavbarById = async (req, res) => {
+export const getFooterById = async (req, res) => {
   try {
-    const data = await Navbar.findById(req.params.id);
+    const data = await Footer.findById(req.params.id);
 
     if (!data) {
-      return res.status(404).json({ message: "Navbar not found" });
+      return res.status(404).json({ message: "Footer not found" });
     }
 
     res.status(200).json({
@@ -78,13 +78,13 @@ export const getNavbarById = async (req, res) => {
 };
 
 // ================= DELETE =================
-export const deleteNavbar = async (req, res) => {
+export const deleteFooter = async (req, res) => {
   try {
-    await Navbar.findByIdAndDelete(req.params.id);
+    await Footer.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,
-      message: "Navbar deleted 🗑️",
+      message: "Footer deleted 🗑️",
     });
   } catch (error) {
     console.error("DELETE NAVBAR ERROR:", error);
