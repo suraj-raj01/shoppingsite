@@ -72,7 +72,7 @@ export const saveProduct = async (req, res) => {
 // ================= TRANDING PRODUCT =================
 export const trandingProduct = async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 }).limit(4);
+    const products = await Product.find().sort({ createdAt: -1 }).limit(6);
     return res.status(200).json({
       success: true,
       data: products,

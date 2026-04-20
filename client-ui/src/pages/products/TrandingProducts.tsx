@@ -43,7 +43,7 @@ export default function TrandingProducts() {
             <div className="max-w-full mx-auto px-2 md:px-2">
 
                 {/* Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-3">
                     {products.map((product) => (
                         <Card
                             key={product._id}

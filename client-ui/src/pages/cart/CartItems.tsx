@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Trash } from "lucide-react";
+import { ShoppingCart, Trash } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function CartItems() {
@@ -38,7 +38,7 @@ export default function CartItems() {
 
     return (
         <div className="w-full min-h-screen max-w-7xl mx-auto p-4 space-y-6">
-            <h1 className="text-3xl font-bold">Your Cart Items</h1>
+            <h1 className="text-3xl font-bold flex items-center gap-2">Your Cart <ShoppingCart className=""/> Items</h1>
 
             {/* ✅ cart list */}
             <div className="space-y-4">

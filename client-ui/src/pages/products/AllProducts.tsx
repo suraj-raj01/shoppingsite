@@ -61,8 +61,8 @@ export default function AllProducts() {
         <section className="w-full py-6 md:px-5">
             <div className="max-w-full mx-auto md:px-2 px-1">
                 <div className="flex md:flex-row flex-col px-1 items-start justify-between">
-                    <h2 className="font-bold text-xl md:py-5">Recently Added Items </h2>
-                    <h2 className="md:font-bold md:text-xl text-sm md:py-5 pb-4">Best Deals On New Products </h2>
+                    <h2 className="font-semibold text-xl md:py-5">Recently Added Items </h2>
+                    <h2 className="md:font-semibold md:text-xl text-sm md:py-5 pb-4">Best Deals On New Products </h2>
                 </div>
                 {/* 🔥 Outer Grid (Boxes) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">

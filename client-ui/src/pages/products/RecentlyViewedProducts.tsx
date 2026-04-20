@@ -67,9 +67,9 @@ export default function RecentlyViewedProduct() {
     return (
         <section className="w-full md:px-5 md:py-10 py-5">
             <div className="max-w-full mx-auto px-2">
-                <h2 className="font-bold text-xl md:text-xl py-5">
+                <h2 className="font-semibold text-xl md:text-xl py-5">
                     Recently Viewed Products |
-                    <span className="text-sm md:text-xl text-[#6096ff] cursor-pointer">
+                    <span className="text-md md:text-md text-[#6096ff] cursor-pointer">
                         <Link to="/products/electronics"> View all</Link>
                     </span>
                 </h2>
@@ -91,7 +91,7 @@ export default function RecentlyViewedProduct() {
                                             key={product._id}
                                             className="overflow-hidden rounded-sm border p-0"
                                         >
-                                            <div className="aspect-square p-2 overflow-hidden">
+                                            <div className="aspect-4/3 p-2 overflow-hidden">
                                                 <img
                                                     src={product.defaultImage}
                                                     alt={product.title}
@@ -109,16 +109,16 @@ export default function RecentlyViewedProduct() {
                         {products.map((product) => (
                             <CarouselItem
                                 key={`desktop-${product._id}`}
-                                className="hidden md:block basis-1/3 md:basis-1/4 lg:basis-1/5"
+                                className="hidden md:block basis-1/3 md:basis-1/5 lg:basis-1/6"
                             >
                                 <Card className="overflow-hidden rounded-sm border p-0 hover:shadow-md transition">
-                                    <div className="w-full md:aspect-4/3 aspect-4/3 p-2 overflow-hidden">
+                                    <div className="w-full md:aspect-3/3 aspect-4/3 p-2 overflow-hidden">
                                         <img
                                             src={product.defaultImage}
                                             alt={product.title}
                                             loading="lazy"
                                             onClick={() => navigate(`/products/view/${product._id}`)}
-                                            className="w-full h-full object-cover hover:scale-105 transition duration-500"
+                                            className="w-full h-full object-contain hover:scale-105 transition duration-500"
                                         />
                                     </div>
                                 </Card>
@@ -128,8 +128,8 @@ export default function RecentlyViewedProduct() {
                     </CarouselContent>
 
                     {/* arrows */}
-                    <CarouselPrevious className="absolute bg-background/50 rounded-sm h-20 w-10 left-2 md:left-2 cursor-pointer" />
-                    <CarouselNext className="absolute bg-background/50 rounded-sm h-20 w-10 right-2 md:right-2 cursor-pointer" />
+                    <CarouselPrevious className="absolute md:block hidden bg-background/50 rounded-sm h-20 w-10 left-2 md:left-2 cursor-pointer" />
+                    <CarouselNext className="absolute md:block hidden bg-background/50 rounded-sm h-20 w-10 right-2 md:right-2 cursor-pointer" />
                 </Carousel>
             </div>
         </section>

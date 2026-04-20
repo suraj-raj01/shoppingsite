@@ -150,7 +150,7 @@ export default function AllOrders() {
                 <div>
                     {row.original.items.map((item, index) => (
                         <div key={item.productId} className='flex gap-2 mb-1'>
-                            <Badge variant="outline" className='cursor-pointer bg-secondary' onClick={() => handleViewProduct(item.productId)}>View Product <span className='h-4 w-4 bg-primary rounded-full border flex items-center justify-center'> {index + 1}</span></Badge>
+                            <Badge variant="outline" className='cursor-pointer bg-secondary' onClick={() => handleViewProduct(item.productId)}>View Product <span className='h-4 w-4 bg-primary text-white rounded-full border flex items-center justify-center'> {index + 1}</span></Badge>
                         </div>
                     ))}
                 </div>

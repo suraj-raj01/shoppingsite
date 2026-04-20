@@ -44,7 +44,7 @@ export default function HeroView() {
       <div className="flex items-start mt-2 flex-col justify-center">
         <p className="text-2xl font-bold">{hero.title}</p>
         <p className="text-sm mb-2">{hero.description}</p>
-        <Button><Link to={hero.link}>Shop Now</Link></Button>
+        <Button><Link to={`/dashboard/${hero.link}`}>Shop Now</Link></Button>
       </div>
     </div>
   )
