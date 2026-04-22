@@ -48,7 +48,7 @@ export default function OrdersView() {
             Order Details
           </CardTitle>
 
-          <Badge className={`capitalize text-sm font-medium px-2 py-1 rounded-xs ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-[#6096ff]"}`}>
+          <Badge className={`capitalize text-sm font-medium text-white px-2 py-1 rounded-xs ${order.paymentStatus === "pending" ? "bg-red-500" : "bg-[#6096ff]"}`}>
             {order.paymentStatus}
           </Badge>
         </CardHeader>
@@ -56,7 +56,7 @@ export default function OrdersView() {
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
 
           {/* Order Date */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <CalendarDays className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Order Date</p>
@@ -67,7 +67,7 @@ export default function OrdersView() {
           </div>
 
           {/* Total Amount */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <IndianRupee className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Total Amount</p>
@@ -78,7 +78,7 @@ export default function OrdersView() {
           </div>
 
           {/* Shipping Address */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <MapPin className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Shipping Address</p>
@@ -87,7 +87,7 @@ export default function OrdersView() {
           </div>
 
           {/* Razorpay Order ID */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <Package className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Razorpay Order ID</p>
@@ -96,7 +96,7 @@ export default function OrdersView() {
           </div>
 
           {/* Payment ID */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <CreditCard className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Payment ID</p>
@@ -105,7 +105,7 @@ export default function OrdersView() {
           </div>
 
           {/* Signature */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 bg-background px-2">
             <ShieldCheck className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Payment Signature</p>

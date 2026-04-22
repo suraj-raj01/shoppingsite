@@ -44,7 +44,7 @@ export default function EnquiryTable() {
                 setEnquiry(response?.data?.data || [])
                 setPage(response.data.pagination.page)
                 setPageCount(response.data.pagination.totalPages)
-                console.log("userdata data", response.data)
+                // console.log("userdata data", response.data)
             }
             const { data } = response
             setPageCount(data.pagination.totalPages || 1)
