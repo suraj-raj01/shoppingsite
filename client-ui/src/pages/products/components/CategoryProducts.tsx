@@ -18,6 +18,7 @@ import AddToCart from "@/pages/helpers/AddtoCart";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ScrollToTop from "@/pages/helpers/ScrollToTop";
 
 type Product = {
   _id: string;
@@ -104,15 +105,15 @@ export default function CategoryProduct() {
   /* ---------------- UI ---------------- */
 
   return (
-    <section className="px-3 md:px-5 md:flex gap-5">
-
+    <section className="px-3 bg-card md:px-7 md:flex gap-0">
+      <ScrollToTop />
       {/* ================= FILTER SIDEBAR ================= */}
 
-      <div className="md:w-1/5 w-full space-y-5 md:sticky top-15 h-screen border-r pr-5 pt-2">
+      <div className="md:w-1/5 w-full space-y-4 md:sticky top-22 h-screen border-r pr-5 pt-5">
 
         {/* Search */}
-        <div className="space-y-2">
-          <Label className="text-md md:text-xl">Search</Label>
+        <div className="space-y-1">
+          <Label>Search</Label>
           <Input
             placeholder="Search products..."
             value={search}
@@ -123,10 +124,10 @@ export default function CategoryProduct() {
         <Separator />
 
         {/* Category */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label>Category</Label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
 
@@ -145,7 +146,7 @@ export default function CategoryProduct() {
         <Separator />
 
         {/* Price */}
-        <div className="space-y-3">
+        <div className="space-y-1">
           <Label>Max Price</Label>
 
           <Slider
@@ -176,11 +177,11 @@ export default function CategoryProduct() {
         <Separator />
 
         {/* Sorting */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label>Sort By</Label>
 
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Sort products" />
             </SelectTrigger>
 
@@ -200,9 +201,9 @@ export default function CategoryProduct() {
 
       {/* ================= PRODUCT GRID ================= */}
 
-      <div className="md:w-3/4 w-full">
+      <div className="md:w-full w-full border-r mb-5">
 
-        <h1 className="text-2xl font-bold mb-6 capitalize">
+        <h1 className="text-2xl font-bold mb-3 border-b capitalize p-3">
           {filteredProducts.length === 0 ? "" : id}
         </h1>
 
@@ -212,7 +213,7 @@ export default function CategoryProduct() {
           </h1>
         ) : (
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
             {filteredProducts.map((product) => (
 

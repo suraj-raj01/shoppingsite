@@ -20,6 +20,7 @@ export default function ReviewView() {
                 setLoadingReview(true)
                 const response = await axios.get(`${api}/api/reviews/${id}`)
                 setReview(response.data[0] || null)
+                // console.log(response.data,'review')
             } catch (error) {
                 console.error("Error fetching review:", error)
             } finally {

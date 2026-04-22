@@ -343,7 +343,7 @@ export default function ProductForm() {
             <div
               key={s}
               onClick={() => setStep(s)}
-              className={`px-4 py-2 cursor-pointer rounded-xs text-sm font-medium ${step === s ? "bg-primary" : "bg-secondary"
+              className={`px-4 py-2 cursor-pointer rounded-xs text-sm font-medium ${step === s ? "bg-primary text-white" : "bg-secondary"
                 }`}
             >
               {s}. {title}

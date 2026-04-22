@@ -38,7 +38,7 @@ export default function OrdersAreaChart() {
       try {
         setLoading(true);
 
-        const res = await axios.get(`${BASE_URL}/api/payment/orders`);
+        const res = await axios.get(`${BASE_URL}/api/payment/orders?limit=1000`);
         const orders = res.data?.data || [];
 
         // ✅ Month order

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux-toolkit/Store";
 import ReviewRating from "@/pages/helpers/reviewRating";
 import ReviewForm from "@/pages/helpers/reviewForm";
+import ScrollToTop from "@/pages/helpers/ScrollToTop";
 
 type Reviews = {
   _id: string,
@@ -161,6 +162,7 @@ export default function ViewProduct() {
 
   return (
     <div className="mt-10 px-4 md:px-10 max-w-full mx-auto">
+      <ScrollToTop />
       <div className="grid lg:grid-cols-2 gap-12">
 
         {/* ================= LEFT SIDE ================= */}

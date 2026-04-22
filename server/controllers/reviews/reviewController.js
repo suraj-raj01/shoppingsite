@@ -62,7 +62,7 @@ export const getReviewById = async (req, res) => {
         {userId:id},
         {productId:id}
       ]
-    })
+    }).sort({ createdAt: -1 });
     // console.log(data,'data')
     if (!data) {
       return res.status(404).json({ message: "Review not found" });

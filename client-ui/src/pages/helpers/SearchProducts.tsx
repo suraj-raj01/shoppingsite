@@ -118,7 +118,7 @@ export default function SearchProducts() {
                                 key={item._id}
                                 className="flex items-center gap-3 p-3 hover:bg-gray-100 cursor-pointer"
                             >
-                                <div className="flex flex-col" onClick={() => { navigate(`/products/view/${item._id}`); setShowDropdown(false) }}>
+                                <div className="flex flex-col" onClick={() => { navigate(`/products/${item.brand}`); setShowDropdown(false) }}>
                                     <div className="flex items-center gap-2">
                                         <img src={item.defaultImage} alt="" className="w-10 h-10" />
                                         <div className="text-sm flex flex-col font-medium ">

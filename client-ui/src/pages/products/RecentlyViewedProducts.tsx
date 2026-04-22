@@ -128,8 +128,8 @@ export default function RecentlyViewedProduct() {
                     </CarouselContent>
 
                     {/* arrows */}
-                    <CarouselPrevious className="absolute md:block hidden bg-background/50 rounded-sm h-20 w-10 left-2 md:left-2 cursor-pointer" />
-                    <CarouselNext className="absolute md:block hidden bg-background/50 rounded-sm h-20 w-10 right-2 md:right-2 cursor-pointer" />
+                    <CarouselPrevious className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 left-2 md:left-2 cursor-pointer" />
+                    <CarouselNext className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 right-2 md:right-2 cursor-pointer" />
                 </Carousel>
             </div>
         </section>
