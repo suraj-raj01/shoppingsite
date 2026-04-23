@@ -5,7 +5,7 @@ export default function HeroSkeleton() {
     <section className="w-full">
 
       {/* Hero image skeleton */}
-      <div className="relative w-full h-130 md:h-135 lg:h-165 overflow-hidden">
+      <div className="relative w-full h-90 md:h-115 lg:h-120 mt-5 overflow-hidden">
         <Skeleton className="w-full h-full" />
 
         {/* Button skeleton overlay */}

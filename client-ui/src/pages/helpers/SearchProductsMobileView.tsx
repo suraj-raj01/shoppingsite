@@ -98,10 +98,10 @@ export default function SearchProductsMobileView({ onClose }: { onClose: () => v
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="w-full mx-auto mt-3 md:w-2xl bg-background border rounded-xs shadow-lg z-50 max-h-80">
+                <div className="w-full mx-auto mt-3 md:w-2xl overflow-auto bg-background border max-h-100 rounded-xs shadow-lg z-50 max-h-80">
 
                     {loading && (
-                        <p className="p-3 text-sm text-muted-foreground">Searching...</p>
+                        <p className="p-3 text-sm text-muted-foreground text-center">Searching...</p>
                     )}
 
                     {!loading && suggestions.length === 0 && (
@@ -116,7 +116,7 @@ export default function SearchProductsMobileView({ onClose }: { onClose: () => v
                                 key={item._id}
                                 className="flex items-center gap-3 p-3 hover:bg-gray-100 cursor-pointer"
                             >
-                                <div className="flex flex-col" onClick={() => { navigate(`/products/view/${item._id}`); setShowDropdown(false); onClose() }}>
+                                <div className="flex flex-col" onClick={() => { navigate(`/products/${item.brand}`); setShowDropdown(false); onClose() }}>
                                     <div className="flex items-center gap-2">
                                         <img src={item.defaultImage} alt="" className="w-10 h-10" />
                                         <div className="text-sm flex flex-col font-medium ">

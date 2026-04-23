@@ -47,15 +47,19 @@ export default function CategoryProduct() {
   const [inStock, setInStock] = useState(false);
   const [priceRange, setPriceRange] = useState([100000]);
   const [sortBy, setSortBy] = useState("");
+  const [loading, setLoading] = useState(false);
 
   /* ---------------- FETCH PRODUCTS ---------------- */
 
   const fetchProductByCategory = async (id: string) => {
     try {
+      setLoading(true);
       const res = await axios.get(`${BASE_URL}/api/admin/products/search/${id}`);
       setProducts(res.data.data || []);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,7 +113,7 @@ export default function CategoryProduct() {
       <ScrollToTop />
       {/* ================= FILTER SIDEBAR ================= */}
 
-      <div className="md:w-1/5 w-full space-y-4 md:sticky top-22 h-screen border-r pr-5 pt-5">
+      <div className="md:w-1/5 w-full space-y-4 md:sticky top-22 md:h-screen md:border-r md:pr-5 pt-5">
 
         {/* Search */}
         <div className="space-y-1">
@@ -201,30 +205,48 @@ export default function CategoryProduct() {
 
       {/* ================= PRODUCT GRID ================= */}
 
-      <div className="md:w-full w-full border-r mb-5">
+      <div className="md:w-full w-full md:border-r mb-5">
 
         <h1 className="text-2xl font-bold mb-3 border-b capitalize p-3">
           {filteredProducts.length === 0 ? "" : id}
         </h1>
 
-        {filteredProducts.length === 0 ? (
-          <h1 className="text-2xl font-bold text-red-600">
-            No {id} Products Found
-          </h1>
+        {loading ? (
+          // 🔄 Loading State (Skeleton UI)
+          <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="animate-pulse border rounded-sm p-4 space-y-3"
+              >
+                <div className="h-32 bg-gray-300 rounded"></div>
+                <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                <div className="h-6 bg-gray-300 rounded w-1/3"></div>
+              </div>
+            ))}
+          </div>
+
+        ) : filteredProducts.length === 0 ? (
+
+          // ❌ Empty State
+          <div className="flex justify-center items-center h-40">
+            <h1 className="text-2xl font-bold text-gray-500">
+              No Products Found
+            </h1>
+          </div>
+
         ) : (
 
+          // ✅ Data State
           <div className="grid grid-cols-1 p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-
             {filteredProducts.map((product) => (
-
               <div
                 key={product._id}
                 className="border rounded-sm py-2 px-1 hover:shadow-md transition bg-background"
               >
-
                 {/* Image */}
                 <div className="w-full h-38 flex items-center justify-center overflow-hidden">
-
                   <img
                     src={product.defaultImage}
                     alt={product.name}
@@ -234,12 +256,10 @@ export default function CategoryProduct() {
                       navigate(`/products/view/${product._id}`)
                     }
                   />
-
                 </div>
 
                 {/* Info */}
                 <div className="mt-4 space-y-1 p-2">
-
                   <p className="text-xs text-gray-400 capitalize">
                     {product.category} • {product.subcategory} • {product.brand}
                   </p>
@@ -250,9 +270,7 @@ export default function CategoryProduct() {
 
                   {/* Price */}
                   <div className="flex items-center justify-between gap-2 mt-2">
-
                     <div className="flex items-center gap-2">
-
                       <span className="text-lg font-bold text-[#6096ff]">
                         ₹{product.price?.toLocaleString()}
                       </span>
@@ -262,34 +280,30 @@ export default function CategoryProduct() {
                           ₹{product.salePrice?.toLocaleString()}
                         </span>
                       )}
-
                     </div>
 
-                    <Badge
-                      variant="destructive"
-                      className="text-sm px-2 py-1 rounded-xs"
-                    >
-                      {Math.round(
-                        ((product.salePrice - product.price) /
-                          product.salePrice) *
-                        100
-                      )}
-                      % OFF
-                    </Badge>
-
+                    {product.salePrice > product.price && (
+                      <Badge
+                        variant="destructive"
+                        className="text-sm px-2 py-1 rounded-xs"
+                      >
+                        {Math.round(
+                          ((product.salePrice - product.price) /
+                            product.salePrice) *
+                          100
+                        )}
+                        % OFF
+                      </Badge>
+                    )}
                   </div>
 
                   {/* Cart */}
                   <div className="w-full flex flex-col gap-2 mt-2">
                     <AddToCart product={product} className="flex" />
                   </div>
-
                 </div>
-
               </div>
-
             ))}
-
           </div>
         )}
 

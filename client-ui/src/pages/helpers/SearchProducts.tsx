@@ -71,11 +71,11 @@ export default function SearchProducts() {
                         value={selectedCategory}
                         onValueChange={setSelectedCategory}
                     >
-                        <SelectTrigger className="w-fit shadow-none font-bold border-r-0">
+                        <SelectTrigger className="w-fit shadow-none font-semibold border-r-0">
                             <SelectValue placeholder="All" />
                         </SelectTrigger>
 
-                        <SelectContent className="font-semibold">
+                        <SelectContent className="font-normal">
                             <SelectItem value="all">All</SelectItem>
                             {category?.map((item) => (
                                 <SelectItem key={item._id} value={item.categories}>
@@ -100,10 +100,10 @@ export default function SearchProducts() {
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="absolute top-full left-center w-full mx-auto md:w-2xl bg-background border rounded-xs shadow-lg z-50 max-h-80">
+                <div className="absolute top-full left-center bg-background overflow-auto w-full mx-auto md:w-2xl max-h-120 border rounded-xs shadow-lg z-50 max-h-80">
 
                     {loading && (
-                        <p className="p-3 text-sm text-muted-foreground">Searching...</p>
+                        <p className="p-3 text-sm text-muted-foreground text-center">Searching...</p>
                     )}
 
                     {!loading && suggestions.length === 0 && (

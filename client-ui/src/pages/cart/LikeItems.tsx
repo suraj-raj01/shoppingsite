@@ -7,6 +7,7 @@ import { Heart, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { removelikesData } from "@/redux-toolkit/LikeSlice";
 import type { AppDispatch } from "@/redux-toolkit/Store";
+import ScrollToTop from "../helpers/ScrollToTop";
 
 export default function LikeItems() {
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function LikeItems() {
 
     if (!likeItems || likeItems.length < 1) {
         return (
-            <div className="p-10 text-center text-gray-500 md:text-2xl">
+            <div className="text-center min-h-screen md:min-h-150 flex items-center justify-center text-gray-500 md:text-2xl">
                 🛒 Your liked items are empty
             </div>
         );
@@ -26,6 +27,7 @@ export default function LikeItems() {
 
     return (
         <div className="w-full min-h-screen max-w-7xl mx-auto p-4 space-y-6">
+            <ScrollToTop/>
             <h1 className="text-3xl font-bold flex items-center gap-2 justify-start">Your Liked <Heart className="fill-red-500 border-0 text-red-500" /> Items</h1>
 
             {/* ✅ cart list */}

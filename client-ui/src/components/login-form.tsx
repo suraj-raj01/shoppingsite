@@ -37,14 +37,12 @@ export function LoginForm({
     try {
       const response = await axios.post(`${BASE_URL}/api/admin/users/login`, payload);
       const user = response.data;
-      // console.log(response.data);
       localStorage.setItem("user", JSON.stringify(user))
       localStorage.setItem("token", user.token)
       toast.success(response.data.message || "Login successful")
       navigate("/dashboard/analytics")
     } catch (err: any) {
-      console.log(err)
-      // setError(err.response.data.message)
+      setError(err?.response?.data?.message || 'Something went wrong. Please try again.')
     } finally {
       setLoading(false)
     }

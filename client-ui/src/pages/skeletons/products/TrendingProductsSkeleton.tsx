@@ -7,7 +7,7 @@ export default function TrendingProductsSkeleton() {
       <div className="max-w-full mx-auto px-2 md:px-2">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="overflow-hidden p-1 rounded-md">
+            <Card key={i} className="overflow-hidden p-1 bg-background rounded-md">
               {/* Image */}
               <Skeleton className="w-full aspect-3/2" />
 

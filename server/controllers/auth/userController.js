@@ -459,6 +459,7 @@ export const userLogin = async (req, res) => {
         }
 
         const isUser = await UserModel.findOne({ email }).populate("roleId");
+        
         if (!isUser) {
             return res.status(400).json({ message: "User not found" });
         }

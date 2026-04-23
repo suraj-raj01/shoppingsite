@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import BASE_URL from "@/Config";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import jsPDF from "jspdf";
 import { Badge } from "@/components/ui/badge";
 import { Download } from "lucide-react";
@@ -106,6 +106,8 @@ export default function Invoice() {
         doc.save(`invoice-${invoice.invoiceNumber}.pdf`)
     }
 
+    const navigate = useNavigate()
+
     return (
         <div className="p-3">
             {loading ? (
@@ -149,38 +151,53 @@ export default function Invoice() {
                         <h3 className="font-semibold mb-3">Items</h3>
 
                         <div className="space-y-3">
-                            {invoice.items.map((item) => (
-                                <div
-                                    key={item._id}
-                                    className="flex items-center justify-between border p-3 rounded-sm"
-                                >
-                                    <div className="flex items-center gap-3">
+                            {invoice.items.map((item) => {
+                                const product = item.productId;
 
-                                        <img
-                                            src={item.productId?.images?.[0]?.url}
-                                            className="w-14 h-14 object-cover rounded-md border"
-                                        />
+                                return (
+                                    <div
+                                        key={item._id}
+                                        className="flex md:flex-row flex-col items-center justify-between border p-3 rounded-sm gap-3"
+                                    >
+                                        {/* Left Section */}
+                                        <div
+                                            className="flex md:flex-row flex-col items-center gap-3 cursor-pointer w-full"
+                                            onClick={() => {
+                                                if (product?._id) {
+                                                    navigate(`/products/view/${product._id}`);
+                                                }
+                                            }}
+                                        >
+                                            {/* Image */}
+                                            <img
+                                                src={product?.images?.[0]?.url || "/placeholder.png"}
+                                                alt={item.name || "Product image"}
+                                                className="w-14 h-14 rounded-md border object-cover"
+                                            />
 
-                                        <div>
-                                            <p className="font-medium text-sm">
-                                                {item.name}
+                                            {/* Info */}
+                                            <div className="text-center md:text-left">
+                                                <p className="font-medium text-sm md:w-2/3 line-clamp-2">
+                                                    {item.name}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Qty: {item.quantity}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Right Section */}
+                                        <div className="text-center md:text-right w-full md:w-auto">
+                                            <p className="font-semibold">
+                                                ₹{item.total?.toLocaleString()}
                                             </p>
-                                            <p className="text-xs text-muted-foreground">
-                                                Qty: {item.quantity}
+                                            <p className="text-xs flex items-center justify-center md:justify-end md:w-25 md:text-right md:text-muted-foreground">
+                                                <span>₹{item.price?.toLocaleString()} × {item.quantity}</span>
                                             </p>
                                         </div>
                                     </div>
-
-                                    <div className="text-right">
-                                        <p className="font-semibold">
-                                            ₹{item.total}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                            ₹{item.price} each
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
 
@@ -196,7 +213,7 @@ export default function Invoice() {
                     <div>
                         Payment Status :  {" "}
                         <Badge className="bg-green-600 capitalize">
-                           {invoice.status}
+                            {invoice.status}
                         </Badge>
                     </div>
 

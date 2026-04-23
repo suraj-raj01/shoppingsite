@@ -41,7 +41,7 @@ export default function OrdersView() {
   return (
     <div className="p-3 max-w-full mx-auto space-y-3">
       {/* 🔷 ORDER SUMMARY */}
-      <Card className="rounded-xs shadow-xs">
+      <Card className="rounded-sm shadow-xs">
         <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-xl">
             <Package size={20} />
@@ -56,7 +56,7 @@ export default function OrdersView() {
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
 
           {/* Order Date */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <CalendarDays className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Order Date</p>
@@ -67,7 +67,7 @@ export default function OrdersView() {
           </div>
 
           {/* Total Amount */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <IndianRupee className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Total Amount</p>
@@ -78,7 +78,7 @@ export default function OrdersView() {
           </div>
 
           {/* Shipping Address */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <MapPin className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Shipping Address</p>
@@ -87,7 +87,7 @@ export default function OrdersView() {
           </div>
 
           {/* Razorpay Order ID */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <Package className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Razorpay Order ID</p>
@@ -96,7 +96,7 @@ export default function OrdersView() {
           </div>
 
           {/* Payment ID */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <CreditCard className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Payment ID</p>
@@ -105,7 +105,7 @@ export default function OrdersView() {
           </div>
 
           {/* Signature */}
-          <div className="flex items-center gap-3 bg-background px-2">
+          <div className="flex items-center gap-3 bg-secondary rounded-sm p-2">
             <ShieldCheck className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
               <p className="text-muted-foreground">Payment Signature</p>
@@ -119,7 +119,7 @@ export default function OrdersView() {
       </Card>
 
       {/* 🔷 ORDER ITEMS */}
-      <Card className="rounded-xs shadow-sm">
+      <Card className="rounded-sm shadow-sm">
         <CardHeader>
           <CardTitle className="-mt-1 text-lg">Order Items</CardTitle>
         </CardHeader>
@@ -129,7 +129,7 @@ export default function OrdersView() {
             {order.items?.map((item: any) => (
               <div
                 key={item._id}
-                className="border rounded-xs p-4 hover:shadow-md transition bg-background flex flex-col justify-between"
+                className="border rounded-sm p-4 hover:shadow-md transition bg-secondary flex flex-col justify-between"
               >
                 <div className="space-y-1 text-sm">
                   <p className="font-semibold">Product ID</p>
