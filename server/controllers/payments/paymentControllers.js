@@ -2,6 +2,7 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import Orders from "../../models/payments/orderModel.js"
 import { generateInvoice } from "./invoiceController.js";
+import mongoose from "mongoose";
 
 export const createOrder = async (req, res) => {
     try {
@@ -186,3 +187,48 @@ export const deleteOrder = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error!" });
     }
 }
+
+
+export const searchOrder = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ message: "Search term is required" });
+        }
+
+        const regex = new RegExp(id, "i"); // case-insensitive
+
+        const query = {
+            $or: [
+                { orderId: regex },
+                { razorpay_order_id: regex },
+                { razorpay_payment_id: regex },
+                { razorpay_signature: regex },
+                { paymentStatus: regex },
+                { shippingAddress: regex },
+                { totalAmount: regex }
+            ],
+        };
+
+        // ✅ If it's a valid ObjectId → include userId search
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            query.$or.push({ userId: id });
+            query.$or.push({ _id: id });
+        }
+
+        // ✅ Use find instead of findOne for better search results
+        const orders = await Orders.find(query)
+            .sort({ createdAt: -1 }) // latest first
+            .limit(20); // optional
+
+        res.status(200).json({
+            success: true,
+            count: orders.length,
+            data: orders,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal Server Error!" });
+    }
+};

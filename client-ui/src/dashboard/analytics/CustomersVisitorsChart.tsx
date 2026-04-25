@@ -1,10 +1,8 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
 import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
@@ -39,19 +37,17 @@ export default function CustomersVisitorsChart() {
         setLoading(true);
 
         const res = await axios.get(`${BASE_URL}/api/customers`);
-        // console.log(res.data.data)
         const customers = res.data?.data || [];
 
         const monthsOrder = [
-          "January","February","March","April","May","June",
-          "July","August","September","October","November","December"
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
         ];
 
-        // ✅ initialize month map
         const monthMap: Record<string, number> = {};
         monthsOrder.forEach((m) => (monthMap[m] = 0));
 
-        // ✅ count users per month
+        // ✅ Count users per month
         customers.forEach((user: any) => {
           if (!user.updatedAt) return;
 
@@ -65,10 +61,11 @@ export default function CustomersVisitorsChart() {
           }
         });
 
-        // ✅ last 6 months
+        // ✅ Correct last 6 months logic
         const currentMonthIndex = new Date().getMonth();
-        const last6MonthsIndexes = Array.from({ length: 5 }, (_, i) =>
-          (currentMonthIndex - 4 + i + 12) % 12
+
+        const last6MonthsIndexes = Array.from({ length: 6 }, (_, i) =>
+          (currentMonthIndex - 5 + i + 12) % 12
         );
 
         const formattedData = last6MonthsIndexes.map((index) => {
@@ -102,21 +99,12 @@ export default function CustomersVisitorsChart() {
       <CardContent>
         {loading ? (
           <div className="p-4 space-y-2 animate-pulse">
-            {/* Header Skeleton */}
-            {/* <div className="h-5 w-40 bg-gray-200 rounded"></div> */}
-
-            {/* Chart Skeleton */}
             <div className="h-35 w-full bg-gray-200 rounded-md"></div>
-
-            {/* Footer Skeleton */}
-            <div className="space-y-2">
-              <div className="h-4 w-full bg-gray-200 rounded"></div>
-              {/* <div className="h-4 w-40 bg-gray-200 rounded"></div> */}
-            </div>
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
           </div>
         ) : (
           <ChartContainer config={chartConfig}>
-            <AreaChart data={chartData} margin={{ left: 5, right: 5, top:5 }}>
+            <BarChart data={chartData} margin={{ left: 5, right: 5, top: 5 }}>
               <CartesianGrid vertical={false} />
 
               <XAxis
@@ -132,14 +120,12 @@ export default function CustomersVisitorsChart() {
                 content={<ChartTooltipContent indicator="line" />}
               />
 
-              <Area
+              <Bar
                 dataKey="visitors"
-                type="natural"
                 fill="#6096ff"
-                fillOpacity={0.4}
-                stroke="#6096ff"
+                radius={[6, 6, 0, 0]}
               />
-            </AreaChart>
+            </BarChart>
           </ChartContainer>
         )}
       </CardContent>
@@ -148,7 +134,7 @@ export default function CustomersVisitorsChart() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Visitors trend{" "}
+              Visitors trend
               <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
 

@@ -1,7 +1,7 @@
 
 import { Router } from "express";
 const router = Router();
-import { createOrder, deleteOrder, getOrder, getOrderById, getOrderView, verifyPayment } from "../../controllers/payments/paymentControllers.js";
+import { createOrder, deleteOrder, getOrder, getOrderById, getOrderView, searchOrder, verifyPayment } from "../../controllers/payments/paymentControllers.js";
 import { getInvoice } from "../../controllers/payments/invoiceController.js";
 
 //Creating Order
@@ -18,5 +18,7 @@ router.get("/orders/view/:id", getOrderView);
 router.get("/invoice/:id", getInvoice);
 //delete order
 router.delete("/orders/:id", deleteOrder)
+// search order
+router.post("/orders/searchorder/:id", searchOrder)
 
 export default router;

@@ -1,8 +1,8 @@
 // import { ChartLineStep } from "./ChartLineStep";
-import OrdersAreaChart from "./AreaChart";
-import ReturnsChart from "./ChartBarDefault";
-import CustomersVisitorsChart from "./ChartAreaLegend";
+import ReturnsChart from "./ReturnsChart";
+import CustomersVisitorsChart from "./CustomersVisitorsChart";
 import KPI from "./KPI";
+import OrdersBarChart from "./OrderBarChart";
 
 export default function Analytics() {
   return (
@@ -10,7 +10,7 @@ export default function Analytics() {
       <KPI />
       <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4">
         <div className="">
-          <OrdersAreaChart />
+          <OrdersBarChart />
         </div>
         <div className="">
           <CustomersVisitorsChart />

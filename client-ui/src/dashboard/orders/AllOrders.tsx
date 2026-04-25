@@ -82,6 +82,7 @@ export default function AllOrders() {
 
                 setOrders(response?.data?.data || [])
                 setPageCount(response?.data?.totalPages || 1)
+                console.log(response.data,'search')
 
             } else {
                 response = await axios.get(

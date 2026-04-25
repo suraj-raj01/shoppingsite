@@ -147,7 +147,7 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                                 key={index}
                                 src={img.url}
                                 alt="review"
-                                className="w-full h-12 w-12 object-cover rounded-xs border"
+                                className="w-full h-12 object-cover rounded-xs border"
                               />
                             ))}
                           </div>
@@ -220,17 +220,18 @@ export default function ReviewForm({ productId, userId, reviews }: { productId: 
                 <div key={index} className="relative">
                   <img
                     src={img.url}
+                    alt="image"
                     className="h-20 w-20 object-cover rounded border"
                   />
 
                   {/* REMOVE BTN */}
-                  <button
+                  <Button
                     type="button"
                     onClick={() => removeImage(index)}
                     className="absolute -top-2 -right-2 bg-black text-white rounded-full p-1"
                   >
                     <X size={12} />
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>

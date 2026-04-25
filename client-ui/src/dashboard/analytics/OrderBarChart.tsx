@@ -1,10 +1,8 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
 import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
@@ -29,7 +27,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function OrdersAreaChart() {
+export default function OrdersBarChart() {
   const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,13 +39,11 @@ export default function OrdersAreaChart() {
         const res = await axios.get(`${BASE_URL}/api/payment/orders?limit=1000`);
         const orders = res.data?.data || [];
 
-        // ✅ Month order
         const monthsOrder = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
 
-        // ✅ Initialize month map
         const monthMap: Record<string, number> = {};
         monthsOrder.forEach((m) => (monthMap[m] = 0));
 
@@ -60,7 +56,6 @@ export default function OrdersAreaChart() {
             month: "long",
           });
 
-          // ✅ Sum total quantity in order
           const totalItems = order.items?.reduce(
             (sum: number, item: any) => sum + (item.quantity || 0),
             0
@@ -73,8 +68,9 @@ export default function OrdersAreaChart() {
 
         // ✅ Last 6 months
         const currentMonthIndex = new Date().getMonth();
-        const last6MonthsIndexes = Array.from({ length: 4 }, (_, i) =>
-          (currentMonthIndex - 3 + i + 12) % 12
+
+        const last6MonthsIndexes = Array.from({ length: 6 }, (_, i) =>
+          (currentMonthIndex - 5 + i + 12) % 12
         );
 
         const formattedData = last6MonthsIndexes.map((index) => {
@@ -108,21 +104,12 @@ export default function OrdersAreaChart() {
       <CardContent>
         {loading ? (
           <div className="p-4 space-y-2 animate-pulse">
-            {/* Header Skeleton */}
-            {/* <div className="h-5 w-40 bg-gray-200 rounded"></div> */}
-
-            {/* Chart Skeleton */}
             <div className="h-35 w-full bg-gray-200 rounded-md"></div>
-
-            {/* Footer Skeleton */}
-            <div className="space-y-2">
-              <div className="h-4 w-full bg-gray-200 rounded"></div>
-              {/* <div className="h-4 w-40 bg-gray-200 rounded"></div> */}
-            </div>
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
           </div>
         ) : (
           <ChartContainer config={chartConfig}>
-            <AreaChart
+            <BarChart
               accessibilityLayer
               data={chartData}
               margin={{ left: 12, right: 12 }}
@@ -142,14 +129,12 @@ export default function OrdersAreaChart() {
                 content={<ChartTooltipContent indicator="line" />}
               />
 
-              <Area
+              <Bar
                 dataKey="Item Sold"
-                type="natural"
                 fill="#6096ff"
-                fillOpacity={0.5}
-                stroke="#6096ff"
+                radius={[6, 6, 0, 0]}
               />
-            </AreaChart>
+            </BarChart>
           </ChartContainer>
         )}
       </CardContent>
@@ -158,7 +143,7 @@ export default function OrdersAreaChart() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Products sold trend{" "}
+              Products sold trend
               <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
 

@@ -110,9 +110,9 @@ export default function KPI() {
 
   return (
     <section>
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-2 md:gap-4">
         {/* 💰 Revenue */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
+        <div className="bg-card rounded-sm shadow-xs p-4 border">
           <h3 className="text-md font-semibold text-gray-500">Total Revenue</h3>
           <p className="text-2xl font-bold text-green-600">
             ₹{totalRevenue.toLocaleString()}
@@ -120,7 +120,7 @@ export default function KPI() {
         </div>
 
         {/* 📦 Orders */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-1" onClick={() => navigate("/dashboard/allorders")}>
+        <div className="bg-card rounded-sm shadow-xs p-4 border" onClick={() => navigate("/dashboard/allorders")}>
           <h3 className="text-md font-semibold text-gray-500">Total Orders</h3>
           <p className="text-2xl font-bold">
             {totalOrders}
@@ -128,7 +128,7 @@ export default function KPI() {
         </div>
 
         {/* 🕒 Pending */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
+        <div className="bg-card rounded-sm shadow-xs p-4 border">
           <h3 className="text-md font-semibold text-gray-500">Pending Orders</h3>
           <p className="text-2xl font-bold text-yellow-600">
             {pendingOrders}
@@ -136,13 +136,13 @@ export default function KPI() {
         </div>
 
         {/* 🛒 Items Sold */}
-        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
+        <div className="bg-card rounded-sm shadow-xs p-4 border">
           <h3 className="text-md font-semibold text-gray-500">Items Sold</h3>
           <p className="text-2xl font-bold text-blue-600">
             {totalItemsSold-returns.length-pendingOrders}
           </p>
         </div>
-        <div className="bg-card rounded-sm shadow-xs p-4 border-1">
+        <div className="bg-card rounded-sm shadow-xs p-4 border">
           <h3 className="text-md font-semibold text-gray-500">Items Returns</h3>
           <p className="text-2xl font-bold text-red-600">
             {returns.length}

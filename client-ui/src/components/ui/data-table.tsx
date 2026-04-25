@@ -215,7 +215,7 @@ export function DataTable<TData, TValue>({
           {isLoading ? (
             <>
               <Skeleton className="h-8 w-16 inline-block" />
-              <Skeleton className="h-4 w-24 inline-block mx-2" />
+              <Skeleton className="h-4 w-24 inline-block" />
               <Skeleton className="h-8 w-12 inline-block" />
             </>
           ) : (

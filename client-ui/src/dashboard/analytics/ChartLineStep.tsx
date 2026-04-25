@@ -1,4 +1,4 @@
-"use client"
+
 
 import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
@@ -80,7 +80,7 @@ export function ChartLineStep() {
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total visitors for the last 4 months
         </div>
       </CardFooter>
     </Card>

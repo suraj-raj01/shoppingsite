@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "@/Config";
@@ -41,13 +39,11 @@ export default function ReturnsChart() {
         const res = await axios.get(`${BASE_URL}/api/returns`);
         const data = res.data?.data || [];
 
-        // ✅ Month order
         const monthsOrder = [
           "January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"
         ];
 
-        // ✅ Initialize map
         const monthMap: Record<string, number> = {};
         monthsOrder.forEach((m) => (monthMap[m] = 0));
 
@@ -65,10 +61,11 @@ export default function ReturnsChart() {
           }
         });
 
-        // ✅ Get last 6 months dynamically
+        // ✅ Last 6 months (correct)
         const currentMonthIndex = new Date().getMonth();
-        const last6MonthsIndexes = Array.from({ length: 4 }, (_, i) =>
-          (currentMonthIndex - 3 + i + 12) % 12
+
+        const last6MonthsIndexes = Array.from({ length: 6 }, (_, i) =>
+          (currentMonthIndex - 5 + i + 12) % 12
         );
 
         const formattedData = last6MonthsIndexes.map((index) => {
@@ -94,46 +91,43 @@ export default function ReturnsChart() {
     <Card className="rounded-sm">
       <CardHeader>
         <CardTitle>Total Return Items</CardTitle>
-        <CardDescription>Last 6 Months</CardDescription>
+        <CardDescription>
+          Showing total returned items for the last 6 months
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
         {loading ? (
           <div className="p-4 space-y-2 animate-pulse">
-            {/* Header Skeleton */}
-            {/* <div className="h-5 w-40 bg-gray-200 rounded"></div> */}
-
-            {/* Chart Skeleton */}
-            <div className="h-35 w-full bg-gray-200 rounded-md"></div>
-
-            {/* Footer Skeleton */}
-            <div className="space-y-2">
-              <div className="h-4 w-full bg-gray-200 rounded"></div>
-              {/* <div className="h-4 w-40 bg-gray-200 rounded"></div> */}
-            </div>
+            <div className="h-35 w-full bg-gray-200 rounded-xl"></div>
+            <div className="h-4 w-full bg-gray-200 rounded"></div>
           </div>
         ) : (
           <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={chartData}>
+            <BarChart
+              accessibilityLayer
+              data={chartData}
+              margin={{ left: 10, right: 10, top: 5 }}
+            >
               <CartesianGrid vertical={false} />
 
               <XAxis
                 dataKey="month"
                 tickLine={false}
-                tickMargin={10}
                 axisLine={false}
+                tickMargin={8}
                 tickFormatter={(value) => value.slice(0, 3)}
               />
 
               <ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+                content={<ChartTooltipContent indicator="line" />}
               />
 
               <Bar
                 dataKey="Returns Item"
                 fill="#6096ff"
-                radius={4}
+                radius={[6, 6, 0, 0]}
               />
             </BarChart>
           </ChartContainer>
@@ -146,7 +140,7 @@ export default function ReturnsChart() {
         </div>
 
         <div className="leading-none text-muted-foreground">
-          Showing total returned items for the last 6 months
+          Last 6 months performance
         </div>
       </CardFooter>
     </Card>
