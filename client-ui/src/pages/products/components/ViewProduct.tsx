@@ -10,7 +10,6 @@ import { Heart } from "lucide-react";
 import { likelikesData, removelikesData } from "@/redux-toolkit/LikeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux-toolkit/Store";
-import ReviewRating from "@/pages/helpers/reviewRating";
 import ReviewForm from "@/pages/helpers/reviewForm";
 import ScrollToTop from "@/pages/helpers/ScrollToTop";
 import RelatedProduct from "./RelatedProducts";
@@ -162,7 +161,7 @@ export default function ViewProduct() {
 
 
   return (
-    <div className="mt-10 px-3 md:px-10 max-w-full mx-auto">
+    <div className="mt-10 px-3 md:px-7 max-w-full mx-auto">
       <ScrollToTop />
       <div className="grid lg:grid-cols-2 gap-12">
 
@@ -331,11 +330,10 @@ export default function ViewProduct() {
             </p>
           </div>
           {/* product ratings */}
-          <ReviewRating rating={4.5} totalReviews={reviews.length} />
         </div>
       )}
-      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
       <RelatedProduct slug={product?.subcategory}/>
+      <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
     </div>
   );
 }

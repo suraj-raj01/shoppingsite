@@ -72,11 +72,11 @@ export default function CategoriesProducts({ title }: { title: string }) {
                         <Card key={index} className="p-1 bg-background border-0 rounded-sm shadow-none">
 
                             {/* 🔥 Inner Grid (4 items inside box) */}
-                            <div className="grid grid-cols-2 bg-card rounded-sm gap-5 md:gap-2">
+                            <div className="grid grid-cols-2 rounded-sm gap-5 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="cursor-pointer rounded-sm border"
+                                        className="cursor-pointer bg-card rounded-sm border"
                                         onClick={() => navigate(`/products/view/${product._id}`)}
                                         >
                                         <div>
