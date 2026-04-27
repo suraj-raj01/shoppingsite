@@ -99,7 +99,7 @@ export default function AllProducts() {
                     {chunkedProducts.map((group, index) => (
                         <Card key={index} className="p-1 bg-background border-0 rounded-md shadow-none">
 
-                            <div className="grid grid-cols-2 gap-4 md:gap-2">
+                            <div className="grid grid-cols-2 bg-card gap-4 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}
@@ -111,7 +111,7 @@ export default function AllProducts() {
                                                 src={product.defaultImage}
                                                 alt={product.title}
                                                 loading="lazy"
-                                                className="w-full h-full p-1 rounded-md object-cover hover:scale-105 transition duration-300"
+                                                className="w-full h-full p-1 rounded-md object-contain hover:scale-105 transition duration-300"
                                             />
                                         </div>
 

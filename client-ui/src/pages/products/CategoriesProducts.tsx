@@ -4,7 +4,6 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { limitWords } from "../helpers/WordLimiter"
-import ProductsGridSkeleton from "../skeletons/products/AllProductSkeleton"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
@@ -50,7 +49,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
         }
     }
 
-    if (loading) return <ProductsGridSkeleton />
+    // if (loading) return <ProductsGridSkeleton />
     if (!products.length) return null
 
     // 🔥 Group products into chunks of 4
@@ -73,7 +72,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
                         <Card key={index} className="p-1 bg-background border-0 rounded-sm shadow-none">
 
                             {/* 🔥 Inner Grid (4 items inside box) */}
-                            <div className="grid grid-cols-2 rounded-sm gap-5 md:gap-2">
+                            <div className="grid grid-cols-2 bg-card rounded-sm gap-5 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}
@@ -95,7 +94,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
                                                 src={product.defaultImage}
                                                 alt={product.title}
                                                 loading="lazy"
-                                                className="w-full h-full p-1 rounded-sm object-cover hover:scale-105 transition duration-300"
+                                                className="w-full h-full p-1 rounded-sm object-contain hover:scale-105 transition duration-300"
                                             />
                                         </div>
                                         <p className="text-xs font-normal px-2 py-1 text-gray-500">

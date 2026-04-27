@@ -155,7 +155,7 @@ export default function CategoryProduct() {
 
           <Slider
             min={0}
-            max={100000}
+            max={1000000}
             step={500}
             value={priceRange}
             onValueChange={setPriceRange}
@@ -198,18 +198,21 @@ export default function CategoryProduct() {
 
         <Separator />
 
-        <Badge variant="secondary" className="w-full justify-center py-2">
-          Showing {filteredProducts.length} results
-        </Badge>
       </div>
 
       {/* ================= PRODUCT GRID ================= */}
 
-      <div className="md:w-full w-full md:border-r mb-5">
+      <div className="md:w-full bg-card w-full md:border-r mb-5">
 
-        <h1 className="text-2xl font-bold mb-3 border-b capitalize p-3">
-          {filteredProducts.length === 0 ? "" : id}
-        </h1>
+        <div className="flex items-center border-b justify-between">
+          <h1 className="text-2xl font-bold  capitalize p-3">
+            {filteredProducts.length === 0 ? "" : id}
+          </h1>
+
+          <Badge variant="default" className="py-2 font-semibold md:mr-2">
+            {loading ? ("Loading ...") : (`Showing ${filteredProducts.length} results`)}
+          </Badge>
+        </div>
 
         {loading ? (
           // 🔄 Loading State (Skeleton UI)
@@ -243,7 +246,7 @@ export default function CategoryProduct() {
             {filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="border rounded-sm py-2 px-1 hover:shadow-md transition bg-background"
+                className="border rounded-sm py-2 px-1 hover:shadow-md transition bg-card"
               >
                 {/* Image */}
                 <div className="w-full h-38 flex items-center justify-center overflow-hidden">

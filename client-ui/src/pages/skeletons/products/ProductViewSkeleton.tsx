@@ -1,3 +1,5 @@
+import { Skeleton } from "@/components/ui/skeleton";
+
 export default function ProductDetailsSkeleton() {
   return (
     <div className="mt-10 px-4 md:px-10 max-w-full mx-auto animate-pulse">
@@ -82,6 +84,36 @@ export default function ProductDetailsSkeleton() {
         <div className="h-4 bg-gray-200 rounded w-full" />
         <div className="h-4 bg-gray-200 rounded w-11/12" />
         <div className="h-4 bg-gray-200 rounded w-10/12" />
+      </div>
+
+      <div className="grid grid-cols-1 my-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="border border-gray-200 rounded-sm shadow-md p-4 bg-white"
+          >
+            {/* Badge */}
+            <Skeleton className="w-16 h-5 mb-2" />
+
+            {/* Image */}
+            <Skeleton className="w-full h-48 mb-3 rounded" />
+
+            {/* Title */}
+            <Skeleton className="w-3/4 h-5 mb-2" />
+
+            {/* Brand */}
+            <Skeleton className="w-1/2 h-4 mb-2" />
+
+            {/* Category */}
+            <Skeleton className="w-full h-3 mb-3" />
+
+            {/* Price */}
+            <div className="flex gap-3">
+              <Skeleton className="w-20 h-5" />
+              <Skeleton className="w-16 h-5" />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

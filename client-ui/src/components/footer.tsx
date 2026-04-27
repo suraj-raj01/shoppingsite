@@ -151,7 +151,7 @@ export default function Footer() {
         )}
 
         {/* BOTTOM */}
-        <div className="border-t border-gray-700 mt-10 pt-5 text-center text-sm text-gray-500">
+        <div className="border-t border-gray-700 pt-5 text-center text-sm text-gray-500">
           {footer?.copyright}
         </div>
 

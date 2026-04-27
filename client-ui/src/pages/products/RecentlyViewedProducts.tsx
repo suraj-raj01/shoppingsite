@@ -96,7 +96,7 @@ export default function RecentlyViewedProduct() {
                                                     src={product.defaultImage}
                                                     alt={product.title}
                                                     onClick={() => navigate(`/products/view/${product._id}`)}
-                                                    className="w-full h-full object-cover"
+                                                    className="w-full h-full object-contain"
                                                 />
                                             </div>
                                         </Card>

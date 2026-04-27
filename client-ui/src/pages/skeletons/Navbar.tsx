@@ -29,8 +29,8 @@ export default function NavbarSkeleton() {
 
         {/* Location (desktop) */}
         <div className="hidden px-8 md:flex md:flex-col items-center gap-1">
-          <Skeleton className="h-3 w-32" />
-          <Skeleton className="h-4 w-40" />
+          <Skeleton className="h-3 bg-transparent w-32" />
+          <Skeleton className="h-4 bg-transparent w-40" />
         </div>
 
         {/* Search (desktop) */}

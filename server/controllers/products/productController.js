@@ -271,7 +271,7 @@ export const getProductById = async (req, res) => {
 export const searchProducts = async (req, res) => {
   try {
     const { query } = req.params;
-
+    // console.log(query,'query')
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = parseInt(req.query.offset) || 0;
@@ -283,6 +283,7 @@ export const searchProducts = async (req, res) => {
       $or: [
         { name: { $regex: query, $options: "i" } },
         { category: { $regex: query, $options: "i" } },
+        { subcategory: { $regex: query, $options: "i" } },
         { brand: { $regex: query, $options: "i" } },
       ],
     };

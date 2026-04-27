@@ -47,7 +47,7 @@ export default function TrandingProducts() {
                     {products.map((product) => (
                         <Card
                             key={product._id}
-                            className="overflow-hidden flex items-start justify-between md:p-1 p-0 rounded-sm hover:shadow-md transition"
+                            className="overflow-hidden bg-card flex items-start justify-between md:p-1 p-0 rounded-sm hover:shadow-md transition"
                         >
                             {/* Image */}
                             <div className="w-full md:aspect-3/2 aspect-3/2 p-1 backdrop-blur-xl overflow-hidden">

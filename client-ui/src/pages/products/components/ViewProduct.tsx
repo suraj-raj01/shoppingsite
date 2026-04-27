@@ -13,6 +13,7 @@ import type { RootState } from "@/redux-toolkit/Store";
 import ReviewRating from "@/pages/helpers/reviewRating";
 import ReviewForm from "@/pages/helpers/reviewForm";
 import ScrollToTop from "@/pages/helpers/ScrollToTop";
+import RelatedProduct from "./RelatedProducts";
 
 type Reviews = {
   _id: string,
@@ -161,7 +162,7 @@ export default function ViewProduct() {
 
 
   return (
-    <div className="mt-10 px-4 md:px-10 max-w-full mx-auto">
+    <div className="mt-10 px-3 md:px-10 max-w-full mx-auto">
       <ScrollToTop />
       <div className="grid lg:grid-cols-2 gap-12">
 
@@ -169,7 +170,7 @@ export default function ViewProduct() {
         <div className="lg:sticky top-24 h-fit">
 
           {/* Main Image */}
-          <div className="border rounded-xs p-4 bg-background">
+          <div className="border rounded-xs p-3 bg-background">
             <img
               src={activeImage || product.defaultImage}
               alt={product.name}
@@ -334,6 +335,7 @@ export default function ViewProduct() {
         </div>
       )}
       <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
+      <RelatedProduct slug={product?.subcategory}/>
     </div>
   );
 }

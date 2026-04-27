@@ -100,7 +100,7 @@ export default function SearchProducts() {
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="absolute top-full left-center bg-background overflow-auto w-full mx-auto md:w-2xl max-h-120 border rounded-xs shadow-lg z-50 max-h-80">
+                <div className="absolute top-full left-center bg-background overflow-auto w-full mx-auto md:w-2xl max-h-120 border rounded-xs shadow-lg z-50">
 
                     {loading && (
                         <p className="p-3 text-sm text-muted-foreground text-center">Searching...</p>
@@ -120,7 +120,7 @@ export default function SearchProducts() {
                             >
                                 <div className="flex flex-col" onClick={() => { navigate(`/products/${item.brand}`); setShowDropdown(false) }}>
                                     <div className="flex items-center gap-2">
-                                        <img src={item.defaultImage} alt="" className="w-10 h-10" />
+                                        <img src={item.defaultImage} alt="" className="w-10 h-10 object-contain" />
                                         <div className="text-sm flex flex-col font-medium ">
                                             <span className="line-clamp-1">
                                                 {item.name}
