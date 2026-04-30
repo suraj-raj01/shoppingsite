@@ -97,13 +97,13 @@ export default function AllProducts() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
 
                     {chunkedProducts.map((group, index) => (
-                        <Card key={index} className="p-1 bg-background border-0 rounded-md shadow-none">
+                        <Card key={index} className="p-1 bg-background  border-0 rounded-md shadow-none">
 
-                            <div className="grid grid-cols-2 bg-card gap-4 md:gap-2">
+                            <div className="grid grid-cols-2 gap-4 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}
-                                        className="cursor-pointer rounded-sm border"
+                                        className="cursor-pointer bg-card rounded-sm border"
                                         onClick={() => navigate(`/products/view/${product._id}`)}
                                     >
                                         <div className="aspect-4/3 overflow-hidden p-3 rounded-md">

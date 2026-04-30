@@ -43,7 +43,7 @@ export default function LikeItems() {
                             alt={item.name}
                             onClick={() => navigate(`/products/view/${item._id}`)}
                             loading="lazy"
-                            className="md:w-38 md:h-30 w-25 h-20 object-cover mx-auto rounded-xs"
+                            className="md:w-38 md:h-30 w-25 h-20 object-contain mx-auto rounded-xs"
                         />
 
                         <Separator orientation="vertical" className="h-40 mx-2" />

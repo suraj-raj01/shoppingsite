@@ -13,6 +13,7 @@ import {
 import { MapPin, Phone, Mail, HomeIcon, Trash2, Edit2Icon } from "lucide-react";
 import { getAddress } from "../helpers/getAddress";
 import { toast } from "sonner";
+import ScrollToTop from "../helpers/ScrollToTop";
 
 declare global {
     interface Window {
@@ -271,6 +272,7 @@ export default function ShopNow() {
     return (
         <div className="grid md:grid-cols-2 min-h-screen gap-6 p-5">
             {/* LEFT - ADDRESS */}
+            <ScrollToTop/>
             <Card className="bg-background shadow-xs h-fit rounded-sm">
                 <CardHeader className="flex justify-between items-center">
                     <CardTitle>Shipping Address</CardTitle>
@@ -352,6 +354,7 @@ export default function ShopNow() {
                     <div className="flex justify-center align-center">
                         <img
                             src={productData[0].defaultImage}
+                            alt="image"
                             className="md:h-30 md:w-35 w-full object-contain cursor-pointer"
                             onClick={() => seeDetails(productData[0]._id)}
                         />

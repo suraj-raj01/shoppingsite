@@ -58,7 +58,7 @@ export default function RelatedProduct({ slug }: { slug: string }) {
                     Related Products
                 </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                     {[...Array(5)].map((_, i) => (
                         <div
                             key={i}
@@ -95,11 +95,11 @@ export default function RelatedProduct({ slug }: { slug: string }) {
     return (
         <section className="py-8">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Related Products</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                 {product.length > 0 ? (
                     product.map((prod) => (
                         <div key={prod._id} onClick={() => { navigate(`/products/view/${prod._id}`) }} className="border border-gray-200 rounded-sm shadow-md hover:shadow-lg transition-shadow p-3 bg-white">
-                            <div className="relative -top-2">
+                            <div className="relative md:-top-2">
                                 <Badge variant='destructive' className="text-xs relative top-1 left-1 px-2 py-1 rounded-xs">
                                     {Math.round(
                                         ((prod?.salePrice - prod.price) /
@@ -109,12 +109,12 @@ export default function RelatedProduct({ slug }: { slug: string }) {
                                     % OFF
                                 </Badge>
                             </div>
-                            <img src={prod.defaultImage} alt={prod.name} className="w-full h-40 object-contain mb-3 rounded" />
-                            <h3 className="text-lg font-semibold text-gray-800 truncate">{prod.name}</h3>
-                            <Badge className="text-sm  mb-1">{prod.brand}</Badge>
+                            <img src={prod.defaultImage} alt={prod.name} className="w-full h-32 md:h-40 object-contain mb-3 rounded" />
+                            <h3 className="md:text-lg text-sm font-semibold text-gray-800 truncate">{prod.name}</h3>
+                            <Badge className="text-xs md:text-sm  mb-1">{prod.brand}</Badge>
                             <p className="text-xs text-gray-600 mb-3">{prod.category} - {prod.subcategory}</p>
                             <div className="flex items-center justify-start gap-3">
-                                <p className="text-lg font-bold text-[#6096ff]">₹{prod.price.toLocaleString()}</p>
+                                <p className="text-sm md:text-lg font-bold text-[#6096ff]">₹{prod.price.toLocaleString()}</p>
                                 <p className="text-md line-through text-red-500">₹{prod.salePrice.toLocaleString()}</p>
                             </div>
                         </div>

@@ -352,7 +352,7 @@ export default function CheckOut() {
                             <div className="flex items-center gap-3 w-full sm:w-auto">
 
                                 {/* Avatar */}
-                                <div className="h-15 w-15 min-w-[48px]  border border-green-500 rounded-full overflow-hidden border bg-muted">
+                                <div className="h-15 w-15 min-w-[48px]  border border-green-500 rounded-full overflow-hidden bg-muted">
                                     {mydata?.profile ? (
                                         <img
                                             src={mydata.profile}
@@ -434,7 +434,7 @@ export default function CheckOut() {
                                         <img
                                             src={item.defaultImage}
                                             alt={item.name}
-                                            className="md:h-24 md:w-30 h-16 w-20 object-cover rounded-xs cursor-pointer flex-shrink-0"
+                                            className="md:h-24 md:w-30 h-16 w-20 object-contain rounded-xs cursor-pointer flex-shrink-0"
                                             onClick={() => seeDetails(item.id)}
                                         />
                                     </div>

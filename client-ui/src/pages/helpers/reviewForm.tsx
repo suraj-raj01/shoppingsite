@@ -100,7 +100,7 @@ export default function ReviewForm({
   const activeRating = hover || ratings;
 
   return (
-    <section className="w-full max-w-full mx-auto px-2 py-6 space-y-10">
+    <section className="w-full max-w-full mx-auto md:px-2 py-6 space-y-10">
 
       {/* ───── EXISTING REVIEWS ───── */}
       <div className="space-y-5">
@@ -133,7 +133,7 @@ export default function ReviewForm({
                 className="group relative overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 bg-white rounded-sm"
               >
                 {/* Accent top bar */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-t-xl" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-400 to-indigo-500 rounded-t-xl" />
 
                 <CardContent className="pt-5 pb-4 px-4 space-y-3">
                   <UserInfo userId={item.userId} />
