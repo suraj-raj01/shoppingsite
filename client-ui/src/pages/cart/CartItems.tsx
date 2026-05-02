@@ -136,7 +136,7 @@ export default function CartItems() {
                         ₹{totalAmount.toLocaleString()}
                     </h2>
                 </div>
-                <Button className="ml-auto text-xs md:text-xl bg-[#6096ff] hover:bg-[#5089fa] text-white md:px-6 px-3 py-3 md:py-6 cursor-pointer rounded-xs">
+                <Button className="ml-auto text-sm md:text-xl bg-[#6096ff] hover:bg-[#5089fa] text-white md:px-6 px-3 py-3 md:py-6 cursor-pointer rounded-xs">
                     <Link to="/products/checkouts">Proceed to Checkout</Link>
                 </Button>
             </div>

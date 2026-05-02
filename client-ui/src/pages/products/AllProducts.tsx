@@ -94,12 +94,12 @@ export default function AllProducts() {
                 </div>
 
                 {/* ✅ Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
 
                     {chunkedProducts.map((group, index) => (
                         <Card key={index} className="p-1 bg-background  border-0 rounded-md shadow-none">
 
-                            <div className="grid grid-cols-2 gap-4 md:gap-2">
+                            <div className="grid grid-cols-2 gap-3 md:gap-3">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}

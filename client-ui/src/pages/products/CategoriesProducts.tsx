@@ -66,13 +66,13 @@ export default function CategoriesProducts({ title }: { title: string }) {
                     <h2 className="md:font-semibold md:text-xl md:py-5 pb-4">Best Deals On {title} </h2>
                 </div>
                 {/* 🔥 Outer Grid (Boxes) */}
-                <div className="grid grid-cols-1 py-2 rounded-sm sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 py-2 rounded-sm sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2">
 
                     {chunkedProducts.map((group, index) => (
                         <Card key={index} className="p-1 bg-background border-0 rounded-sm shadow-none">
 
                             {/* 🔥 Inner Grid (4 items inside box) */}
-                            <div className="grid grid-cols-2 rounded-sm gap-5 md:gap-2">
+                            <div className="grid grid-cols-2 rounded-sm gap-3 md:gap-2">
                                 {group.map((product) => (
                                     <div
                                         key={product._id}

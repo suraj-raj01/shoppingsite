@@ -121,13 +121,14 @@ export default function Navbar() {
         fetchCategories()
     }, [])
 
-    if (loading) return <NavbarSkeleton />
-    if (loading) return <CategoriesSkeleton />
-    // if (!navbar) return <div className="p-4">Navbar not found</div>
+    if (loading) return <div>
+        <NavbarSkeleton />
+        <CategoriesSkeleton />
+    </div> 
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b bg-white backdrop-blur-2xl">
-            <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-10 px-3 py-3 gap-3">
+            <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-10 px-2 py-3 gap-3">
                 {/* Mobile Menu */}
                 <Sheet open={openSheet} onOpenChange={setOpenSheet}>
                     <SheetTrigger asChild>
