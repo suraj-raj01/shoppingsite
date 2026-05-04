@@ -85,13 +85,12 @@ export default function ViewProduct() {
       setLoading(false)
     }
   }
-
+  
   useEffect(() => {
     fetchReview()
   }, [])
 
   // ================ Get User Id =====================
-
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {

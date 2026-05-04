@@ -179,7 +179,7 @@ export default function ChatBot() {
 
       {/* Dialog */}
       <DialogContent className="sm:max-w-md p-0 overflow-hidden rounded-xl">
-        <div className="flex flex-col h-[600px]">
+        <div className="flex flex-col h-150">
 
           {/* 🔹 Header */}
           <div className="p-4 border-b bg-white flex justify-between items-center">
@@ -288,7 +288,7 @@ export default function ChatBot() {
 
                               // ✅ INLINE CODE
                               return (
-                                <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-[2px] rounded text-sm">
+                                <code className="bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded text-sm">
                                   {children}
                                 </code>
                               );

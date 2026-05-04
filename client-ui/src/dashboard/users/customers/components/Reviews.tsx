@@ -38,7 +38,8 @@ export default function Reviews() {
     const [reviews, setReviews] = useState<Reviews[]>([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState<string>('')
-
+    const [page, setPage] = useState(1)
+    const [pageCount, setPageCount] = useState(1)
     const [user, setUser] = useState<User | null>(null)
 
     // ✅ Load user safely
@@ -61,9 +62,7 @@ export default function Reviews() {
 
         try {
             setLoading(true)
-
             let response
-
             if (searchQuery) {
                 response = await axios.post(
                     `${api}/api/reviews/searchreviews`,
@@ -73,12 +72,14 @@ export default function Reviews() {
                 )
             } else {
                 response = await axios.get(
-                    `${api}/api/reviews/${user?._id}`
+                    `${api}/api/reviews/${user?._id}?page=${page}&limit=10`
                 )
             }
 
-            setReviews(response?.data || [])
-            // console.log(response.data,'data')
+            setReviews(response?.data?.data || [])
+            setPage(response?.data?.currentPage || 1)
+            setPageCount(response?.data?.totalPages || 1)
+            console.log(response.data, 'data')
 
         } catch (error) {
             console.error("Error fetching reviews:", error)
@@ -90,7 +91,7 @@ export default function Reviews() {
     // ✅ Add user dependency
     useEffect(() => {
         fetchReviews()
-    }, [searchQuery, user])
+    }, [searchQuery, user, page])
 
 
     const deleteReviews = async (id: any) => {
@@ -206,9 +207,9 @@ export default function Reviews() {
                 <DataTable
                     columns={columns}
                     data={reviews}
-                    pageCount={1}
-                    currentPage={1}
-                    onPageChange={() => { }}
+                    pageCount={pageCount}
+                    currentPage={page}
+                    onPageChange={setPage}
                     onSearch={handleSearch}
                     isLoading={loading}
                 />

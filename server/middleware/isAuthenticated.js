@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/auth/customerModel.js';
 
+// to check user is authenticated or not
+
 export const isAuthenticated = async(req, res, next) =>{
     try {
         const authHeader = req.headers.authorization;

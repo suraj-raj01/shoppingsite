@@ -103,6 +103,7 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: "Something went wrong", error: error.message });
     }
 }
+
 export const searchUser = async (req, res) => {
     const { id } = req.params;
     try {

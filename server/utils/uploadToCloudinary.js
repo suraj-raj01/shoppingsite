@@ -1,3 +1,5 @@
+// upload images to cloudinary
+
 import cloudinary from "../config/cloudinary.js";
 
 export const uploadImage = (buffer) => {

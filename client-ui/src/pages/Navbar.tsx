@@ -36,7 +36,6 @@ import { useSelector } from "react-redux"
 import type { RootState } from "@/redux-toolkit/Store"
 import SearchProducts from "./helpers/SearchProducts"
 import SearchProductsMobileView from "./helpers/SearchProductsMobileView"
-import CategoriesSkeleton from "./skeletons/products/CategoriesSkeleton"
 
 type NavbarType = {
     _id: string
@@ -123,7 +122,7 @@ export default function Navbar() {
 
     if (loading) return <div>
         <NavbarSkeleton />
-        <CategoriesSkeleton />
+        {/* <CategoriesSkeleton /> */}
     </div> 
 
     return (

@@ -41,7 +41,7 @@ export const getAllCategories = async (req, res) => {
       Category.find()
         .skip(skip)
         .limit(limit)
-        .sort({ updatedAt: -1 }),
+        .sort({ createdAt: 1 }),
       Category.countDocuments(),
     ]);
 

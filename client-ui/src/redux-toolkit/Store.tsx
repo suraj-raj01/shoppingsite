@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./CartSlice";
 import likeReducer from "./LikeSlice";
+import recentViewReducer from "./RecentViewSlice";
 
 import {
   persistStore,
@@ -27,6 +28,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, cartReducer);
 const likePersistedReducer = persistReducer(persistConfig, likeReducer);
+const recentViewPersistedReducer = persistReducer(persistConfig, recentViewReducer);
 
 // Store
 
@@ -34,6 +36,7 @@ export const store = configureStore({
   reducer: {
     addtoCart: persistedReducer,
     addtoLike: likePersistedReducer,
+    addtoView: recentViewPersistedReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

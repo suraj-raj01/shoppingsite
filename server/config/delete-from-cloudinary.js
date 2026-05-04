@@ -1,5 +1,6 @@
 import cloudinary from "./cloudinary.js"
 // get publicId from cloudinary images
+
 function getPublicIdFromUrl(url) {
     try {
         const parts = url.split("/");

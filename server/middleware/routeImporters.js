@@ -1,3 +1,4 @@
+// All the route imported here.
 
 import productRoutes from "../routes/products/productRoutes.js"
 import categoryRoutes from "../routes/products/categoryRoutes.js"
@@ -51,5 +52,6 @@ export function routeImporters(app){
     app.use('/api/returns', returnRoutes)
     // chat route
     app.use('/api/chat', chatRoutes)
+    // handle enquiries.
     app.use('/api/enquiry', enquiryRoutes)
 }

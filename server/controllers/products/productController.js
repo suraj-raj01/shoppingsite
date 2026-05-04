@@ -292,7 +292,7 @@ export const searchProducts = async (req, res) => {
     const products = await Product.find(filter)
       .skip(skip)
       .limit(limit)
-      .lean();
+      .lean().sort({ createdAt: -1 });
 
     const total = await Product.countDocuments(filter);
 
