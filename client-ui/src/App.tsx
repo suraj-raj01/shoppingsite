@@ -67,6 +67,7 @@ const AuthFailed = lazy(() => import("./auth/customers/components/AuthFailed"));
 const Layout = lazy(() => import("./Layout"));
 const Home = lazy(() => import("./pages/Home"));
 const PageNotFound = lazy(() => import("./PageNotFound"));
+const RecentlyViewed = lazy(() => import("./pages/RecentlyViewed"));
 const DashboardLayout = lazy(() => import("./dashboard/DashboardLayout"));
 const Dashboard = lazy(() => import("./dashboard/Dashboard"));
 const ProductLayout = lazy(() => import("./products-layouting/ProductLayout"));
@@ -154,6 +155,7 @@ export default function App() {
             <Route index element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="*" element={<PageNotFound url="/" />} />
+            <Route path="recently-viewed" element={<RecentlyViewed/>} />
             <Route path="products" element={<Products />} />
             <Route path="products/:id" element={<CategoryProduct />} />
             <Route path="products/view/:id" element={<ViewProduct />} />

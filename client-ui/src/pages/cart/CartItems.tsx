@@ -38,7 +38,7 @@ export default function CartItems() {
 
 
     return (
-        <div className="w-full min-h-screen max-w-7xl mx-auto p-4 space-y-6">
+        <div className="w-full min-h-screen bg-slate-50 max-w-full md:px-7 mx-auto p-3 space-y-6">
             <ScrollToTop/>
             <h1 className="text-3xl font-bold flex items-center gap-2">Your Cart <ShoppingCart className=""/> Items</h1>
 
@@ -47,7 +47,7 @@ export default function CartItems() {
                 {cartItems.map((item) => (
                     <div
                         key={item._id}
-                        className="flex overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
+                        className="flex bg-white overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-sm p-3 md:p-1 md:px-5 shadow-sm"
                     >
                         {/* image */}
                         <img

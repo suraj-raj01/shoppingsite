@@ -13,6 +13,7 @@ import type { RootState } from "@/redux-toolkit/Store";
 import ReviewForm from "@/pages/helpers/reviewForm";
 import ScrollToTop from "@/pages/helpers/ScrollToTop";
 import RelatedProduct from "./RelatedProducts";
+import { addRecentView } from "@/redux-toolkit/RecentViewSlice";
 
 type Reviews = {
   _id: string,
@@ -85,7 +86,7 @@ export default function ViewProduct() {
       setLoading(false)
     }
   }
-  
+
   useEffect(() => {
     fetchReview()
   }, [])
@@ -128,6 +129,7 @@ export default function ViewProduct() {
   const isLiked = cartItems?.some((item) => item._id === product?._id);
 
   const dispatch = useDispatch();
+
   const addtoLike = (product: Product) => {
     dispatch(
       likelikesData({
@@ -146,9 +148,23 @@ export default function ViewProduct() {
     );
   }
 
+  const handleAddToView = () => {
+    if (!product) return;
+    dispatch(
+      addRecentView({
+        ...product,
+        id: product._id,
+        qnty: 1,
+      })
+    );
+  };
+  handleAddToView();
+
 
   useEffect(() => {
-    if (id) fetchProduct(id);
+    if (id) {
+      fetchProduct(id);
+    }
   }, [id]);
 
   if (loading) {
@@ -160,7 +176,7 @@ export default function ViewProduct() {
 
 
   return (
-    <div className="mt-10 px-3 md:px-7 max-w-full mx-auto">
+    <div className="pt-10 bg-white px-3 md:px-7 max-w-full mx-auto">
       <ScrollToTop />
       <div className="grid lg:grid-cols-2 gap-12">
 
@@ -168,7 +184,7 @@ export default function ViewProduct() {
         <div className="lg:sticky top-24 h-fit">
 
           {/* Main Image */}
-          <div className="border rounded-xs p-3 bg-background">
+          <div className="border rounded-sm p-3 bg-white">
             <img
               src={activeImage || product.defaultImage}
               alt={product.name}
@@ -331,7 +347,7 @@ export default function ViewProduct() {
           {/* product ratings */}
         </div>
       )}
-      <RelatedProduct slug={product?.subcategory}/>
+      <RelatedProduct slug={product?.subcategory} />
       <ReviewForm productId={id as string} userId={user?._id as string} reviews={reviews} />
     </div>
   );

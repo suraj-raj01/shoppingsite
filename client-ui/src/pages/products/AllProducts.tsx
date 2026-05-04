@@ -84,7 +84,7 @@ export default function AllProducts() {
         <section className="w-full py-6 md:px-5">
             <div className="max-w-full mx-auto md:px-2 px-1">
 
-                <div className="flex md:flex-row flex-col px-1 items-start justify-between">
+                <div className="flex md:flex-row flex-col px-1 items-center md:items-start justify-between">
                     <h2 className="font-semibold text-xl md:py-5">
                         Recently Added Items
                     </h2>

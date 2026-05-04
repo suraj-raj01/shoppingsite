@@ -26,7 +26,7 @@ export default function LikeItems() {
     }
 
     return (
-        <div className="w-full min-h-screen max-w-7xl mx-auto p-4 space-y-6">
+        <div className="w-full bg-slate-50 min-h-screen max-w-full md:px-7 x-auto p-3 space-y-6">
             <ScrollToTop/>
             <h1 className="text-3xl font-bold flex items-center gap-2 justify-start">Your Liked <Heart className="fill-red-500 border-0 text-red-500" /> Items</h1>
 
@@ -35,7 +35,7 @@ export default function LikeItems() {
                 {likeItems.map((item) => (
                     <div
                         key={item._id}
-                        className="flex overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-xs p-3 md:p-1 md:px-5 shadow-sm"
+                        className="flex bg-white overflow-scroll md:overflow-hidden md:flex-row gap-4 border rounded-sm p-3 md:p-1 md:px-5 shadow-sm"
                     >
                         {/* image */}
                         <img
@@ -81,7 +81,7 @@ export default function LikeItems() {
                                 onClick={() => dispatch(removelikesData({ id: item._id }))}
                                 className="text-sm cursor-pointer"
                             >
-                                <Trash />
+                                <Trash /> Remove
                             </Button>
                         </div>
                     </div>

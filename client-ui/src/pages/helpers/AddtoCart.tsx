@@ -36,7 +36,6 @@ export default function AddToCart({
     product: Product;
 }) {
     const dispatch = useDispatch();
-
     const isOutOfStock = product.stock !== undefined && product.stock <= 0;
 
     const handleAddToCart = () => {
@@ -56,12 +55,12 @@ export default function AddToCart({
     return (
         <div className={`${className} space-y-4`}>
             {/* Buttons */}
-            <div className={`${className} flex flex-col md:items-center justify-start md:justify-between gap-2 w-full`}>
+            <div className={`${className} grid grid-cols-1 md:grid-cols-2 gap-4`}>
 
                 <Button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className={`flex py-3 font-semibold w-full rounded-xs ${isOutOfStock
+                    className={`flex py-5 font-semibold w-full rounded-xs ${isOutOfStock
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-[#5089fa] hover:bg-[#6096ff] text-white cursor-pointer"
                         }`}
@@ -73,7 +72,7 @@ export default function AddToCart({
                     variant="outline"
                     onClick={() => navigate(`/shopnow/${product._id}`)}
                     disabled={isOutOfStock}
-                    className="flex cursor-pointer py-3 font-semibold rounded-xs w-full"
+                    className="flex bg-white cursor-pointer py-5 font-semibold rounded-xs w-full"
                 >
                     <IndianRupee />  Buy Now
                 </Button>

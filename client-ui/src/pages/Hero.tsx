@@ -90,8 +90,8 @@ export default function Hero() {
 
         <TrandingProducts />
 
-        <CarouselPrevious className="absolute top-55 left-2 md:left-10 cursor-pointer" />
-        <CarouselNext className="absolute top-55 right-2 md:right-10 cursor-pointer" />
+        <CarouselPrevious className="absolute top-55 left-2 md:left-8 cursor-pointer" />
+        <CarouselNext className="absolute top-55 right-2 md:right-8 cursor-pointer" />
       </Carousel>
     </section>
   )

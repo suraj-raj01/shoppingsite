@@ -1,8 +1,5 @@
 import { Card } from "@/components/ui/card"
-import BASE_URL from "@/Config"
-import axios from "axios"
-import { useEffect, useRef, useState } from "react"
-
+import { useRef } from "react"
 import {
     Carousel,
     CarouselContent,
@@ -12,74 +9,59 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Link, useNavigate } from "react-router-dom"
-import ProductsGridSkeleton from "../skeletons/products/AllProductSkeleton"
+import type { RootState } from "@/redux-toolkit/Store"
+import { useSelector } from "react-redux"
 
-type Product = {
-    _id: string
-    title: string
-    description: string
-    defaultImage: string
-    more: string
-}
+import type { Product } from "@/redux-toolkit/RecentViewSlice"
+import { HistoryIcon } from "lucide-react"
 
 export default function RecentlyViewedProduct() {
-    const [products, setProducts] = useState<Product[]>([])
     const navigate = useNavigate()
-    const [loading, setLoading] = useState<boolean>(true)
 
-    const loadProducts = async () => {
-        try {
-            const res = await axios.get(`${BASE_URL}/api/admin/products/search/electronics`)
-            setProducts(res.data.data || [])
-        } catch (error) {
-            console.log(error)
-        }
-        finally {
-            setLoading(false)
-        }
-    }
+    const cartItems: Product[] = useSelector(
+        (state: RootState) => state?.addtoView?.view ?? []
+    )
 
-    useEffect(() => {
-        loadProducts()
-    }, [])
-
+    // 🔹 chunk into groups of 4 (for mobile 2x2)
     const chunkProducts = (arr: Product[], size: number) => {
-        const result = []
+        const result: Product[][] = []
         for (let i = 0; i < arr.length; i += size) {
             result.push(arr.slice(i, i + size))
         }
         return result
     }
 
-    const groupedProducts = chunkProducts(products, 4)
+    const groupedProducts = chunkProducts(cartItems, 4)
 
     const autoplay = useRef(
         Autoplay({
-            delay: 3000, // slide every 3 sec
+            delay: 3000,
             stopOnInteraction: false,
             stopOnMouseEnter: true,
         })
     )
 
-    if (loading) return <ProductsGridSkeleton />
-    if (!products.length) return null
+    // ❌ No API → so no loading state needed
+    if (!cartItems.length) return null
 
     return (
         <section className="w-full md:px-5 md:py-10 py-5">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-semibold text-xl md:text-xl py-5 flex items-center gap-2">
-                    Recently Viewed Products |
-                    <span className="text-sm md:text-md text-[#6096ff] cursor-pointer">
-                        <Link to="/products/electronics"> View all</Link>
+                   <HistoryIcon/> Recently Viewed Products |
+                    <span className="md:text-md text-[#6096ff] cursor-pointer">
+                        <Link to="/recently-viewed">View all</Link>
                     </span>
                 </h2>
 
-                <Carousel opts={{ loop: true }}
+                <Carousel
+                    opts={{ loop: true }}
                     plugins={[autoplay.current]}
-                    className="w-full">
+                    className="w-full"
+                >
                     <CarouselContent>
 
-                        {/* ✅ MOBILE VIEW (2x2 per slide) */}
+                        {/* ✅ MOBILE VIEW (2x2 grid per slide) */}
                         {groupedProducts.map((group, index) => (
                             <CarouselItem
                                 key={`mobile-${index}`}
@@ -89,15 +71,22 @@ export default function RecentlyViewedProduct() {
                                     {group.map((product) => (
                                         <Card
                                             key={product._id}
-                                            className="overflow-hidden rounded-sm border p-0"
+                                            className="overflow-auto rounded-sm border p-0"
                                         >
                                             <div className="aspect-4/3 p-2 overflow-hidden">
                                                 <img
                                                     src={product.defaultImage}
-                                                    alt={product.title}
-                                                    onClick={() => navigate(`/products/view/${product._id}`)}
-                                                    className="w-full h-full object-contain"
+                                                    alt={product.name}
+                                                    onClick={() =>
+                                                        navigate(`/products/view/${product._id}`)
+                                                    }
+                                                    className="w-full h-full object-contain cursor-pointer"
                                                 />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm mt-2 pb-1 line-clamp-2 px-2">
+                                                    {product.name}
+                                                </p>
                                             </div>
                                         </Card>
                                     ))}
@@ -105,21 +94,28 @@ export default function RecentlyViewedProduct() {
                             </CarouselItem>
                         ))}
 
-                        {/* ✅ DESKTOP VIEW (UNCHANGED) */}
-                        {products.map((product) => (
+                        {/* ✅ DESKTOP VIEW */}
+                        {cartItems.map((product) => (
                             <CarouselItem
                                 key={`desktop-${product._id}`}
-                                className="hidden md:block basis-1/3 md:basis-1/5 lg:basis-1/6"
+                                className="hidden md:block basis-1/3 md:basis-1/6 lg:basis-1/5"
                             >
                                 <Card className="overflow-hidden rounded-sm border p-0 hover:shadow-md transition">
-                                    <div className="w-full md:aspect-3/3 aspect-4/3 p-2 overflow-hidden">
+                                    <div className="w-full md:aspect-3/2 aspect-4/3 p-2 overflow-hidden">
                                         <img
                                             src={product.defaultImage}
                                             alt={product.title}
                                             loading="lazy"
-                                            onClick={() => navigate(`/products/view/${product._id}`)}
-                                            className="w-full h-full object-contain hover:scale-105 transition duration-500"
+                                            onClick={() =>
+                                                navigate(`/products/view/${product._id}`)
+                                            }
+                                            className="w-full h-full object-contain hover:scale-105 transition duration-500 cursor-pointer"
                                         />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm pb-1 line-clamp-2 px-2">
+                                            {product.name}
+                                        </p>
                                     </div>
                                 </Card>
                             </CarouselItem>
@@ -128,8 +124,8 @@ export default function RecentlyViewedProduct() {
                     </CarouselContent>
 
                     {/* arrows */}
-                    <CarouselPrevious className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 left-2 md:left-2 cursor-pointer" />
-                    <CarouselNext className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 right-2 md:right-2 cursor-pointer" />
+                    <CarouselPrevious className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 left-2 cursor-pointer" />
+                    <CarouselNext className="absolute px-2 md:block hidden bg-background/50 rounded-sm h-20 w-10 right-2 cursor-pointer" />
                 </Carousel>
             </div>
         </section>
