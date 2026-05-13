@@ -186,7 +186,7 @@ export default function UserForm({ editData, onSuccess }: Props) {
                 </Button>
 
                 <div className="flex w-full sm:col-span-2 justify-center mx-auto w-full items-center">
-                    <p className="text-sm text-gray-500">Already have an account? <Link to="/auth/login" className="text-sm font-bold text-blue-600">Login</Link></p>
+                    <p className="text-sm text-gray-500">Already have an account? <Link to="/auth/login" className="text-sm font-bold text-green-600">Login</Link></p>
                 </div>
             </form>
         </Form>

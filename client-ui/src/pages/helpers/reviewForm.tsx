@@ -105,14 +105,14 @@ export default function ReviewForm({
       {/* ───── EXISTING REVIEWS ───── */}
       <div className="space-y-5">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-9 h-9 rounded-sm bg-blue-50 text-blue-500">
+          <div className="flex items-center justify-center w-9 h-9 rounded-sm bg-green-50 text-green-500">
             <MessageSquare size={18} />
           </div>
           <h2 className="text-xl font-bold text-slate-800 tracking-tight">
             Customer Reviews
           </h2>
           {filteredData.length > 0 && (
-            <Badge className="bg-blue-100 text-blue-600 hover:bg-blue-100 font-semibold rounded-full px-3">
+            <Badge className="bg-green-100 text-green-600 hover:bg-green-100 font-semibold rounded-full px-3">
               {filteredData.length}
             </Badge>
           )}
@@ -133,7 +133,7 @@ export default function ReviewForm({
                 className="group relative overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 bg-white rounded-sm"
               >
                 {/* Accent top bar */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-400 to-indigo-500 rounded-t-xl" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-indigo-500 rounded-t-xl" />
 
                 <CardContent className="pt-5 pb-4 px-4 space-y-3">
                   <UserInfo userId={item.userId} />
@@ -172,7 +172,7 @@ export default function ReviewForm({
                   <Separator className="bg-slate-100" />
 
                   {/* Message */}
-                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-4 border-l-2 border-blue-200 pl-3">
+                  <p className="text-sm text-slate-600 leading-relaxed line-clamp-4 border-l-2 border-green-200 pl-3">
                     {item.message}
                   </p>
 
@@ -203,7 +203,7 @@ export default function ReviewForm({
         <Card className="lg:col-span-2 rounded-sm border border-slate-100 shadow-sm bg-white">
           <CardHeader className="pb-2 pt-6 px-6">
             <CardTitle className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2">
-              <Star size={20} className="text-blue-500" />
+              <Star size={20} className="text-green-500" />
               Write a Review
             </CardTitle>
             <p className="text-sm text-slate-400 mt-1">Your feedback helps other shoppers</p>
@@ -257,7 +257,7 @@ export default function ReviewForm({
                   placeholder="Share your honest experience — what did you love or what could be better?"
                   rows={5}
                   required
-                  className="resize-none rounded-sm border-slate-200 bg-slate-50 text-sm text-slate-700 placeholder:text-slate-400 focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:border-blue-400 transition"
+                  className="resize-none rounded-sm border-slate-200 bg-slate-50 text-sm text-slate-700 placeholder:text-slate-400 focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:border-green-400 transition"
                 />
               </div>
 
@@ -278,8 +278,8 @@ export default function ReviewForm({
                     handleImageUpload(e.dataTransfer.files);
                   }}
                   className={`flex flex-col items-center justify-center gap-2 w-full rounded-sm border-2 border-dashed py-8 cursor-pointer transition-colors duration-150 ${dragOver
-                    ? "border-blue-400 bg-blue-50"
-                    : "border-slate-200 bg-slate-50 hover:border-blue-300 hover:bg-blue-50/50"
+                    ? "border-green-400 bg-green-50"
+                    : "border-slate-200 bg-slate-50 hover:border-green-300 hover:bg-green-50/50"
                     }`}
                 >
                   <input
@@ -290,8 +290,8 @@ export default function ReviewForm({
                     className="hidden"
                     onChange={(e) => handleImageUpload(e.target.files)}
                   />
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <Upload size={18} className="text-blue-500" />
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <Upload size={18} className="text-green-500" />
                   </div>
                   <div className="text-center">
                     <p className="text-sm font-semibold text-slate-600">
@@ -321,7 +321,7 @@ export default function ReviewForm({
                       </div>
                     ))}
                     {/* Add more tile */}
-                    <label className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-300 hover:border-blue-300 hover:text-blue-400 cursor-pointer transition-colors">
+                    <label className="w-20 h-20 rounded-xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-slate-300 hover:border-green-300 hover:text-green-400 cursor-pointer transition-colors">
                       <input
                         type="file"
                         multiple
@@ -340,7 +340,7 @@ export default function ReviewForm({
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 rounded-sm text-sm font-semibold bg-[#6096ff] hover:bg-[#4b82f7] text-white shadow-md shadow-blue-200 hover:shadow-blue-300 transition-all duration-150 active:scale-[0.98]"
+                className="w-full h-12 rounded-sm text-sm font-semibold bg-[#6096ff] hover:bg-[#4b82f7] text-white shadow-md shadow-green-200 hover:shadow-green-300 transition-all duration-150 active:scale-[0.98]"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">

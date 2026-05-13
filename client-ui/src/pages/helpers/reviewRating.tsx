@@ -49,7 +49,7 @@ export default function ReviewRating({
         <span className="font-semibold text-lg">{rating}</span>
 
         {/* TOTAL REVIEWS */}
-        <span className="text-sm text-blue-600 cursor-pointer hover:underline">
+        <span className="text-sm text-green-600 cursor-pointer hover:underline">
           {totalReviews} ratings
         </span>
       </div>

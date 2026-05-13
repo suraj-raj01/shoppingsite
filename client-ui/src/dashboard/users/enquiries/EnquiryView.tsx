@@ -45,7 +45,7 @@ export default function EnquiryView() {
                 <h1 className="font-bold text-xl">Chats <p className="text-xs font-normal -mt-1 text-gray-400">Chat conversation</p></h1>
                 <div className="flex items-center gap-2">
                     {
-                        <div className="h-9 w-9 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">
+                        <div className="h-9 w-9 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold">
                             {enquiry?.name?.[0] || "U"}
                         </div>
                     }
@@ -79,7 +79,7 @@ export default function EnquiryView() {
                                 {/* Message Bubble */}
                                 <div
                                     className={`max-w-[85%] px-4 py-2 rounded-md text-sm shadow-sm ${isUser
-                                        ? "bg-blue-500 text-white rounded-br-none"
+                                        ? "bg-green-500 text-white rounded-br-none"
                                         : "bg-background border rounded-bl-none"
                                         }`}
                                 >
@@ -106,7 +106,7 @@ export default function EnquiryView() {
 
                                             a: (props) => (
                                                 <a
-                                                    className="text-blue-500 hover:underline break-all"
+                                                    className="text-green-500 hover:underline break-all"
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     {...props}
@@ -170,7 +170,7 @@ export default function EnquiryView() {
 
                                     {/* Time */}
                                     <div
-                                        className={`text-[10px] mt-1 ${isUser ? "text-blue-100" : "text-gray-400"
+                                        className={`text-[10px] mt-1 ${isUser ? "text-green-100" : "text-gray-400"
                                             }`}
                                     >
                                         {new Date(msg.createdAt).toLocaleTimeString()}
@@ -179,7 +179,7 @@ export default function EnquiryView() {
 
                                 {/* Avatar (Right side for user) */}
                                 {isUser && (
-                                    <div className="h-10 w-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">
+                                    <div className="h-10 w-10 rounded-full bg-green-500 text-white flex items-center justify-center text-xs font-bold">
                                         {enquiry?.name?.[0] || "U"}
                                     </div>
                                 )}

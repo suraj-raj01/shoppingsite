@@ -130,7 +130,7 @@ export default function FooterTable() {
 
                                         <Link
                                             to={icon.url}
-                                            className="text-blue-500 text-xs sm:text-sm break-all hover:underline"
+                                            className="text-green-500 text-xs sm:text-sm break-all hover:underline"
                                             target="_blank"
                                         >
                                             {icon.url}
@@ -142,7 +142,7 @@ export default function FooterTable() {
                                 {icons.length > 2 && (
                                     <button
                                         onClick={() => setShowAll(!showAll)}
-                                        className="text-xs text-blue-500 hover:underline text-left"
+                                        className="text-xs text-green-500 hover:underline text-left"
                                     >
                                         {showAll
                                             ? "Show less"

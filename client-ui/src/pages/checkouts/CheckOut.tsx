@@ -11,6 +11,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { MapPin, Phone, Mail, HomeIcon, Trash2 } from "lucide-react"
 import { getAddress } from "../helpers/getAddress";
 import { toast } from "sonner";
+import ScrollToTop from "../helpers/ScrollToTop";
 
 declare global {
     interface Window {
@@ -94,7 +95,6 @@ export default function CheckOut() {
 
                     // 🔥 fetch address immediately (NO WAIT for useEffect)
                     const fullAddress = await getAddress(lat, lng)
-
                     setAddress(
                         fullAddress as {
                             suburb?: string
@@ -313,7 +313,7 @@ export default function CheckOut() {
     }
     return (
         <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-5">
-
+            <ScrollToTop/>
             {/* ✅ USER DETAILS */}
             <div className="w-full">
                 <Card className="rounded-xs shadow-xs">
@@ -352,7 +352,7 @@ export default function CheckOut() {
                             <div className="flex items-center gap-3 w-full sm:w-auto">
 
                                 {/* Avatar */}
-                                <div className="h-15 w-15 min-w-[48px]  border border-green-500 rounded-full overflow-hidden bg-muted">
+                                <div className="h-15 w-15 min-w-12  border border-green-500 rounded-full overflow-hidden bg-muted">
                                     {mydata?.profile ? (
                                         <img
                                             src={mydata.profile}
@@ -434,7 +434,7 @@ export default function CheckOut() {
                                         <img
                                             src={item.defaultImage}
                                             alt={item.name}
-                                            className="md:h-24 md:w-30 h-16 w-20 object-contain rounded-xs cursor-pointer flex-shrink-0"
+                                            className="md:h-24 md:w-30 h-16 w-20 object-contain rounded-xs cursor-pointer shrink-0"
                                             onClick={() => seeDetails(item.id)}
                                         />
                                     </div>

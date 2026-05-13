@@ -10,7 +10,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { MapPin, Phone, Mail, HomeIcon, Trash2, Edit2Icon } from "lucide-react";
+import { MapPin, Phone, Mail, HomeIcon, Trash2 } from "lucide-react";
 import { getAddress } from "../helpers/getAddress";
 import { toast } from "sonner";
 import ScrollToTop from "../helpers/ScrollToTop";
@@ -272,77 +272,108 @@ export default function ShopNow() {
     return (
         <div className="grid md:grid-cols-2 min-h-screen gap-6 p-5">
             {/* LEFT - ADDRESS */}
-            <ScrollToTop/>
-            <Card className="bg-background shadow-xs h-fit rounded-sm">
-                <CardHeader className="flex justify-between items-center">
-                    <CardTitle>Shipping Address</CardTitle>
+            <ScrollToTop />
+            <div className="w-full">
+                <Card className="rounded-xs shadow-xs">
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="md:text-xl font-bold">
+                            Shipping Address
+                        </CardTitle>
 
-                    <Button onClick={getUserLocation} disabled={detecting}>
-                        <MapPin size={16} />
-                        {detecting ? "Detecting..." : "Use Current Location"}
-                    </Button>
-                </CardHeader>
+                        <Button variant="outline" size="sm" className="gap-2 bg-[#6096ff] text-white hover:bg-[#5089fa] hover:text-white cursor-pointer" onClick={getUserLocation}>
+                            <MapPin size={16} />
+                            {detecting ? "Detecting..." : "Current Location"}
+                        </Button>
+                    </CardHeader>
 
-                {address && (
-                    <CardFooter>
-                        <p className="text-sm">{fullAddress}</p>
-                        <Trash2
-                            className="ml-3 text-red-500 cursor-pointer"
-                            onClick={() => {
-                                localStorage.removeItem("userLocation");
-                                setAddress(null);
-                                setCoords(null);
-                                setUseCurrentLocation(false);
-                            }}
-                        />
-                    </CardFooter>
-                )}
-
-                <CardContent className="space-y-3">
-                    <div className="flex items-center gap-3 w-full sm:w-auto">
-
-                        {/* Avatar */}
-                        <div className="h-15 w-15 min-w-[48px]  border border-green-500 rounded-full overflow-hidden border bg-muted">
-                            {mydata?.profile ? (
-                                <img
-                                    src={mydata.profile}
-                                    alt="profile"
-                                    className="h-full w-full object-cover"
-                                />
-                            ) : (
-                                <div className="flex h-full w-full items-center justify-center font-bold">
-                                    {mydata?.name?.[0]?.toUpperCase() || "U"}
-                                </div>
-                            )}
-                        </div>
-                        {/* User Info */}
-                        <div className="min-w-0">
-                            <p className="font-semibold truncate">
-                                {mydata?.name || "User"}
-                            </p>
+                    {address && (
+                        <CardFooter className="flex flex-row items-center -mt-3 justify-start">
                             <p className="text-sm text-muted-foreground">
-                                Default Address
+                                {address.suburb}, {address.postcode}, {address.city}, {address.state}, {address.country}
                             </p>
-                        </div>
-                        <Link to={`/dashboard/profile/${mydata?._id}`} >
-                            <Button className="bg-transparent border-1 shadow-none cursor-pointer hover:bg-[#3674f0] hover:text-white" variant="outline"><Edit2Icon className="h-4 w-4 " /></Button>
-                        </Link>
+                            <Button variant="outline" size="sm" className="border-0 ml-3 shadow-none gap-2 cursor-pointer" onClick={() => {
+                                localStorage.removeItem("userLocation")
+                                setAddress(null)
+                                setCoords(null)
+                                setUseCurrentLocation(false)
+                            }}>
+                                <Trash2 size={16} className="text-red-500" />
+                            </Button>
+                        </CardFooter>
+                    )}
 
-                    </div>
-                    <p className="flex items-center gap-2">
-                        <Phone size={14} /> {mydata.contact}
-                    </p>
-                    <p className="flex items-center gap-2">
-                        <Mail size={14} /> {mydata.email}
-                    </p>
-                    <p className="flex items-center gap-2">
-                        <HomeIcon size={14} />
-                        {useCurrentLocation
-                            ? fullAddress
-                            : mydata.address}
-                    </p>
-                </CardContent>
-            </Card>
+                    <CardContent className="space-y-3">
+                        {/* user row */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-xs bg-background">
+
+                            {/* LEFT SECTION */}
+                            <div className="flex items-center gap-3 w-full sm:w-auto">
+
+                                {/* Avatar */}
+                                <div className="h-15 w-15 min-w-12  border border-green-500 rounded-full overflow-hidden bg-muted">
+                                    {mydata?.profile ? (
+                                        <img
+                                            src={mydata.profile}
+                                            alt="profile"
+                                            className="h-full w-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="flex h-full w-full items-center justify-center font-bold">
+                                            {mydata?.name?.[0]?.toUpperCase() || "U"}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* User Info */}
+                                <div className="min-w-0">
+                                    <p className="font-semibold truncate">
+                                        {mydata?.name || "User"}
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Default Address
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* RIGHT SECTION */}
+                            <div className="w-full sm:w-auto">
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    size="sm"
+                                    className="w-full sm:w-auto"
+                                >
+                                    <Link to={`/dashboard/profile/${mydata?._id}`}>
+                                        Update Details
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* details grid */}
+                        <div className="flex flex-col gap-3 text-md">
+                            <p className="flex items-center gap-2">
+                                <Phone size={16} className="text-[#6096ff]" />
+                                Phone : {mydata.contact}
+                            </p>
+
+                            <p className="flex items-center gap-2">
+                                <Mail size={16} className="text-[#6096ff]" />
+                                Email : {mydata.email}
+                            </p>
+
+                            <div className="flex items-center gap-2 sm:col-span-2">
+                                <HomeIcon size={16} className="text-[#6096ff] h-6 w-6 md:h-4 md:w-4" />
+                                {useCurrentLocation ? (
+                                    <p>Current Location : {detecting ? "Detecting..." : address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
+                                ) : (
+                                    <p>Default Address : {mydata.address ? (mydata.address) : (address?.suburb + ", " + address?.postcode + ", " + address?.city)}</p>
+                                )}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
 
             {/* RIGHT - PRODUCT */}
             <div className="border p-4 h-fit rounded">

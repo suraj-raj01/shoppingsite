@@ -115,7 +115,7 @@ export default function AllReturns() {
             accessorKey: 'userId', 
             header: "User ID" ,
             cell:({row})=>(
-                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/customers/${row.original.userId}/view`}>{row.original.userId}</Link>
+                <Link className='hover:text-green-500 hover:underline' to={`/dashboard/customers/${row.original.userId}/view`}>{row.original.userId}</Link>
             )
         },
 
@@ -123,14 +123,14 @@ export default function AllReturns() {
             accessorKey: 'productId', 
             header: "Product ID" ,
             cell:({row})=>(
-                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/products/${row.original.productId}/view`}>{row.original.productId}</Link>
+                <Link className='hover:text-green-500 hover:underline' to={`/dashboard/products/${row.original.productId}/view`}>{row.original.productId}</Link>
             )
         },
         { 
             accessorKey: 'orderId', 
             header: "Order ID" ,
             cell:({row})=>(
-                <Link className='hover:text-blue-500 hover:underline' to={`/dashboard/orders/${row.original.orderId}/view`}>{row.original.orderId}</Link>
+                <Link className='hover:text-green-500 hover:underline' to={`/dashboard/orders/${row.original.orderId}/view`}>{row.original.orderId}</Link>
             )
         },
         { 
@@ -151,7 +151,7 @@ export default function AllReturns() {
                         row.original.status === "pending"
                             ? "bg-yellow-500"
                             : row.original.status === "approved"
-                                ? "bg-blue-500"
+                                ? "bg-green-500"
                                 : "bg-red-500"
                     }`}
                 >

@@ -138,7 +138,7 @@ export default function KPI() {
         {/* 🛒 Items Sold */}
         <div className="bg-card rounded-sm shadow-xs p-4 border">
           <h3 className="text-md font-semibold text-gray-500">Items Sold</h3>
-          <p className="text-2xl font-bold text-blue-600">
+          <p className="text-2xl font-bold text-green-600">
             {totalItemsSold-returns.length-pendingOrders}
           </p>
         </div>

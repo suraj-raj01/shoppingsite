@@ -300,7 +300,7 @@ export default function ChatBot() {
 
                         {/* Time */}
                         <p
-                          className={`text-[10px] -mt-1 ${isUser ? "text-blue-100" : "text-gray-400"
+                          className={`text-[10px] -mt-1 ${isUser ? "text-green-100" : "text-gray-400"
                             }`}
                         >
                           {new Date(enquiry ? (enquiry.createdAt) : (new Date())).toLocaleTimeString()}
