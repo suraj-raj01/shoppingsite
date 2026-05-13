@@ -129,21 +129,6 @@ export default function ShopNow() {
         })();
     }, [coords]);
 
-    // ================= ADDRESS STRING =================
-    const fullAddress = useMemo(() => {
-        if (!address) return mydata.address || "";
-
-        return [
-            address?.suburb,
-            address?.postcode,
-            address?.city,
-            address?.state,
-            address?.country,
-        ]
-            .filter(Boolean)
-            .join(", ");
-    }, [address, mydata.address]);
-
     // ================= PRODUCT DATA =================
     const loadRazorpay = () => {
         return new Promise<boolean>((resolve) => {

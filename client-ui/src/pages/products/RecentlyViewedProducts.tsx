@@ -47,9 +47,9 @@ export default function RecentlyViewedProduct() {
     return (
         <section className="w-full md:px-5 md:py-10 py-5">
             <div className="max-w-full mx-auto px-2">
-                <h2 className="font-semibold text-lg md:text-xl py-5 flex items-center gap-2">
+                <h2 className="font-semibold text-md md:text-xl py-5 flex items-center gap-2">
                    <HistoryIcon/> Recently Viewed Products |
-                    <span className="md:text-md text-lg text-[#6096ff] cursor-pointer">
+                    <span className="md:text-md text-[#6096ff] cursor-pointer">
                         <Link to="/recently-viewed">View all</Link>
                     </span>
                 </h2>
