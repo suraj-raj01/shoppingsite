@@ -301,7 +301,7 @@ export default function CategoryProduct() {
                   </div>
 
                   {/* Cart */}
-                  <div className="w-full flex flex-col gap-2 mt-2">
+                  <div className="w-full grid grid-cols-1 gap-2 mt-2">
                     <AddToCart product={product} className="flex" />
                   </div>
                 </div>

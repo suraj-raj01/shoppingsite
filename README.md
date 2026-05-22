@@ -31,195 +31,67 @@ This is a shopping site built with Next.js and MongoDB. It allows users to brows
 - `public`: The public assets for the shopping site
 
 ```bash
-client-ui
-    |--- public
-    |       |--- tablogo.png
-    |       |--- vite.svg
+client-ui 
     |--- src
-    |   |--- assets
-    |   |       |--- react.svg
-    |   |--- auth
-    |   |       |--- Auth.tsx
-    |   |       |--- AuthNavbar.tsx
-    |   |       |--- ForgetPassword.tsx
-    |   |       |--- Login.tsx
-    |   |       |--- LoginLayout.tsx
-    |   |       |--- ResetPassword.tsx
-    |   |       |--- customers/
-    |   |--- chats
-    |   |       |--- ChatBot.tsx
-    |   |       |--- EnquiryForm.tsx
-    |   |--- components
-    |   |       |--- access-denied.tsx
-    |   |       |--- app-sidebar.tsx
-    |   |       |--- footer.tsx
-    |   |       |--- login-form.tsx
-    |   |       |--- nav-main.tsx
-    |   |       |--- nav-projects.tsx
-    |   |       |--- nav-user.tsx
-    |   |       |--- team-switcher.tsx
-    |   |       |--- theme-provider.tsx
-    |   |       |--- toggleTheme.tsx
-    |   |       |--- ui/
-    |   |--- contexts
-    |   |       |--- loginContext.tsx
-    |   |       |--- userContext.tsx
-    |   |--- dashboard
-    |   |       |--- Dashboard.tsx
-    |   |       |--- DashboardLayout.tsx
-    |   |       |--- analytics/
-    |   |       |--- authentication/
-    |   |       |--- cart/
-    |   |       |--- categories/
-    |   |       |--- footer/
-    |   |       |--- helpers/
-    |   |       |--- hero/
-    |   |       |--- navbar/
-    |   |       |--- orders/
-    |   |       |--- products/
-    |   |       |--- users/
-    |   |--- hooks
-    |   |       |--- use-mobile.ts
-    |   |--- i18n
-    |   |       |--- index.tsx
-    |   |       |--- locales/
-    |   |--- lib
-    |   |       |--- utils.ts
-    |   |--- pages
-    |   |       |--- Hero.tsx
-    |   |       |--- Home.tsx
-    |   |       |--- Navbar.tsx
-    |   |       |--- cart
-    |   |       |       |--- CartItems.tsx
-    |   |       |       |--- LikeItems.tsx
-    |   |       |--- checkouts
-    |   |       |       |--- CheckOut.tsx
-    |   |       |       |--- ShopNow.tsx
-    |   |       |--- components
-    |   |       |       |--- PaymentFailed.tsx
-    |   |       |       |--- PaymentSuccess.tsx
-    |   |       |--- helpers
-    |   |       |       |--- AddtoCart.tsx
-    |   |       |       |--- Filtering.tsx
-    |   |       |       |--- ScrollToTop.tsx
-    |   |       |       |--- SearchProducts.tsx
-    |   |       |       |--- SearchProductsMobileView.tsx
-    |   |       |       |--- Translate.tsx
-    |   |       |       |--- UserInfo.tsx
-    |   |       |       |--- WordLimiter.tsx
-    |   |       |       |--- getAddress.tsx
-    |   |       |       |--- reviewForm.tsx
-    |   |       |       |--- reviewRating.tsx
-    |   |       |--- products
-    |   |       |       |--- AllProducts.tsx
-    |   |       |       |--- Categories.tsx
-    |   |       |       |--- CategoriesProducts.tsx
-    |   |       |       |--- GrossoryProduct.tsx
-    |   |       |       |--- RecentlyViewedProducts.tsx
-    |   |       |       |--- TrandingProducts.tsx
-    |   |       |       |--- components
-    |   |       |               |--- CategoryProducts.tsx
-    |   |       |               |--- ViewProduct.tsx
-    |   |       |--- skeletons
-    |   |               |--- FooterSkeleton.tsx
-    |   |               |--- FooterSkeleton1.tsx
-    |   |               |--- HeroSkeleton.tsx
-    |   |               |--- Navbar.tsx
-    |   |               |--- products
-    |   |                       |--- AllProductSkeleton.tsx
-    |   |                       |--- CategoriesSkeleton.tsx
-    |   |                       |--- ElectronicProductSkeleton.tsx
-    |   |                       |--- ProductViewSkeleton.tsx
-    |   |                       |--- TrendingProductsSkeleton.tsx
-    |   |--- products-layouting
-    |   |       |--- ProductLayout.tsx
-    |   |       |--- Products.tsx
-    |   |--- redux-toolkit
-    |   |       |--- CartSlice.tsx
-    |   |       |--- LikeSlice.tsx
-    |   |       |--- Store.tsx
-    |   |--- routes
-    |   |       |--- AuthRoutes.tsx
-    |   |       |--- CartItems.tsx
-    |   |       |--- CategoryRoutes.tsx
-    |   |       |--- DashboardRoutes.tsx
-    |   |       |--- Index.tsx
-    |   |       |--- OrderRoutes.tsx
-    |   |       |--- ProductRoutes.tsx
-    |   |       |--- ProfileRoutes.tsx
-    |   |       |--- PublicRoutes.tsx
-    |   |       |--- RolesPermission.tsx
-    |   |       |--- UserRoutes.tsx
-    |   |--- App.tsx
-    |   |--- Config.tsx
-    |   |--- Layout.tsx
-    |   |--- PageNotFound.tsx
-    |   |--- index.css
-    |   |--- main.tsx
-    |--- .env
-    |--- .gitignore
-    |--- components.json
-    |--- eslint.config.js
-    |--- index.html
-    |--- package.json
-    |--- package-lock.json
-    |--- tsconfig.app.json
-    |--- tsconfig.json
-    |--- tsconfig.node.json
-    |--- vercel.json
-    |--- vite.config.ts
+        |--- app
+        |--- components
+        |--- context
+        |--- lib
+        |--- auth
+        |--- config
+        |--- context
+        |--- Dashboard
+        |--- hooks
+        |--- redux-toolikit 
+        |--- pages
+                |--- cart
+                      |--- CartItems.tsx
+                      |--- LikeItems.tsx
+                |--- checkout
+                      |--- Checkout.tsx
+                      |--- Payment.tsx
+                |--- products
+                      |--- Product.tsx
+                      |--- ProductList.tsx
+                      |--- ProductDetails.tsx
+                |--- helpers
+                      |--- helpers.ts
+                |--- skeletons
+                      |--- Skeleton.tsx
+                |--- user
+        |--- public
+        |--- styles
+        |--- utils
+        |--- app.tsx
+        |--- Config.tsx
+        |--- index.css
+        |--- layout.tsx
+        |--- next-env.d.ts
+        |--- next.config.js
+        |--- postcss.config.js
+        |--- README.md
+        |--- reportWebVitals.ts
+        |--- tailwind.config.js
+        |--- tsconfig.json
+        |--- vercel.json
 
 server
     |--- config
-    |       |--- cloudinary.js
-    |       |--- db.js
-    |       |--- delete-from-cloudinary.js
-    |       |--- passport.js
     |--- controllers
-    |       |--- auth/
-    |       |--- chatbot/
-    |       |--- payments/
-    |       |--- products/
-    |       |--- returns/
-    |       |--- reviews/
-    |       |--- site-settings/
-    |       |--- uploadImage/
     |--- models
-    |       |--- auth/
-    |       |--- chatbot/
-    |       |--- payments/
-    |       |--- products/
-    |       |--- returns/
-    |       |--- reviews/
-    |       |--- site-settings/
     |--- routes
-    |       |--- auth/
-    |       |--- chatbot/
-    |       |--- location/
-    |       |--- payments/
-    |       |--- products/
-    |       |--- returns/
-    |       |--- reviews/
-    |       |--- site-settings/
-    |       |--- upload.js
     |--- middleware
-    |       |--- errorHandler.js
-    |       |--- isAuthenticated.js
-    |       |--- routeImporters.js
-    |       |--- sendEmail.js
-    |       |--- upload.js
-    |--- lib
-    |       |--- chatBot.js
-    |       |--- rateLimiter.js
     |--- utils
-    |       |--- orders/
-    |       |--- uploadToCloudinary.js
+    |--- uploads
+    |--- server.js
     |--- app.js
     |--- .env
     |--- package.json
     |--- package-lock.json
+    |--- README.md
     |--- .gitignore
-
+    |--- .env.example
+    
 ```
 
 ## Setup

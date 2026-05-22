@@ -55,7 +55,7 @@ export default function AddToCart({
     return (
         <div className={`${className} space-y-4`}>
             {/* Buttons */}
-            <div className={`${className} grid grid-cols-1 md:grid-cols-2 gap-4`}>
+            <div className={`${className} grid grid-cols-1 w-full md:grid-cols-2 mt-3 gap-2 md:gap-4`}>
 
                 <Button
                     onClick={handleAddToCart}

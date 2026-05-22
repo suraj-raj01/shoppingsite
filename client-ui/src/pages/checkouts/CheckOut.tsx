@@ -207,9 +207,6 @@ export default function CheckOut() {
         })
     }
 
-    useEffect(() => {
-        loadRazorpay()
-    }, [])
     // ✅ computed values (IMPORTANT optimization)
     const { totalAmount, myProImg, } = useMemo(() => {
         let total = 0;
@@ -279,7 +276,7 @@ export default function CheckOut() {
     const handlePay = async () => {
         try {
             setPayLoading(true)
-
+            
             const res = await loadRazorpay()
             if (!res) {
                 toast.error("Razorpay SDK failed to load")
@@ -313,7 +310,7 @@ export default function CheckOut() {
     }
     return (
         <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-5">
-            <ScrollToTop/>
+            <ScrollToTop />
             {/* ✅ USER DETAILS */}
             <div className="w-full">
                 <Card className="rounded-xs shadow-xs">
