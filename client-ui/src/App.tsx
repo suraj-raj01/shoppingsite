@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
+import Chat from "./chats/Chat";
 
 const EnquiryView = lazy(() => import("./dashboard/users/enquiries/EnquiryView"));
 const EnquiryTable = lazy(() => import("./dashboard/users/enquiries/EnquiryTable"));
@@ -165,6 +166,7 @@ export default function App() {
             <Route path="shopnow/:id" element={<ShopNow />} />
             <Route path="success" element={<PaymentSuccess />} />
             <Route path="failed" element={<PaymentFailed />} />
+            <Route path="chats" element={<Chat />} />
             <Route path="*" element={<PageNotFound url="/products" />} />
           </Route>
 

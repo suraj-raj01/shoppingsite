@@ -320,7 +320,7 @@ export default function Navbar() {
                                 <DropdownMenuTrigger asChild>
                                     <div className="rounded-full flex p-0 items-center justify-center -mr-5 border cursor-pointer text-xl h-8 w-8">
                                         {user?.user?.profile ? (
-                                            <img src={user?.user?.profile || ""} alt="Profile" className="w-full h-full rounded-full" />
+                                            <img src={user?.user?.profile || ""} alt="Profile" className="w-full aspect-auto h-full  rounded-full" />
                                         ) : (
                                             user?.user?.name[0]?.toUpperCase() || "U"
                                         )}

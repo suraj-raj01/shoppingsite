@@ -1,5 +1,7 @@
 import express from 'express'
 const app = express();
+import http from 'http'
+import { Server } from 'socket.io'
 import cors from 'cors'
 import bodyparser from 'body-parser'
 import dotenv from 'dotenv'
@@ -19,6 +21,8 @@ app.use(cors({
     credentials: true
 }))
 
+const server = http.createServer(app);
+
 // Middlewares
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -28,6 +32,36 @@ app.use("/uploads", express.static("uploads"));
 // error handler
 app.use(errorHandler);
 
+// Socket server
+const io = new Server(server, {
+    cors:{
+        origin: ["http://localhost:5173", "https://res.cloudinary.com"],
+        methods:["GET","POST"]
+    }
+});
+
+io.on("connection",(socket)=>{
+    console.log(
+      "User connected:",
+      socket.id
+    );
+    // receive message from client
+    socket.on("send_message",(data)=>{
+        console.log(data,"data");
+        // send message to all clients
+        io.emit(
+          "receive_message",
+          data
+        );
+    });
+    // disconnect
+    socket.on("disconnect",()=>{
+        console.log(
+          "User disconnected"
+        );
+    });
+});
+
 app.get("/", (req, res) => {
     res.send(`SERVER IS RUNNING ✅ ON PORT ${PORT}`);
 });
@@ -36,6 +70,6 @@ app.get("/", (req, res) => {
 routeImporters(app);
 
 // Server is running on port
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT} 🚀`);
 });

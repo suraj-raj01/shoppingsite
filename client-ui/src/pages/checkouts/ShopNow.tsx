@@ -361,7 +361,7 @@ export default function ShopNow() {
             </div>
 
             {/* RIGHT - PRODUCT */}
-            <div className="border p-4 h-fit rounded">
+            <div className="border p-4 bg-card h-fit rounded">
                 <h3 className="text-xl font-bold mb-4">
                     Your Item
                 </h3>

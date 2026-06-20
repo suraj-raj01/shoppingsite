@@ -53,14 +53,7 @@ export default function CheckOut() {
     const [useCurrentLocation, setUseCurrentLocation] = useState(false);
     const [payLoading, setPayLoading] = useState(false)
 
-    const [address, setAddress] = useState<{
-        suburb?: string
-        postcode?: string
-        city?: string
-        state?: string
-        country?: string
-        county?: string
-    } | null>(null)
+    const [address, setAddress] = useState<any>(null)
     const [detecting, setDetecting] = useState(false)
 
     const [coords, setCoords] = useState<{
@@ -155,6 +148,7 @@ export default function CheckOut() {
                     coords.latitude,
                     coords.longitude
                 )
+                console.log(fullAddress, 'address')
                 setAddress(fullAddress as { suburb?: string; county?: string; postcode?: string; city?: string })
             } catch (err) {
                 console.log("Address fetch failed:", err)
@@ -276,7 +270,7 @@ export default function CheckOut() {
     const handlePay = async () => {
         try {
             setPayLoading(true)
-            
+
             const res = await loadRazorpay()
             if (!res) {
                 toast.error("Razorpay SDK failed to load")
@@ -404,7 +398,11 @@ export default function CheckOut() {
                             <div className="flex items-center gap-2 sm:col-span-2">
                                 <HomeIcon size={16} className="text-[#6096ff] h-6 w-6 md:h-4 md:w-4" />
                                 {useCurrentLocation ? (
-                                    <p>Current Location : {detecting ? "Detecting..." : address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country}</p>
+                                    address ? (address.suburb ? address.county : address.suburb + ", " + address.postcode + ", ", address.city + ", " + address.state + ", " + address.country) : (
+                                        <span className="text-sm text-muted-foreground">
+                                            Detecting location...
+                                        </span>
+                                    )
                                 ) : (
                                     <p>Default Address : {mydata.address ? (mydata.address) : (address?.suburb + ", " + address?.postcode + ", " + address?.city)}</p>
                                 )}
@@ -417,7 +415,7 @@ export default function CheckOut() {
             {/* ✅ CART TABLE */}
             {
                 Data.length > 0 && (
-                    <div id="purchase-items" className="border h-fit w-full rounded-xs p-2">
+                    <div id="purchase-items" className="border bg-white h-fit w-full rounded-xs p-2">
                         <h3 className="text-xl font-bold mb-4">Your Purchase Items</h3>
 
                         <div className="space-y-4">
@@ -498,8 +496,7 @@ export default function CheckOut() {
                             </Button>
                         </div>
                     </div>
-                )
-            }
+                )}
         </div>
     );
 }
