@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { lazy, useEffect, useState } from "react"
 import { ShoppingCart, Heart, LucideMenu, LayoutDashboardIcon, SearchIcon, CreditCardIcon, LogOutIcon, SettingsIcon, X, } from "lucide-react"
 import BASE_URL from "@/Config"
 import {
@@ -26,6 +26,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
+const Categories = lazy(() => import("@/pages/products/Categories"));
+
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, useNavigate } from "react-router-dom"
@@ -34,7 +36,7 @@ import { toast } from "sonner"
 import Translation from "./helpers/Translate"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux-toolkit/Store"
-import SearchProducts from "./helpers/SearchProducts"
+// import SearchProducts from "./helpers/SearchProducts"
 import SearchProductsMobileView from "./helpers/SearchProductsMobileView"
 
 type NavbarType = {
@@ -123,7 +125,7 @@ export default function Navbar() {
     if (loading) return <div>
         <NavbarSkeleton />
         {/* <CategoriesSkeleton /> */}
-    </div> 
+    </div>
 
     return (
         <nav className="sticky top-0 z-40 w-full border-b bg-white backdrop-blur-2xl">
@@ -173,7 +175,7 @@ export default function Navbar() {
                                                         className="text-left text-sm hover:text-green-600"
                                                         onClick={() => navigate(`/products/${sub.name}`)}
                                                     >
-                                                        ➡️ {sub.name}
+                                                        ▪️ {sub.name}
                                                     </p>
                                                 ))}
                                             </div>
@@ -203,10 +205,15 @@ export default function Navbar() {
                 </Sheet>
 
                 {/* Logo */}
-                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-10 w-auto -ml-4 object-contain" />
+                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-10 w-auto -ml-4 object-contain cursor-pointer" />
+
+                <div className="sticky md:block hidden top-16 z-35 bg-white">
+                    <Categories />
+                </div>
 
                 {/* Mobile Icons */}
                 <div className="ml-auto flex md:hidden items-center gap-1">
+                    {/* Search */}
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogTrigger asChild>
                             <SearchIcon
@@ -287,12 +294,34 @@ export default function Navbar() {
                         )}
                     </Link>
                 </div>
-                <SearchProducts />
+                {/* <SearchProducts /> */}
 
                 {/* Right Icons */}
                 <div className="hidden md:flex items-center gap-3">
                     {/* Translation components */}
                     <Translation />
+                    {/* Search */}
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
+                            <SearchIcon
+                                className="h-4 w-4 cursor-pointer"
+                                onClick={() => setOpen(true)}
+                            />
+                        </DialogTrigger>
+                        <DialogContent showCloseButton={false} className="w-full">
+                            <DialogHeader>
+                                <DialogTitle>Search Products</DialogTitle>
+                                <div className="mt-5">
+                                    <SearchProductsMobileView onClose={() => setOpen(false)} />
+                                </div>
+                            </DialogHeader>
+                            <DialogFooter className="mt-5">
+                                <DialogClose asChild className="absolute top-2 right-2">
+                                    <Button variant="destructive"><X /></Button>
+                                </DialogClose>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                     <div className="relative ml-0" onClick={() => { navigate('products/likeditems') }}>
                         {
                             likeItems.length > 0 ? (

@@ -1,7 +1,8 @@
+import BASE_URL from "@/Config";
 import {io} from "socket.io-client";
 
 export const socket = io(
-    "http://localhost:8000",{
+    BASE_URL,{
         autoConnect: true
     }
 );

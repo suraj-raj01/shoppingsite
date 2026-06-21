@@ -1,24 +1,14 @@
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import BASE_URL from "@/Config"
 import { useNavigate } from "react-router-dom"
 import ProductFilters from "./Filtering"
-type CategoryType = {
-    _id: string
-    categories: string
-}
+import { Button } from "@/components/ui/button"
+import { Search } from "lucide-react"
 
 export default function SearchProductsMobileView({ onClose }: { onClose: () => void }) {
-    const [selectedCategory, setSelectedCategory] = useState("all")
-    const [category, setCategory] = useState<CategoryType[] | null>(null)
     const [search, setSearch] = useState("")
     const [suggestions, setSuggestions] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
@@ -46,59 +36,31 @@ export default function SearchProductsMobileView({ onClose }: { onClose: () => v
         return () => clearTimeout(delayDebounce)
     }, [search])
 
-    useEffect(() => {
-        const fetchCategory = async () => {
-            try {
-                const res = await axios.get(`${BASE_URL}/api/admin/category`)
-                setCategory(res.data?.data)
-                // console.log(res.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchCategory()
-    }, [])
 
     const navigate = useNavigate()
 
     return (
         <div>
-            <div className="flex-1 md:hidden">
+            <div className="flex-1">
                 <div className="flex w-full items-center justify-center shadow-xs">
-                    <Select
-                        value={selectedCategory}
-                        onValueChange={setSelectedCategory}
-                    >
-                        <SelectTrigger className="w-fit shadow-none border-r-0">
-                            <SelectValue placeholder="All" />
-                        </SelectTrigger>
 
-                        <SelectContent>
-                            <SelectItem value="all">All</SelectItem>
-                            {category?.map((item) => (
-                                <SelectItem key={item._id} value={item.categories}>
-                                    {item.categories}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
+                    <Button className="text-secondary rounded-l-full border border-r-0 bg-gray-100 hover:text-secondary hover:bg-gray-100 w-15">
+                        <Search className="font-bold text-blue-500" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
+                    </Button>
                     <Input
                         type="text"
                         placeholder="Search products..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={() => setShowDropdown(true)}
-                        className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
+                        className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none rounded-r-full outline-none"
                     />
 
-                    {/* <Button variant='outline' className="w-18 border rounded-xs px-8">
-                        <Search className="font-bold" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
-                    </Button> */}
+
                 </div>
             </div>
             {showDropdown && search && (
-                <div className="w-full mx-auto mt-3 md:w-2xl overflow-auto bg-background border max-h-100 rounded-xs shadow-lg z-50 max-h-80">
+                <div className="w-full mx-auto mt-3 md:w-2xl overflow-auto bg-background border rounded-md shadow-lg z-50 max-h-80">
 
                     {loading && (
                         <p className="p-3 text-sm text-muted-foreground text-center">Searching...</p>

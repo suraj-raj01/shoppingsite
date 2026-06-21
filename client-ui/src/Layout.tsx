@@ -5,7 +5,6 @@ import { Suspense, lazy } from "react";
 
 const Navbar = lazy(() => import("./pages/Navbar"));
 const Footer = lazy(() => import("./components/footer"));
-const Categories = lazy(() => import("./pages/products/Categories"));
 
 export default function Layout() {
   const { setTheme } = useTheme();
@@ -16,9 +15,6 @@ export default function Layout() {
   return (
     <Suspense fallback={<div></div>}>
       <Navbar />
-      <div className="sticky top-16 border-b z-35 bg-background">
-        <Categories />
-      </div>
       <Outlet />
       <Footer />
     </Suspense>

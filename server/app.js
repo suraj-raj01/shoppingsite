@@ -35,7 +35,7 @@ app.use(errorHandler);
 // Socket server
 const io = new Server(server, {
     cors:{
-        origin: ["http://localhost:5173", "https://res.cloudinary.com"],
+        origin: process.env.CLIENT_URL,
         methods:["GET","POST"]
     }
 });

@@ -58,7 +58,7 @@ function ProductFrame({
                 ) : null}
 
                 {featured ? (
-                    <span className="rounded-md bg-slate-950 px-2 py-1 text-[10px] font-semibold text-white">
+                    <span className="rounded-md bg-blue-600 px-2 py-1 text-[10px] font-semibold text-white">
                         Top Pick
                     </span>
                 ) : null}
@@ -182,7 +182,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 rounded-sm md:rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                    <div className="flex items-center gap-2 rounded-sm border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
                         <ShoppingBag className="h-4 w-4 text-emerald-600" />
                         <Link to={`/products/${title.toLowerCase()}`}>Shop Now</Link>
                     </div>

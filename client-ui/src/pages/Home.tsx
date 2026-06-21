@@ -46,7 +46,7 @@ const Home = () => {
       <RecentlyViewedProduct/>
       {
         categories.map((cat)=>(
-          <div>
+          <div key={cat._id} className="">
             <CategoriesProducts title={cat.categories} />
           </div>
         ))

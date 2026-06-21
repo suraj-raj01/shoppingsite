@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 
 type Subcategory = {
   name: string;
@@ -16,6 +17,7 @@ type Subcategory = {
 
 type CategoryFormState = {
   categories: string;
+  categoriesImg: string;
   subcategories: Subcategory[];
 };
 
@@ -25,19 +27,49 @@ const CategoryForm: React.FC = () => {
 
   const [form, setForm] = useState<CategoryFormState>({
     categories: "",
+    categoriesImg: "",
     subcategories: [],
   });
-
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState("")
   const [loading, setLoading] = useState(false);
+
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setImageFile(file)
+    setPreview(URL.createObjectURL(file))
+  }
+
+  const uploadImageToCloudinary = async () => {
+    if (!imageFile) return ""
+    try {
+      const fd = new FormData()
+      fd.append("image", imageFile)
+
+      const res = await axios.post(
+        `${BASE_URL}/api/admin/upload/single`,
+        fd
+      )
+
+      return res.data.url
+    } catch (err) {
+      console.error("Image upload failed", err)
+      toast.error("Image upload failed")
+      return ""
+    }
+  }
 
   // Fetch category if editing
   useEffect(() => {
     if (!id) return;
-
     const fetchCategory = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/api/admin/category/${id}`);
         setForm(res.data);
+        if (res.data.categoriesImg) {
+          setPreview(res.data.categoriesImg);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -104,6 +136,11 @@ const CategoryForm: React.FC = () => {
 
     try {
       setLoading(true);
+      // Upload image if selected
+      if (imageFile) {
+        const imageUrl = await uploadImageToCloudinary();
+        form.categoriesImg = imageUrl;
+      }
 
       if (id) {
         await axios.put(`${BASE_URL}/api/admin/category/${id}`, form);
@@ -162,6 +199,23 @@ const CategoryForm: React.FC = () => {
                 onChange={handleCategoryChange}
                 placeholder="Enter category"
               />
+            </div>
+
+            <div className="grid gap-0">
+              <Label htmlFor="profile">Category Image</Label>
+              <div className="space-y-2 md:col-span-1">
+                <Input type="file" accept="image/*" onChange={handleImageChange} />
+                {/* PREVIEW */}
+                {preview && (
+                  <div className="md:col-span-1">
+                    <img
+                      src={preview}
+                      alt="preview"
+                      className="h-20 rounded-sm border object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Subcategories */}

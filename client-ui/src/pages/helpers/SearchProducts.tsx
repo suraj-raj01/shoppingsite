@@ -1,10 +1,4 @@
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import axios from "axios"
@@ -13,14 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import ProductFilters from "./Filtering"
-type CategoryType = {
-    _id: string
-    categories: string
-}
 
 export default function SearchProducts() {
-    const [selectedCategory, setSelectedCategory] = useState("all")
-    const [category, setCategory] = useState<CategoryType[] | null>(null)
     const [search, setSearch] = useState("")
     const [suggestions, setSuggestions] = useState<any[]>([])
     const [loading, setLoading] = useState(false)
@@ -51,8 +39,8 @@ export default function SearchProducts() {
     useEffect(() => {
         const fetchCategory = async () => {
             try {
-                const res = await axios.get(`${BASE_URL}/api/admin/category`)
-                setCategory(res.data?.data)
+                // const res = await axios.get(`${BASE_URL}/api/admin/category`)
+                // setCategory(res.data?.data)
                 // console.log(res.data)
             } catch (error) {
                 console.log(error)
@@ -67,36 +55,20 @@ export default function SearchProducts() {
         <div>
             <div className="flex-1 hidden md:flex md:w-2xl">
                 <div className="flex w-full items-center justify-center shadow-xs">
-                    <Select
-                        value={selectedCategory}
-                        onValueChange={setSelectedCategory}
-                    >
-                        <SelectTrigger className="w-fit shadow-none font-semibold border-r-0">
-                            <SelectValue placeholder="All" />
-                        </SelectTrigger>
-
-                        <SelectContent className="font-normal">
-                            <SelectItem value="all">All</SelectItem>
-                            {category?.map((item) => (
-                                <SelectItem key={item._id} value={item.categories}>
-                                    {item.categories}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
+                
+                    <Button className="text-secondary rounded-l-full border border-r-0 bg-gray-100 hover:text-secondary hover:bg-gray-100 w-15">
+                        <Search className="font-bold text-blue-500" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
+                    </Button>
                     <Input
                         type="text"
                         placeholder="Search products..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={() => setShowDropdown(true)}
-                        className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none outline-none"
+                        className="w-full focus-visible:border-none focus-visible:ring-1 px-3 border-l rounded-none py-2 shadow-none rounded-r-full outline-none"
                     />
 
-                    <Button className="w-18 bg-primary text-secondary hover:text-secondary hover:bg-primary px-8">
-                        <Search className="font-bold" name="search" onChange={(e: any) => { setSearch(e.target.value) }} />
-                    </Button>
+
                 </div>
             </div>
             {showDropdown && search && (
