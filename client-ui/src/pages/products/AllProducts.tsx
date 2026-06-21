@@ -49,7 +49,7 @@ export default function AllProducts() {
         setLoading(true)
         try {
             const [productsRes] = await Promise.all([
-                axios.get(`${BASE_URL}/api/admin/products?limit=13`)
+                axios.get(`${BASE_URL}/api/admin/products?limit=15`)
             ])
 
             setProducts(productsRes.data.data || [])

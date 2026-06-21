@@ -35,9 +35,9 @@ export default function ReviewRating({
               <Star
                 key={i}
                 className={`h-5 w-5 ${isFilled
-                    ? "fill-[#6096ff] text-[#6096ff]"
+                  ? "fill-[#2266ef] text-[#2266ef]"
                     : isHalf
-                      ? "fill-[#9996ff] text-[#6096ff]"
+                    ? "fill-[#3374f8] text-[#1e66f7]"
                       : "text-gray-300"
                   }`}
               />

@@ -65,7 +65,7 @@ function ProductFrame({
             </div>
 
             <div className={featured ? "h-full p-4 pb-20" : "h-full p-3 pb-14"}>
-                <div className="flex h-full w-full items-center justify-center rounded-md bg-slate-50 p-3">
+                <div className="flex h-full w-full items-center justify-center rounded-md bg-white p-3">
                     <img
                         src={product.defaultImage}
                         alt={product.title || product.name}

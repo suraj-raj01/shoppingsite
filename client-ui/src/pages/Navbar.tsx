@@ -212,7 +212,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile Icons */}
-                <div className="ml-auto flex md:hidden items-center gap-1">
+                <div className="ml-auto flex md:hidden items-center gap-1 mr-2">
                     {/* Search */}
                     <Dialog open={open} onOpenChange={setOpen}>
                         <DialogTrigger asChild>

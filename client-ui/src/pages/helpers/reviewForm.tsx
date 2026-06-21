@@ -133,7 +133,7 @@ export default function ReviewForm({
                 className="group relative overflow-hidden border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 bg-white rounded-sm"
               >
                 {/* Accent top bar */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-indigo-500 rounded-t-xl" />
+                <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-green-500 rounded-t-xl" />
 
                 <CardContent className="pt-5 pb-4 px-4 space-y-3">
                   <UserInfo userId={item.userId} />
