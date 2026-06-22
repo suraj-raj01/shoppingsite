@@ -101,7 +101,7 @@ export default function AllProducts() {
 
                 {/* ✅ Dense grid — featured tiles take a 2x2 block, everything
                     else auto-packs into the remaining cells (no manual chunking) */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 auto-rows-[150px] gap-3 grid-flow-row-dense">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 auto-rows-[150px] gap-3 grid-flow-row-dense p-2 md:p-1">
                     {tagged.map(({ product, discount, topPick, featured }) => (
                         <Card
                             key={product._id}

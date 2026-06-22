@@ -3,20 +3,20 @@ import BASE_URL from "@/Config";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import { itemInc, itemDec, itemDel } from "@/redux-toolkit/CartSlice";
-
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { MapPin, Phone, Mail, HomeIcon, Trash2 } from "lucide-react"
+import { Separator } from "@/components/ui/separator";
+import {
+    MapPin, Phone, Mail, Home, Trash2,
+    Plus, Minus, ShoppingBag, Package,
+    CreditCard, ChevronRight, Tag,
+} from "lucide-react";
 import { getAddress } from "../helpers/getAddress";
 import { toast } from "sonner";
 import ScrollToTop from "../helpers/ScrollToTop";
 
 declare global {
-    interface Window {
-        Razorpay: any;
-    }
+    interface Window { Razorpay: any }
 }
 
 type CartItem = {
@@ -29,9 +29,7 @@ type CartItem = {
 };
 
 type RootState = {
-    addtoCart: {
-        cart: CartItem[];
-    };
+    addtoCart: { cart: CartItem[] };
 };
 
 type UserProfile = {
@@ -46,178 +44,108 @@ type UserProfile = {
 export default function CheckOut() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const Data = useSelector((state: RootState) => state.addtoCart.cart);
 
     const [mydata, setMyData] = useState<UserProfile>({});
     const [useCurrentLocation, setUseCurrentLocation] = useState(false);
-    const [payLoading, setPayLoading] = useState(false)
+    const [payLoading, setPayLoading] = useState(false);
+    const [address, setAddress] = useState<any>(null);
+    const [detecting, setDetecting] = useState(false);
+    const [coords, setCoords] = useState<{ latitude: number; longitude: number } | null>(null);
 
-    const [address, setAddress] = useState<any>(null)
-    const [detecting, setDetecting] = useState(false)
-
-    const [coords, setCoords] = useState<{
-        latitude: number
-        longitude: number
-    } | null>(null)
-
-    // ✅ get location
+    // ── Location detection (logic unchanged) ───────────────────────────
     const getUserLocation = () => {
-        setUseCurrentLocation(true)
-        if (!navigator.geolocation) {
-            toast.error("Geolocation not supported")
-            return
-        }
-
-        if (detecting) return // ✅ prevent spam clicks
-
-        setDetecting(true)
-
+        setUseCurrentLocation(true);
+        if (!navigator.geolocation) { toast.error("Geolocation not supported"); return; }
+        if (detecting) return;
+        setDetecting(true);
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 try {
-                    const lat = position.coords.latitude
-                    const lng = position.coords.longitude
-
-                    const locationObj = { latitude: lat, longitude: lng }
-
-                    setCoords(locationObj)
-
-                    // ✅ save immediately
-                    localStorage.setItem("userLocation", JSON.stringify(locationObj))
-
-                    // 🔥 fetch address immediately (NO WAIT for useEffect)
-                    const fullAddress = await getAddress(lat, lng)
-                    setAddress(
-                        fullAddress as {
-                            suburb?: string
-                            postcode?: string
-                            city?: string
-                            county?: string
-                        }
-                    )
-                    console.log(fullAddress, 'address')
-                    toast.success("Location detected")
-                } catch (err) {
-                    console.error("Address fetch failed:", err)
-                    toast.error("Failed to fetch address")
-                } finally {
-                    setDetecting(false)
-                }
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const locationObj = { latitude: lat, longitude: lng };
+                    setCoords(locationObj);
+                    localStorage.setItem("userLocation", JSON.stringify(locationObj));
+                    const fullAddress = await getAddress(lat, lng);
+                    setAddress(fullAddress as any);
+                    toast.success("Location detected");
+                } catch { toast.error("Failed to fetch address"); }
+                finally { setDetecting(false); }
             },
             (error) => {
-                console.error(error)
-
-                if (error.code === 1) {
-                    toast.error("Location permission denied")
-                } else if (error.code === 2) {
-                    toast.error("Location unavailable")
-                } else if (error.code === 3) {
-                    toast.error("Location request timed out")
-                }
-
-                setDetecting(false)
+                if (error.code === 1) toast.error("Location permission denied");
+                else if (error.code === 2) toast.error("Location unavailable");
+                else if (error.code === 3) toast.error("Location request timed out");
+                setDetecting(false);
             },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000, // ✅ VERY IMPORTANT (was too small)
-                maximumAge: 0,
-            }
-        )
-    }
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+    };
 
-    // ✅ restore location after refresh
+    const clearLocation = () => {
+        localStorage.removeItem("userLocation");
+        setAddress(null);
+        setCoords(null);
+        setUseCurrentLocation(false);
+    };
+
     useEffect(() => {
-        const saved = localStorage.getItem("userLocation")
-        if (saved) {
-            try {
-                setCoords(JSON.parse(saved))
-            } catch (err) {
-                console.error("Failed to parse saved location:", err)
-            }
-        }
-    }, [])
+        const saved = localStorage.getItem("userLocation");
+        if (saved) { try { setCoords(JSON.parse(saved)); } catch { } }
+    }, []);
 
-    // ✅ fetch address when coords change
     useEffect(() => {
-        if (!coords) return
-
+        if (!coords) return;
         const fetchAddress = async () => {
             try {
-                const fullAddress = await getAddress(
-                    coords.latitude,
-                    coords.longitude
-                )
-                console.log(fullAddress, 'address')
-                setAddress(fullAddress as { suburb?: string; county?: string; postcode?: string; city?: string })
-            } catch (err) {
-                console.log("Address fetch failed:", err)
-            }
-        }
-
-        fetchAddress()
-    }, [coords])
+                const fullAddress = await getAddress(coords.latitude, coords.longitude);
+                setAddress(fullAddress as any);
+            } catch (err) { console.log("Address fetch failed:", err); }
+        };
+        fetchAddress();
+    }, [coords]);
 
     useEffect(() => {
         try {
-            const userData = localStorage.getItem("user")
+            const userData = localStorage.getItem("user");
+            if (!userData) { toast.error("Please login to continue"); navigate("/auth/login", { replace: true }); return; }
+            const parsedData = JSON.parse(userData);
+            if (!parsedData?.user) { toast.error("Session expired. Please login again"); navigate("/auth/login", { replace: true }); return; }
+            setMyData(parsedData.user);
+        } catch { navigate("/auth/login", { replace: true }); }
+    }, [navigate]);
 
-            if (!userData) {
-                toast.error("Please login to continue")
-                navigate("/auth/login", { replace: true })
-                return
-            }
-
-            const parsedData = JSON.parse(userData)
-
-            if (!parsedData?.user) {
-                toast.error("Session expired. Please login again")
-                navigate("/auth/login", { replace: true })
-                return
-            }
-
-            setMyData(parsedData.user)
-        } catch (err) {
-            console.error("Invalid user data", err)
-            navigate("/auth/login", { replace: true })
+    // ✅ Fixed: unified address builder (was duplicated + had suburb?county:suburb bug)
+    const getShippingAddress = () => {
+        if (useCurrentLocation && address) {
+            return [
+                address.suburb || address.county,
+                address.postcode,
+                address.city,
+                address.state,
+                address.country,
+            ].filter(Boolean).join(", ");
         }
-    }, [navigate])
-
-    const seeDetails = (id: string) => {
-        navigate(`/products/view/${id}`);
+        return mydata.address || "";
     };
 
-    const loadRazorpay = () => {
-        return new Promise<boolean>((resolve) => {
-            if (window.Razorpay) {
-                resolve(true)
-                return
-            }
-            const script = document.createElement("script")
+    const loadRazorpay = () =>
+        new Promise<boolean>((resolve) => {
+            if (window.Razorpay) { resolve(true); return; }
+            const script = document.createElement("script");
             script.src = import.meta.env.VITE_RAZORPAY_API;
-            script.onload = () => resolve(true)
-            script.onerror = () => resolve(false)
-            document.body.appendChild(script)
-        })
-    }
-
-    // ✅ computed values (IMPORTANT optimization)
-    const { totalAmount, myProImg, } = useMemo(() => {
-        let total = 0;
-        let img = "";
-
-        Data.forEach((item) => {
-            total += Number(item.price * item.qnty);
-            img = `${item.defaultImage}`;
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
         });
 
-        return {
-            totalAmount: total,
-            myProImg: img,
-        };
+    const { totalAmount, myProImg } = useMemo(() => {
+        let total = 0, img = "";
+        Data.forEach((item) => { total += item.price * item.qnty; img = item.defaultImage; });
+        return { totalAmount: total, myProImg: img };
     }, [Data]);
 
-    // ✅ razorpay init
     const initPay = (data: any) => {
         const options = {
             key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -226,11 +154,8 @@ export default function CheckOut() {
             name: "Shopping Site",
             description: "Order Payment",
             image: myProImg,
-            notes: {
-                "Shipping Address": useCurrentLocation ? address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
-            },
+            notes: { "Shipping Address": getShippingAddress() },
             order_id: data.id,
-
             handler: async (response: any) => {
                 try {
                     const res = await axios.post(`${BASE_URL}/api/payment/verify`, {
@@ -238,265 +163,287 @@ export default function CheckOut() {
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
                         productId: Data.map((item) => item.id),
-                    })
-                    if (res.data.success) {
-                        toast.success(res.data.message || "Payment successful 🎉")
-                        navigate("/success")
-                    }
-                    else {
-                        toast.error(res.data.message || "Payment failed")
-                        navigate("/failed")
-                    }
-                } catch (error) {
-                    console.log(error)
-                    toast.error("Payment verification failed")
-                }
+                    });
+                    if (res.data.success) { toast.success(res.data.message || "Payment successful 🎉"); navigate("/success"); }
+                    else { toast.error(res.data.message || "Payment failed"); navigate("/failed"); }
+                } catch { toast.error("Payment verification failed"); }
             },
-
-            prefill: {
-                name: mydata.name,
-                email: mydata.email,
-                contact: mydata.contact,
-            },
-
+            prefill: { name: mydata.name, email: mydata.email, contact: mydata.contact },
             theme: { color: "#3674f0" },
-        }
+        };
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+    };
 
-        const razorpay = new window.Razorpay(options)
-        razorpay.open()
-    }
-
-    // ✅ handle pay
     const handlePay = async () => {
         try {
-            setPayLoading(true)
+            setPayLoading(true);
+            const res = await loadRazorpay();
+            if (!res) { toast.error("Razorpay SDK failed to load"); return; }
+            const { data } = await axios.post(`${BASE_URL}/api/payment/orders`, {
+                id: mydata._id,
+                shippingaddress: getShippingAddress(),
+                amount: totalAmount,
+                defaultImage: myProImg,
+                product: Data,
+            });
+            if (!data?.order?.id) { toast.error("Invalid order response"); return; }
+            initPay(data.order);
+        } catch { toast.error("Payment failed to start"); }
+        finally { setPayLoading(false); }
+    };
 
-            const res = await loadRazorpay()
-            if (!res) {
-                toast.error("Razorpay SDK failed to load")
-                return
-            }
+    const totalItems = Data.reduce((acc, item) => acc + item.qnty, 0);
 
-            const { data } = await axios.post(
-                `${BASE_URL}/api/payment/orders`,
-                {
-                    id: mydata._id,
-                    shippingaddress: useCurrentLocation ? address?.suburb ? address.county : address?.suburb + ", " + address?.postcode + ", " + address?.city + ", " + address?.state + ", " + address?.country : mydata.address,
-                    amount: totalAmount,
-                    defaultImage: myProImg,
-                    product: Data,
-                }
-            )
-
-            if (!data?.order?.id) {
-                toast.error("Invalid order response")
-                return
-            }
-
-            initPay(data.order)
-
-        } catch (error) {
-            console.log(error)
-            toast.error("Payment failed to start")
-        } finally {
-            setPayLoading(false)
-        }
-    }
     return (
-        <div id="checkout" className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-6 p-3 md:p-5">
+        <div className="min-h-screen bg-[#f5f7ff]">
             <ScrollToTop />
-            {/* ✅ USER DETAILS */}
-            <div className="w-full">
-                <Card className="rounded-xs shadow-xs">
-                    <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="md:text-xl font-bold">
-                            Shipping Address
-                        </CardTitle>
 
-                        <Button variant="outline" size="sm" className="gap-2 bg-[#6096ff] text-white hover:bg-[#5089fa] hover:text-white cursor-pointer" onClick={getUserLocation}>
-                            <MapPin size={16} />
-                            {detecting ? "Detecting..." : "Current Location"}
-                        </Button>
-                    </CardHeader>
+            <div className="max-w-5xl mx-auto px-4 md:px-6 py-6 space-y-5">
 
-                    {address && (
-                        <CardFooter className="flex flex-row items-center -mt-3 justify-start">
-                            <p className="text-sm text-muted-foreground">
-                                {address.suburb}, {address.postcode}, {address.city}, {address.state}, {address.country}
-                            </p>
-                            <Button variant="outline" size="sm" className="border-0 ml-3 shadow-none gap-2 cursor-pointer" onClick={() => {
-                                localStorage.removeItem("userLocation")
-                                setAddress(null)
-                                setCoords(null)
-                                setUseCurrentLocation(false)
-                            }}>
-                                <Trash2 size={16} className="text-red-500" />
-                            </Button>
-                        </CardFooter>
-                    )}
+                {/* ── Breadcrumb ── */}
+                <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                    <span
+                        className="text-[#6096ff] font-medium cursor-pointer hover:underline"
+                        onClick={() => navigate("/products/cartitems")}
+                    >
+                        Cart
+                    </span>
+                    <ChevronRight className="w-3 h-3" />
+                    <span className="text-slate-800 font-semibold">Checkout</span>
+                </div>
 
-                    <CardContent className="space-y-3">
-                        {/* user row */}
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 border rounded-xs bg-background">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
-                            {/* LEFT SECTION */}
-                            <div className="flex items-center gap-3 w-full sm:w-auto">
+                    {/* ══ LEFT: Shipping Address ══════════════════════════════ */}
+                    <div className="space-y-4">
+                        <div className="bg-white rounded-lg border border-slate-100 shadow-sm p-5">
 
-                                {/* Avatar */}
-                                <div className="h-15 w-15 min-w-12  border border-green-500 rounded-full overflow-hidden bg-muted">
+                            {/* Card header */}
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="font-bold text-slate-800 text-base flex items-center gap-2">
+                                    <MapPin className="w-4 h-4 text-[#6096ff]" />
+                                    Shipping Address
+                                </h2>
+                                <Button
+                                    size="sm"
+                                    onClick={getUserLocation}
+                                    className="bg-[#6096ff] hover:bg-[#5089fa] text-white text-xs rounded-sm h-8 gap-1.5 cursor-pointer"
+                                >
+                                    <MapPin className="w-3 h-3" />
+                                    {detecting ? "Detecting…" : "Use My Location"}
+                                </Button>
+                            </div>
+
+                            {/* ✅ Detected address tag (fixed: was suburb?county:suburb which was backwards) */}
+                            {address && (
+                                <div className="flex items-start gap-2 bg-emerald-50 border border-emerald-200 rounded-sm px-3 py-2 mb-4">
+                                    <MapPin className="w-3.5 h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                                    <span className="flex-1 text-xs text-emerald-700 leading-relaxed">
+                                        {[
+                                            address.suburb || address.county,
+                                            address.postcode,
+                                            address.city,
+                                            address.state,
+                                            address.country,
+                                        ].filter(Boolean).join(", ")}
+                                    </span>
+                                    <button
+                                        title="Remove Location"
+                                        onClick={clearLocation}
+                                        className="text-red-400 hover:text-red-500 transition-colors flex-shrink-0 mt-0.5"
+                                    >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* User profile row */}
+                            <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-sm border border-slate-100 mb-4">
+                                <div className="w-11 h-11 rounded-full border-2 border-[#6096ff] overflow-hidden bg-slate-200 flex-shrink-0">
                                     {mydata?.profile ? (
                                         <img
                                             src={mydata.profile}
                                             alt="profile"
-                                            className="h-full w-full object-cover"
+                                            className="w-full h-full object-cover"
                                         />
                                     ) : (
-                                        <div className="flex h-full w-full items-center justify-center font-bold">
+                                        <div className="flex h-full w-full items-center justify-center font-bold text-[#6096ff] text-sm">
                                             {mydata?.name?.[0]?.toUpperCase() || "U"}
                                         </div>
                                     )}
                                 </div>
-
-                                {/* User Info */}
-                                <div className="min-w-0">
-                                    <p className="font-semibold truncate">
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-semibold text-slate-800 text-sm truncate">
                                         {mydata?.name || "User"}
                                     </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        Default Address
-                                    </p>
+                                    <p className="text-xs text-slate-400">Delivering to this address</p>
                                 </div>
-                            </div>
-
-                            {/* RIGHT SECTION */}
-                            <div className="w-full sm:w-auto">
                                 <Button
                                     asChild
                                     variant="outline"
                                     size="sm"
-                                    className="w-full sm:w-auto"
+                                    className="text-xs rounded-sm flex-shrink-0"
                                 >
-                                    <Link to={`/dashboard/profile/${mydata?._id}`}>
-                                        Update Details
-                                    </Link>
+                                    <Link to={`/dashboard/profile/${mydata?._id}`}>Edit</Link>
+                                </Button>
+                            </div>
+
+                            {/* Contact + address details */}
+                            <div className="space-y-3 text-sm text-slate-600">
+                                <div className="flex items-center gap-2.5">
+                                    <Phone className="w-4 h-4 text-[#6096ff] flex-shrink-0" />
+                                    <span>{mydata.contact || <span className="text-slate-400 italic">Not set</span>}</span>
+                                </div>
+                                <div className="flex items-center gap-2.5">
+                                    <Mail className="w-4 h-4 text-[#6096ff] flex-shrink-0" />
+                                    <span className="truncate">{mydata.email || <span className="text-slate-400 italic">Not set</span>}</span>
+                                </div>
+                                <div className="flex items-start gap-2.5">
+                                    <Home className="w-4 h-4 text-[#6096ff] flex-shrink-0 mt-0.5" />
+                                    <span className="leading-relaxed">
+                                        {useCurrentLocation
+                                            ? address
+                                                ? [address.suburb || address.county, address.postcode, address.city, address.state, address.country].filter(Boolean).join(", ")
+                                                : <span className="text-slate-400 italic">Detecting location…</span>
+                                            : mydata.address || <span className="text-slate-400 italic">No address saved</span>
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ══ RIGHT: Order Items + Summary ════════════════════════ */}
+                    {Data.length > 0 && (
+                        <div className="space-y-4">
+
+                            {/* Items list */}
+                            <div className="bg-white rounded-lg border border-slate-100 shadow-sm p-5">
+                                <h2 className="font-bold text-slate-800 text-base flex items-center gap-2 mb-4">
+                                    <ShoppingBag className="w-4 h-4 text-[#6096ff]" />
+                                    Order Items
+                                    <span className="text-xs font-normal text-slate-400">
+                                        ({totalItems} {totalItems === 1 ? "item" : "items"})
+                                    </span>
+                                </h2>
+
+                                <div className="space-y-3">
+                                    {Data.map((item) => (
+                                        <div
+                                            key={item.id}
+                                            className="flex gap-3 pb-3 border-b border-slate-50 last:border-0 last:pb-0"
+                                        >
+                                            {/* Image */}
+                                            <div
+                                                className="w-16 h-16 flex-shrink-0 bg-slate-50 rounded-md overflow-hidden cursor-pointer"
+                                                onClick={() => navigate(`/products/view/${item.id}`)}
+                                            >
+                                                <img
+                                                    src={item.defaultImage}
+                                                    alt={item.name}
+                                                    className="w-full h-full object-contain p-1 hover:scale-105 transition-transform duration-200"
+                                                />
+                                            </div>
+
+                                            {/* Info */}
+                                            <div className="flex-1 min-w-0">
+                                                <h4
+                                                    className="text-sm font-semibold text-slate-800 line-clamp-1 cursor-pointer hover:text-[#6096ff] transition-colors"
+                                                    onClick={() => navigate(`/products/view/${item.id}`)}
+                                                >
+                                                    {item.name}
+                                                </h4>
+                                                <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
+                                                    {item.description}
+                                                </p>
+                                                {/* ✅ toLocaleString() for proper Indian number formatting */}
+                                                <p className="text-sm font-bold text-slate-900 mt-1">
+                                                    ₹{(item.price * item.qnty).toLocaleString()}
+                                                </p>
+                                            </div>
+
+                                            {/* Qty stepper + Remove */}
+                                            <div className="flex flex-col items-center gap-2 flex-shrink-0">
+                                                <div className="flex items-center border border-slate-200 rounded-sm overflow-hidden">
+                                                    <button
+                                                        title='btn'
+                                                        disabled={item.qnty === 1}
+                                                        onClick={() => dispatch(itemDec({ id: item.id }))}
+                                                        className="px-2 py-1 bg-slate-50 hover:bg-slate-100 disabled:opacity-35 disabled:cursor-not-allowed transition-colors"
+                                                    >
+                                                        <Minus className="w-3 h-3 text-slate-600" />
+                                                    </button>
+                                                    <span className="px-3 py-1 text-xs font-semibold text-slate-800 border-x border-slate-200 bg-white min-w-[1.75rem] text-center">
+                                                        {item.qnty}
+                                                    </span>
+                                                    <button
+                                                        title='btn'
+                                                        onClick={() => dispatch(itemInc({ id: item.id }))}
+                                                        className="px-2 py-1 bg-slate-50 hover:bg-slate-100 transition-colors"
+                                                    >
+                                                        <Plus className="w-3 h-3 text-slate-600" />
+                                                    </button>
+                                                </div>
+                                                <button
+                                                    onClick={() => dispatch(itemDel({ id: item.id }))}
+                                                    className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50"
+                                                    title="Remove"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Order summary + Pay button */}
+                            <div className="bg-white rounded-lg border border-slate-100 shadow-sm p-5">
+                                <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                    <Package className="w-4 h-4 text-[#6096ff]" />
+                                    Order Summary
+                                </h2>
+
+                                <div className="space-y-2.5 text-sm text-slate-600">
+                                    <div className="flex justify-between">
+                                        <span>Price ({totalItems} {totalItems === 1 ? "item" : "items"})</span>
+                                        <span>₹{totalAmount.toLocaleString()}</span>
+                                    </div>
+                                    <div className="flex justify-between text-emerald-600">
+                                        <span>Delivery</span>
+                                        <span className="font-medium">FREE</span>
+                                    </div>
+                                </div>
+
+                                <Separator className="my-3" />
+
+                                <div className="flex justify-between text-base font-bold text-slate-900 mb-4">
+                                    <span>Total Amount</span>
+                                    <span>₹{totalAmount.toLocaleString()}</span>
+                                </div>
+
+                                <div className="bg-slate-50 border border-slate-100 rounded-sm px-3 py-2 flex items-center gap-2 mb-4">
+                                    <Tag className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                                    <p className="text-xs text-slate-500">
+                                        100% secure payment via Razorpay
+                                    </p>
+                                </div>
+
+                                {/* ✅ Pay button shows amount inline so user knows exactly what they're paying */}
+                                <Button
+                                    onClick={handlePay}
+                                    disabled={payLoading}
+                                    className="w-full bg-[#6096ff] hover:bg-[#5089fa] text-white py-5 text-sm font-semibold rounded-sm flex items-center gap-2 cursor-pointer disabled:opacity-70"
+                                >
+                                    <CreditCard className="w-4 h-4" />
+                                    {payLoading ? "Processing…" : `Pay ₹${totalAmount.toLocaleString()}`}
                                 </Button>
                             </div>
                         </div>
-
-                        {/* details grid */}
-                        <div className="flex flex-col gap-3 text-md">
-                            <p className="flex items-center gap-2">
-                                <Phone size={16} className="text-[#6096ff]" />
-                                Phone : {mydata.contact}
-                            </p>
-
-                            <p className="flex items-center gap-2">
-                                <Mail size={16} className="text-[#6096ff]" />
-                                Email : {mydata.email}
-                            </p>
-
-                            <div className="flex items-center gap-2 sm:col-span-2">
-                                <HomeIcon size={16} className="text-[#6096ff] h-6 w-6 md:h-4 md:w-4" />
-                                {useCurrentLocation ? (
-                                    address ? (address.suburb ? address.county : address.suburb + ", " + address.postcode + ", ", address.city + ", " + address.state + ", " + address.country) : (
-                                        <span className="text-sm text-muted-foreground">
-                                            Detecting location...
-                                        </span>
-                                    )
-                                ) : (
-                                    <p>Default Address : {mydata.address ? (mydata.address) : (address?.suburb + ", " + address?.postcode + ", " + address?.city)}</p>
-                                )}
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                    )}
+                </div>
             </div>
-
-            {/* ✅ CART TABLE */}
-            {
-                Data.length > 0 && (
-                    <div id="purchase-items" className="border bg-white h-fit w-full rounded-xs p-2">
-                        <h3 className="text-xl font-bold mb-4">Your Purchase Items</h3>
-
-                        <div className="space-y-4">
-                            {Data.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex  overflow-x-auto md:overflow-visible flex-row gap-4 rounded-xs p-2 border-b min-w-[320px] md:min-w-0"
-                                >
-                                    {/* ✅ Image */}
-                                    <div className="flex justify-center md:justify-start">
-                                        <img
-                                            src={item.defaultImage}
-                                            alt={item.name}
-                                            className="md:h-24 md:w-30 h-16 w-20 object-contain rounded-xs cursor-pointer shrink-0"
-                                            onClick={() => seeDetails(item.id)}
-                                        />
-                                    </div>
-
-                                    {/* ✅ Content */}
-                                    <div className="flex-1 space-y-2">
-                                        <h4 className="font-semibold text-base line-clamp-1">
-                                            {item.name}
-                                        </h4>
-
-                                        <p className="text-sm text-muted-foreground line-clamp-2">
-                                            {item.description}
-                                        </p>
-
-                                        <div className="font-bold text-lg">
-                                            ₹{item.price * item.qnty}
-                                        </div>
-                                    </div>
-
-                                    {/* ✅ Actions */}
-                                    <div className="flex sm:flex-col items-center justify-between sm:justify-center gap-3">
-                                        {/* qty */}
-                                        <div className="flex items-center gap-2">
-                                            <Button
-                                                size="icon"
-                                                variant="outline"
-                                                onClick={() => dispatch(itemInc({ id: item.id }))}
-                                            >
-                                                +
-                                            </Button>
-
-                                            <b>{item.qnty}</b>
-
-                                            <Button
-                                                size="icon"
-                                                variant="outline"
-                                                disabled={item.qnty === 1}
-                                                onClick={() => dispatch(itemDec({ id: item.id }))}
-                                            >
-                                                -
-                                            </Button>
-                                        </div>
-
-                                        {/* delete */}
-                                        <Button
-                                            size="sm"
-                                            variant="outline"
-                                            className="md:w-full cursor-pointer text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
-                                            onClick={() => dispatch(itemDel({ id: item.id }))}
-                                        >
-                                            Remove
-                                        </Button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* ✅ TOTAL */}
-                        <div className="flex justify-between items-center mt-6">
-                            <h3 className="text-xl font-bold">Total: ₹{totalAmount}</h3>
-
-                            <Button disabled={payLoading} onClick={handlePay} className="bg-[#6096ff] hover:bg-[#5089fa] text-white">
-                                {payLoading ? "Processing..." : "Pay Now"}
-                            </Button>
-                        </div>
-                    </div>
-                )}
         </div>
     );
 }
