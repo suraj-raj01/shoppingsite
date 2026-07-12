@@ -54,7 +54,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="mx-auto md:px-7 px-3 py-8">
+      <div className="mx-auto md:px-17 px-3 py-8">
 
         {/* TOP SECTION */}
         {loading ? (

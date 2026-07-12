@@ -164,7 +164,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
     if (!products.length) return null
 
     return (
-        <section className="w-full px-3 py-8 md:px-7">
+        <section className="w-full px-3 py-8 md:px-16">
             <div className="mx-auto max-w-full">
                 <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div className="max-w-2xl">
@@ -182,7 +182,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2 rounded-sm border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                    <div className="flex items-center justify-center gap-2 rounded-sm border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
                         <ShoppingBag className="h-4 w-4 text-emerald-600" />
                         <Link to={`/products/${title.toLowerCase()}`}>Shop Now</Link>
                     </div>
@@ -190,7 +190,7 @@ export default function CategoriesProducts({ title }: { title: string }) {
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                     {collageGroups.map((group, groupIndex) => (
-                        <Card key={groupIndex} className="overflow-hidden rounded-lg border-0 bg-transparent shadow-none p-2">
+                        <Card key={groupIndex} className="overflow-hidden rounded-lg border-0 bg-transparent shadow-none lg:p-2">
                             <div className="grid auto-rows-[150px] grid-cols-2 gap-2 sm:grid-cols-4 sm:auto-rows-[190px] lg:auto-rows-[205px]">
                                 {group.map((product, productIndex) => (
                                     <ProductFrame

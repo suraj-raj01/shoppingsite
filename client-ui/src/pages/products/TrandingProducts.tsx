@@ -39,7 +39,7 @@ export default function TrandingProducts() {
     if (loading) return <TrendingProductsSkeleton/>
 
     return (
-        <section className="w-full relative -mt-55 md:-mt-65 md:px-5 py-5">
+        <section className="w-full relative -mt-55 md:-mt-65 md:px-15 py-5">
             <div className="max-w-full mx-auto px-2 md:px-2">
 
                 {/* Grid */}

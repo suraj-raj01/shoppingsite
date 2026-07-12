@@ -82,7 +82,7 @@ export default function AllProducts() {
     if (!products.length) return null
 
     return (
-        <section className="w-full py-6 md:px-5">
+        <section className="w-full py-6 md:px-15">
             <div className="max-w-full mx-auto md:px-2 px-1">
 
                 <div className="flex md:flex-row flex-col px-1 items-start md:items-start justify-between">

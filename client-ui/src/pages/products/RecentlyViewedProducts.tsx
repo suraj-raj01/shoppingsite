@@ -45,7 +45,7 @@ export default function RecentlyViewedProduct() {
     if (!cartItems.length) return null
 
     return (
-        <section className="w-full md:px-5 md:py-10 py-5">
+        <section className="w-full md:px-15 md:py-10 py-5">
             <div className="max-w-full mx-auto px-2">
                 <h2 className="font-semibold text-md md:text-xl py-5 flex items-center gap-2">
                    <HistoryIcon/> Recently Viewed Products |

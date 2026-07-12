@@ -31,13 +31,13 @@ const Categories = lazy(() => import("@/pages/products/Categories"));
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link, useNavigate } from "react-router-dom"
-import NavbarSkeleton from "./skeletons/Navbar"
 import { toast } from "sonner"
 import Translation from "./helpers/Translate"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux-toolkit/Store"
 // import SearchProducts from "./helpers/SearchProducts"
 import SearchProductsMobileView from "./helpers/SearchProductsMobileView"
+import Loader from "@/components/loader"
 
 type NavbarType = {
     _id: string
@@ -123,13 +123,12 @@ export default function Navbar() {
     }, [])
 
     if (loading) return <div>
-        <NavbarSkeleton />
-        {/* <CategoriesSkeleton /> */}
+        <Loader/>
     </div>
 
     return (
-        <nav className="sticky top-0 z-40 w-full border-b bg-white backdrop-blur-2xl">
-            <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-10 px-2 py-3 gap-3">
+        <nav className="sticky top-0 z-40 w-full border-b bg-card backdrop-blur-2xl">
+            <div className="max-w-full w-full flex justify-between items-center mx-auto md:px-20 px-2 py-3 gap-3">
                 {/* Mobile Menu */}
                 <Sheet open={openSheet} onOpenChange={setOpenSheet}>
                     <SheetTrigger asChild>
@@ -205,7 +204,7 @@ export default function Navbar() {
                 </Sheet>
 
                 {/* Logo */}
-                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-10 w-auto -ml-4 object-contain cursor-pointer" />
+                <img src={navbar?.logo} alt="logo" onClick={() => { navigate('/') }} className="h-11 w-auto -ml-4 object-contain cursor-pointer" />
 
                 <div className="sticky md:block hidden top-16 z-35 bg-white">
                     <Categories />

@@ -27,7 +27,7 @@ const ratingLabels = ["", "Poor", "Fair", "Good", "Great", "Excellent"];
 
 const ratingColors: Record<number, string> = {
   1: "text-red-500",
-  2: "text-orange-500",
+  2: "text-blue-500",
   3: "text-yellow-500",
   4: "text-lime-500",
   5: "text-green-500",
